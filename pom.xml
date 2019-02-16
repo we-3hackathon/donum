@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.bdonor</groupId>
-	<artifactId>R U Hacking </artifactId>
+	<artifactId>bdonor </artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>R.U.Hacking </name>
+	<name>bdonor</name>
 	<description>BDonor</description>
 
 	<properties>
@@ -22,12 +22,6 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-rest</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
 		</dependency>
 	</dependencies>
 

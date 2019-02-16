@@ -1,4 +1,4 @@
-package com.hackerthon.R.U.Hacking;
+package com.bdonor;
 
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
