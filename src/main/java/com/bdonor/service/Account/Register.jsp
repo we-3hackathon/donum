@@ -9,6 +9,8 @@
     <div class="login-box">
       <h1> Registration </h1>
     </div>
+    <form>
+    <action =
     <div class="textbox">
       <input type="text" placeholder = "Firstname" name="" value="">
     </div>
@@ -34,6 +36,7 @@
     </div>
 
     <input class="btn" type = "button" name = "" value="">
+    </form>
 
   </body>
 </html>
