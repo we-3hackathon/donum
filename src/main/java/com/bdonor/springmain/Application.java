@@ -1,8 +1,9 @@
-package com.bdonor.SpringMain;
+package com.bdonor.springmain;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+
+
 
 @SpringBootApplication
 public class Application {
@@ -11,6 +12,5 @@ public class Application {
 		System.out.println("hello world");
 		SpringApplication.run(Application.class, args);
 	}
-
 }
 
