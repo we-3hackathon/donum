@@ -1,0 +1,30 @@
+#container {
+  background-color: white;
+  width: 800px;
+  height: auto;
+  margin: auto;
+}
+
+.nav_bar {
+  position: relative;
+  right: -50px;
+  text-align: center;
+  background-color: white;
+  width: 30%;
+}
+
+.nav_bar a {
+  color: black;
+  text-align: center;
+  padding: 3px 16px;
+  text-decoration: none;
+  border-right: 1px solid blue;
+}
+
+.nav_bar a:hover {
+  color: red;
+}
+
+.nav_bar a.active {
+  color: black;
+}
