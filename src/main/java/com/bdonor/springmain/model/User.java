@@ -1,5 +1,4 @@
-package com.bdonor.service.Database;
-
+package com.bdonor.springmain.model;
 
 import org.springframework.data.annotation.Id;
 
@@ -7,7 +6,7 @@ import javax.persistence.Entity;
 
 
 @Entity
-public class applicationUsers {
+public class User {
 
     @Id
     String firstName;
@@ -58,7 +57,7 @@ public class applicationUsers {
 
     @Override
     public String toString() {
-        return "applicationUsers{" +
+        return "User{" +
                 "firstName='" + firstName + '\'' +
                 ", surname='" + surname + '\'' +
                 ", Email=" + Email +
