@@ -1,4 +1,4 @@
-package service.com.bdonor.API.google;
+package service.API.google;
 
 public class Helper {
 
