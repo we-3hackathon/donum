@@ -1,0 +1,16 @@
+package com.bdonor.accountservice.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+
+@Controller
+public class UserController {
+    @RequestMapping(value = "/")
+    @ResponseBody
+    public String register(){
+        return "Register.html";
+    }
+
+}
