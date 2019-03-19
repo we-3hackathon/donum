@@ -1,13 +1,13 @@
-package com.bdonor.accountservice;
+package com.bdonor.gateway;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class AccountServiceApplication {
+public class GatewayApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(AccountServiceApplication.class, args);
+		SpringApplication.run(GatewayApplication.class, args);
 	}
 
 }
