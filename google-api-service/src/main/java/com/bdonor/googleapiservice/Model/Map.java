@@ -8,6 +8,8 @@ public interface Map {
 
     public void setPlotSize();
 
-    
+    void setCenter();
+
+
 
 }
