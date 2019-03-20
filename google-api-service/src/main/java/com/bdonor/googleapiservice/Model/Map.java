@@ -2,14 +2,24 @@ package com.bdonor.googleapiservice.Model;
 
 public interface Map {
 
-    public void setZoom();
+    void setZoom(String zoom);
 
-    public void setSize();
+    void setSize(String size);
 
-    public void setPlotSize();
+    void setPlotSize(String plots);
 
-    void setCenter();
+    void setCenter(String city);
 
+    void setMapType(String mapType);
 
+    String getZoom();
+
+    String getSize();
+
+    String getPlotSize();
+
+    String getCenter();
+
+    String getMapType();
 
 }

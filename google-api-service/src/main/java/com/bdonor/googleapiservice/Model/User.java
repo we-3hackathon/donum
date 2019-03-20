@@ -3,32 +3,16 @@ package com.bdonor.googleapiservice.Model;
 
 public abstract class User {
 
-    private String _lat;
-    private String _long;
+    private String _postcode;
+    private String _address;
     private String _bloodGroup;
     private String id;
 
-    public User(String _lat, String _long, String _bloodGroup, String id) {
-        this._lat = _lat;
-        this._long = _long;
+
+    public User( String _postcode, String _address, String _bloodGroup) {
+        this._postcode = _postcode;
+        this._address = _address;
         this._bloodGroup = _bloodGroup;
-        this.id = id;
-    }
-
-    public String get_lat() {
-        return _lat;
-    }
-
-    public void set_lat(String _lat) {
-        this._lat = _lat;
-    }
-
-    public String get_long() {
-        return _long;
-    }
-
-    public void set_long(String _long) {
-        this._long = _long;
     }
 
     public String get_bloodGroup() {
@@ -45,5 +29,21 @@ public abstract class User {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String get_postcode() {
+        return _postcode;
+    }
+
+    public void set_postcode(String _postcode) {
+        this._postcode = _postcode;
+    }
+
+    public String get_address() {
+        return _address;
+    }
+
+    public void set_address(String _address) {
+        this._address = _address;
     }
 }

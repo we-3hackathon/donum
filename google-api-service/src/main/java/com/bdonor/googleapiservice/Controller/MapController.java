@@ -1,8 +1,8 @@
 package com.bdonor.googleapiservice.Controller;
 
 
-import com.bdonor.googleapiservice.Helper.Helper;
-import org.springframework.stereotype.Controller;
+import com.bdonor.googleapiservice.Model.Variables;
+import com.bdonor.googleapiservice.Service.Map;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -14,12 +14,15 @@ import java.io.IOException;
 @RestController
 public class MapController {
 
-    Helper googleAPI = new Helper();
+    Map googleMap ;
 
     /* Test to see controller is called */
     @RequestMapping("/check")
+    @ResponseBody
     public String testConnection(){
-        return "redirect:"+ googleAPI._exampleURL;
+        googleMap = new Map("London","13", Variables.MEDIUM_RES.toString(),Variables.ROADMAP.toString());
+        googleMap.buildURL();
+        return googleMap.get_URL();
     }
 
 
@@ -27,15 +30,15 @@ public class MapController {
     @RequestMapping(value = "/url", method = RequestMethod.GET)
     public void redirect (HttpServletResponse http){
         try{
-        http.sendRedirect(googleAPI._exampleURL);
+            googleMap = new Map("London","13", Variables.MEDIUM_RES.toString(),Variables.ROADMAP.toString());
+            googleMap.buildURL();
+        http.sendRedirect(googleMap.get_URL());
         }catch (IOException ex){
         }
     }
 
     @RequestMapping(value = "/account-service/getAll", method = RequestMethod.GET)
     public void requestUsersData(){
-
-
 
     }
 }

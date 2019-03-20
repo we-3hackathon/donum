@@ -3,10 +3,13 @@ package com.bdonor.googleapiservice.Model;
 public class Plot extends User{
 
     private String _color;
+    private String _lat;
+    private String _lon;
 
-    public Plot(String lat, String lon, String id, String bloodGroup) {
-        super(lat, lon, id, bloodGroup);
-        _color = setColour(bloodGroup);
+
+    public Plot(String _postcode, String _address, String _bloodGroup) {
+        super(_postcode, _address, _bloodGroup);
+        _color = setColour(_bloodGroup);
     }
 
     public String setColour(String bloodGroup){
@@ -27,5 +30,29 @@ public class Plot extends User{
                 return "grey";
 
         }
+    }
+
+    public String get_color() {
+        return _color;
+    }
+
+    public void set_color(String _color) {
+        this._color = _color;
+    }
+
+    public String get_lat() {
+        return _lat;
+    }
+
+    public void set_lat(String _lat) {
+        this._lat = _lat;
+    }
+
+    public String get_lon() {
+        return _lon;
+    }
+
+    public void set_lon(String _lon) {
+        this._lon = _lon;
     }
 }
