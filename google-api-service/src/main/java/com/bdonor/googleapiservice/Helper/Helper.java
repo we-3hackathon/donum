@@ -1,10 +1,12 @@
-package service.com.bdonor.API.google;
+package com.bdonor.googleapiservice.Helper;
 
 public class Helper {
 
     private final String _APIKEY = "&AIzaSyBz-en4IzG0aeAxcGWc3Xo0fURt-Fb2-sU";
 
     private String _URL = "https://maps.googleapis.com/maps/api/staticmap?center=";
+
+    public final String _exampleURL = "https://maps.googleapis.com/maps/api/staticmap?center=New York&zoom=13&size=600x300&maptype=roadmap&key=AIzaSyBz-en4IzG0aeAxcGWc3Xo0fURt-Fb2-sU";
 
     private String _city = "";
 

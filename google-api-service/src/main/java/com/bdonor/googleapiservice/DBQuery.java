@@ -1,4 +1,4 @@
-package service.com.bdonor.API.google;
+package com.bdonor.googleapiservice;
 
 public class DBQuery {
 
