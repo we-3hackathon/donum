@@ -8,7 +8,6 @@ public class Map {
 
     StaticMap _googleMap;
     String _URL = "";
-    //public final String _exampleURL = "https://maps.googleapis.com/maps/api/staticmap?center=New York&zoom=13&size=600x300&maptype=roadmap&key=AIzaSyBz-en4IzG0aeAxcGWc3Xo0fURt-Fb2-sU";
 
     /*
     * @param city

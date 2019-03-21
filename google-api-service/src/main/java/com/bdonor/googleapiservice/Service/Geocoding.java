@@ -39,7 +39,6 @@ public class Geocoding extends Thread{
                     + URL_ENV.KEY.toString() + Variables.PLACES_KEY.toString();
 
             System.out.println(_URL);
-            //HttpPost post = new HttpPost("https://maps.googleapis.com/maps/api/geocode/json?address=10115,germany&key=AIzaSyCKMh-4IFwLRnoQSDQOuvhwj0QM7rGm8m8");
             HttpPost post = new HttpPost(_URL);
 
             HttpResponse response = client.execute(post);
