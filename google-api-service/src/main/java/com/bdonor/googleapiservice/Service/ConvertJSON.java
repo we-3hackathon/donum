@@ -16,7 +16,7 @@ public class ConvertJSON {
         this._JSONDATA = data;
     }
 
-    public void readFile(){
+    public void readAddData(){
 
         try {
             JSONObject obj = new JSONObject(_JSONDATA);
@@ -36,5 +36,27 @@ public class ConvertJSON {
             System.out.println(ex.getMessage());
         }
     }
+
+    public String readGetCoordinates(){
+
+        String lat = "E_CONVERTJSON";
+        String lon = "E_CONVERTJSON";
+        try {
+            JSONObject obj = new JSONObject(_JSONDATA);
+
+            JSONArray usersArray = obj.getJSONArray("results");
+
+            for (int i = 0; i < usersArray.length(); i++) {
+                lat = usersArray.getJSONObject(i).getJSONObject("geometry").getJSONObject("location").getString("lat");
+                lon = usersArray.getJSONObject(i).getJSONObject("geometry").getJSONObject("location").getString("lng");
+            }
+
+        }catch (Exception ex){
+            System.out.println(ex.getMessage());
+        }
+
+        return lat + "," + lon;
+    }
+
 
 }

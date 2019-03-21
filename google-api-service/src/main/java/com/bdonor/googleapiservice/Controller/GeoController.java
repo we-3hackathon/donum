@@ -1,12 +1,15 @@
 package com.bdonor.googleapiservice.Controller;
 
+import com.bdonor.googleapiservice.Service.Geocoding;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
+@RestController
 public class GeoController {
 
 
+    boolean inProgress;
+    int progress = 0;
     /**
      *
      *
@@ -15,9 +18,18 @@ public class GeoController {
      *
      * return @param latitude and longitude
      */
-    @RequestMapping("/geocoding")
-    public String convertToGeo(String address, String postcode){
+    @GetMapping(value = "/geocoding/{address}/{postcode}")
+    @ResponseBody
+    public String convertToGeo(@PathVariable String address, @PathVariable String postcode){
 
-        return "Your Lat is Lon is";
+        Geocoding convertAddress = new Geocoding(address,postcode);
+
+        convertAddress.start();
+
+        while(convertAddress.isAlive()){
+            inProgress = true;
+        }
+
+        return  convertAddress.getCoordinates();
     }
 }

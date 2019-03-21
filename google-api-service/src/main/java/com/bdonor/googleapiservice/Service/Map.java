@@ -28,7 +28,7 @@ public class Map {
 
 
     /**
-     * URL is in format:
+     * URL_ENV is in format:
      * center={center}&zoom={zoom}&size={size}&maptype={maptype}
      */
     public void buildURL(){
