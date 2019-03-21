@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: accountSerice
+
+eureka:
+  client:
+    registerWithEuerka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://localhost:8081
+    instance:
+      hostname: localhost
