@@ -2,11 +2,9 @@ package com.bdonor.googleapiservice.Controller;
 
 
 import com.bdonor.googleapiservice.Model.Variables;
+import com.bdonor.googleapiservice.Service.Geocoding;
 import com.bdonor.googleapiservice.Service.Map;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -40,5 +38,15 @@ public class MapController {
     @RequestMapping(value = "/account-service/getAll", method = RequestMethod.GET)
     public void requestUsersData(){
 
+    }
+
+    @GetMapping(value = "/generatemap/{lat}/{lng}/{city}")
+    @ResponseBody
+    public String generateMapURL(@PathVariable String lat, @PathVariable String lng,@PathVariable String city){
+
+        googleMap = new Map("London","13", Variables.MEDIUM_RES.toString(),Variables.ROADMAP.toString());
+        googleMap.buildURL();
+
+        return  "";
     }
 }

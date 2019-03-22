@@ -58,5 +58,4 @@ public class ConvertJSON {
         return lat + "," + lon;
     }
 
-
 }

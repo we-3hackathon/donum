@@ -35,11 +35,7 @@ public class Map {
         _URL = Variables.STATIC_MAP + _googleMap.getCenter() + _googleMap.getZoom() + _googleMap.getSize() + _googleMap.getMapType() + "&key=" + Variables.API_KEY.toString();
     }
 
-    /*
-    public void addMarker(){
 
-        _markerURL = _markerURL + _markerColor + "|" + "label:"+ _label +"|"+ _cordX + "," + _cordY;
-    }*/
 
     public String get_URL() {
         return _URL ;
