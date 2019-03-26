@@ -4,6 +4,7 @@ package com.bdonor.googleapiservice.Controller;
 import com.bdonor.googleapiservice.Model.Variables;
 import com.bdonor.googleapiservice.Service.Geocoding;
 import com.bdonor.googleapiservice.Service.Map;
+import com.bdonor.googleapiservice.Service.Plot;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -19,7 +20,7 @@ public class MapController {
     @ResponseBody
     public String testConnection(){
         googleMap = new Map("London","13", Variables.MEDIUM_RES.toString(),Variables.ROADMAP.toString());
-        googleMap.buildURL();
+        //googleMap.buildURL();
         return googleMap.get_URL();
     }
 
@@ -29,7 +30,7 @@ public class MapController {
     public void redirect (HttpServletResponse http){
         try{
             googleMap = new Map("London","13", Variables.MEDIUM_RES.toString(),Variables.ROADMAP.toString());
-            googleMap.buildURL();
+            //googleMap.buildURL();
         http.sendRedirect(googleMap.get_URL());
         }catch (IOException ex){
         }
@@ -40,13 +41,28 @@ public class MapController {
 
     }
 
-    @GetMapping(value = "/generatemap/{lat}/{lng}/{city}")
-    @ResponseBody
-    public String generateMapURL(@PathVariable String lat, @PathVariable String lng,@PathVariable String city){
+    @GetMapping(value = "/generatemap/{lat}/{lng}/{city}/{blood}")
+    public void generateMapURL(@PathVariable String lat, @PathVariable String lng,@PathVariable String city, @PathVariable String blood,HttpServletResponse http){
 
-        googleMap = new Map("London","13", Variables.MEDIUM_RES.toString(),Variables.ROADMAP.toString());
-        googleMap.buildURL();
+        try {
+            // the default map
+            googleMap = new Map(city, "13", Variables.MEDIUM_RES.toString(), Variables.ROADMAP.toString());
 
-        return  "";
+            Plot mapPlot = new Plot();
+            mapPlot.addMarker(mapPlot.setColour(blood), blood, lat, lng);
+
+            googleMap.buildMapOnlyURL();
+            googleMap.buildMapPlotURL(mapPlot.getPlotURL());
+            http.sendRedirect(googleMap.get_URL());
+
+        }catch (Exception e){
+            e.getMessage();
+        }
+    }
+
+    @GetMapping(value = "/editmap/{zoom}")
+    public void changeMapZoom(@PathVariable String zoom){
+
+
     }
 }

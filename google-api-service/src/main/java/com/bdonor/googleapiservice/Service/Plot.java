@@ -6,9 +6,10 @@ public class Plot {
 
     private StringBuilder _plotURL ;
 
+    public Plot(){_plotURL = new StringBuilder();}
     public String generatePlot(String JSONData){
 
-        _plotURL = new StringBuilder();
+        //_plotURL = new StringBuilder();
 
         // read JSON from all users from account service
         // compare each with current lat,lat
@@ -45,4 +46,6 @@ public class Plot {
 
         }
     }
+
+    public String getPlotURL(){return _plotURL.toString();}
 }

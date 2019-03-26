@@ -30,12 +30,20 @@ public class Map {
      * URL_ENV is in format:
      * center={center}&zoom={zoom}&size={size}&maptype={maptype}
      */
-    public void buildURL(){
+    public void buildMapOnlyURL(){
 
-        _URL = Variables.STATIC_MAP + _googleMap.getCenter() + _googleMap.getZoom() + _googleMap.getSize() + _googleMap.getMapType() + "&key=" + Variables.API_KEY.toString();
+        _URL = Variables.STATIC_MAP + _googleMap.getCenter() + _googleMap.getZoom() + _googleMap.getSize() + _googleMap.getMapType() ;
     }
 
 
+    public void buildMapPlotURL(String markers){
+
+        _URL = _URL + markers + buildKeyURL();
+    }
+
+    private String buildKeyURL(){
+        return "&key=" + Variables.API_KEY.toString();
+    }
 
     public String get_URL() {
         return _URL ;
