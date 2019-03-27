@@ -1,4 +1,4 @@
-package com.AccountService.accountService;
+package com.accountservice.accountservice;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
