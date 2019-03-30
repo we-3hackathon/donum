@@ -1,13 +1,13 @@
-package com.accountservice.accountservice.Models;
+package com.bdonor.accountservice.Models;
 
-import com.accountservice.accountservice.Repository.UserRepository;
+import com.bdonor.accountservice.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class AccountService {
+public class AccountHelper {
 
     @Autowired
     private UserRepository UserRepo;

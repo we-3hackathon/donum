@@ -1,11 +1,9 @@
-package com.accountservice.accountservice.Repository;
+package com.bdonor.accountservice.Repository;
 
-import com.accountservice.accountservice.Models.User;
+import com.bdonor.accountservice.Models.User;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @Repository

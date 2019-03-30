@@ -1,8 +1,8 @@
-package com.accountservice.accountservice.Controller;
+package com.bdonor.accountservice.Controller;
 
-import com.accountservice.accountservice.Models.AccountService;
-import com.accountservice.accountservice.Models.User;
-import com.accountservice.accountservice.Repository.UserRepository;
+import com.bdonor.accountservice.Models.AccountHelper;
+import com.bdonor.accountservice.Models.User;
+import com.bdonor.accountservice.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
@@ -12,14 +12,14 @@ import java.util.List;
 
 @Controller
 @Component
-public class As_Controller {
+public class AccountController {
 
     @Autowired
-    private AccountService Service_functions;
+    private AccountHelper Service_functions;
 
     private UserRepository UserRepo;
 
-    public As_Controller(UserRepository userRepo) {
+    public AccountController(UserRepository userRepo) {
         UserRepo = userRepo;
     }
 
@@ -31,7 +31,16 @@ public class As_Controller {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/create/{bloodGroup}/{firstname}/{_surname}/{_email}/{_addressline}/[_postcode}", method = RequestMethod.POST) // Works
+    @RequestMapping("/testController") // Works
+    public String testResponse() {
+
+        System.out.println("a");
+        System.out.println("a");
+
+        return "Response: OK";
+    }
+    @ResponseBody
+    @GetMapping(value = "/create/{bloodGroup}/{firstname}/{_surname}/{_email}/{_addressline}/{_postcode}/{_password}") // Works
     public String create( @PathVariable String bloodGroup , @PathVariable  String firstname, @PathVariable  String _surname, @PathVariable  String _email, @PathVariable  String _password, @PathVariable  String _addressline, @PathVariable  String _postcode){
         User CreateUser = Service_functions.create(bloodGroup, firstname,  _surname,  _email,  _password,  _addressline,  _postcode);
         System.out.println("this is working");
@@ -40,15 +49,16 @@ public class As_Controller {
 
     @ResponseBody
     @GetMapping("/getUser/{firstName}") // THIS KINDA WORKS BUT DOESNT RETURN ANYTHING
-    public User getUser( @PathVariable String firstName ){
+    public String getUser( @PathVariable String firstName ){
         System.out.println("Working");
-        return Service_functions.getByfirstName(firstName);
+        return Service_functions.getByfirstName(firstName).toString();
     }
 
+    @ResponseBody
     @GetMapping("/getAll")
-    public List<User> getAllUsers(){ // THIS DOESNT WORK
+    public String getAllUsers(){ // THIS DOESNT WORK
         System.out.println("This Works");
-        return Service_functions.getAll();
+        return Service_functions.getAll().toString();
     }
 
     @ResponseBody

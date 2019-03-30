@@ -1,4 +1,4 @@
-package com.accountservice.accountservice.Models;
+package com.bdonor.accountservice.Models;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.IndexDirection;
@@ -22,6 +22,7 @@ public class User {
         this.firstName = firstName;
     }
 
+    public User(){}
     public User(String bloodGroup, String firstName, String _surname, String _email, String _password, String _addressline, String _postcode) {
         this.bloodGroup = bloodGroup;
         this.firstName = firstName;
