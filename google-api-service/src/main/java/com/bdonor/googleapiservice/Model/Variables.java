@@ -3,7 +3,7 @@ package com.bdonor.googleapiservice.Model;
 public enum Variables {
 
 
-    API_KEY("AIzaSyBz-en4IzG0aeAxcGWc3Xo0fURt-Fb2-sU"),
+    API_KEY(""),
     PLACES_KEY(""),
     HIGH_RES("900x600"),
     MEDIUM_RES("600x480"),
