@@ -1,4 +1,4 @@
-package com.AccountService.accountService;
+package com.bdonor.accountservice;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -7,7 +7,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class AccountServiceApplicationTests {
+public class AccountHelperApplicationTests {
 
 	@Test
 	public void contextLoads() {
