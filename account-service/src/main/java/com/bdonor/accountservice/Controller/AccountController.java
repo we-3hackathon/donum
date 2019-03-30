@@ -33,10 +33,7 @@ public class AccountController {
     @ResponseBody
     @RequestMapping("/testController") // Works
     public String testResponse() {
-
-        System.out.println("a");
-        System.out.println("a");
-
+        
         return "Response: OK";
     }
     @ResponseBody
@@ -48,7 +45,7 @@ public class AccountController {
     }
 
     @ResponseBody
-    @GetMapping("/getUser/{firstName}") // THIS KINDA WORKS BUT DOESNT RETURN ANYTHING
+    @GetMapping("/getUser/{firstName}") // now OK
     public String getUser( @PathVariable String firstName ){
         System.out.println("Working");
         return Service_functions.getByfirstName(firstName).toString();
