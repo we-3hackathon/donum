@@ -9,6 +9,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "AllUsers")
 public class User {
 
+    @Id
+    private String _id;
     private String bloodGroup;
     private String firstName;
     @Indexed(direction = IndexDirection.ASCENDING)
@@ -18,11 +20,8 @@ public class User {
     private String _addressline;
     private String _postcode;
 
-    public User(String firstName){
-        this.firstName = firstName;
-    }
-
     public User(){}
+
     public User(String bloodGroup, String firstName, String _surname, String _email, String _password, String _addressline, String _postcode) {
         this.bloodGroup = bloodGroup;
         this.firstName = firstName;
@@ -32,6 +31,10 @@ public class User {
         this._addressline = _addressline;
         this._postcode = _postcode;
     }
+
+    public String get_id() { return _id; }
+
+    public void set_id(String _id) { this._id = _id; }
 
     public String getBloodGroup() {
         return bloodGroup;
@@ -92,7 +95,8 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "bloodGroup='" + bloodGroup + '\'' +
+                "_id='" + _id + '\'' +
+                ", bloodGroup='" + bloodGroup + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", _surname='" + _surname + '\'' +
                 ", _email='" + _email + '\'' +
@@ -101,5 +105,4 @@ public class User {
                 ", _postcode='" + _postcode + '\'' +
                 '}';
     }
-
 }

@@ -12,10 +12,6 @@ public class AccountHelper {
     @Autowired
     private UserRepository UserRepo;
 
-    public User createNew(String firstname){ // This works
-        return UserRepo.save(new User(firstname));
-    }
-
     public User create( String bloodGroup, String firstname, String _surname, String _email, String _password, String _addressline, String _postcode ){ // This Works
         return UserRepo.save( new User(bloodGroup, firstname,  _surname,  _email,  _password,  _addressline,  _postcode) );
     }
@@ -44,9 +40,9 @@ public class AccountHelper {
 
     public void deleteAll(){
         UserRepo.deleteAll();
-    } // This Works
+    }
 
-    public void deleteByfirstName(String firstname){ // This Doesnt Work
+    public void deleteByfirstName(String firstname){
         User user = UserRepo.findByFirstName(firstname);
         System.out.println(user);
         UserRepo.delete(user);
