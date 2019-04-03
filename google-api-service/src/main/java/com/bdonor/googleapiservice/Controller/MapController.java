@@ -48,11 +48,19 @@ public class MapController {
             // the default map
             googleMap = new Map(city, "13", Variables.MEDIUM_RES.toString(), Variables.ROADMAP.toString());
 
+            // generate the map
             Plot mapPlot = new Plot();
+
+            // set the first marker
             mapPlot.addMarker(mapPlot.setColour(blood), blood, lat, lng);
 
+            // first part of the URL
             googleMap.buildMapOnlyURL();
+
+            // plots URL
             googleMap.buildMapPlotURL(mapPlot.getPlotURL());
+
+            // redirect to map
             http.sendRedirect(googleMap.get_URL());
 
         }catch (Exception e){
@@ -65,4 +73,34 @@ public class MapController {
 
 
     }
+
+    @GetMapping(value = "/generatemap/{city}")
+    public void generateAllMarkerMapURL(@PathVariable String city, HttpServletResponse http){
+
+        try {
+            // the default map
+            googleMap = new Map(city, "13", Variables.MEDIUM_RES.toString(), Variables.ROADMAP.toString());
+
+            // generate the map
+            Plot mapPlot = new Plot();
+
+            // REST API to account-service GET @all-users
+
+            // for each in @all-users, addMarker
+            //mapPlot.addMarker(mapPlot.setColour(blood), blood, lat, lng);
+
+            // first part of the URL
+            googleMap.buildMapOnlyURL();
+
+            // plots URL
+            googleMap.buildMapPlotURL(mapPlot.getPlotURL());
+
+            // redirect to map
+            http.sendRedirect(googleMap.get_URL());
+
+        }catch (Exception e){
+            e.getMessage();
+        }
+    }
+
 }
