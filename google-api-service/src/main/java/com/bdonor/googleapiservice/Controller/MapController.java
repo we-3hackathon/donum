@@ -68,9 +68,13 @@ public class MapController {
         }
     }
 
-    @GetMapping(value = "/editmap/{zoom}")
+    @GetMapping(value = "/editmap/zoom/{zoom}")
     public void changeMapZoom(@PathVariable String zoom){
 
+    }
+
+    @GetMapping(value = "/editmap/resolution/{resolution}")
+    public void changeResulution(@PathVariable String resolution){
 
     }
 
