@@ -8,7 +8,12 @@ import com.bdonor.googleapiservice.Service.Plot;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 @RestController
 public class MapController {
@@ -21,7 +26,7 @@ public class MapController {
     public String testConnection(){
         googleMap = new Map("London","13", Variables.MEDIUM_RES.toString(),Variables.ROADMAP.toString());
         //googleMap.buildURL();
-        return googleMap.get_URL();
+        return "ok";
     }
 
 
@@ -90,6 +95,7 @@ public class MapController {
 
             // REST API to account-service GET @all-users
 
+
             // for each in @all-users, addMarker
             //mapPlot.addMarker(mapPlot.setColour(blood), blood, lat, lng);
 
@@ -107,4 +113,51 @@ public class MapController {
         }
     }
 
+    @ResponseBody
+    @RequestMapping("/account-service/all-users")
+    public String getAllUsers(){
+
+        String jsonData = "error";
+
+        try {
+
+            URL url = new URL("http://localhost:9090/getAll");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("Accept", "application/json");
+
+            if (conn.getResponseCode() != 200) {
+                throw new RuntimeException("Failed : HTTP error code : "
+                        + conn.getResponseCode());
+            }
+            String output = "E";
+            BufferedReader br = new BufferedReader(new InputStreamReader(
+                    (conn.getInputStream())));
+
+            System.out.println("Output from Server .... \n");
+            while ((output = br.readLine()) != null) {
+                System.out.println(output);
+                jsonData = output;
+            }
+
+            conn.disconnect();
+            return jsonData;
+
+        } catch (MalformedURLException e) {
+
+            e.printStackTrace();
+
+        } catch (IOException e) {
+
+            e.printStackTrace();
+
+        }
+
+        return "Bad Request";
+    }
+
+
+
 }
+
+
