@@ -41,11 +41,7 @@ public class MapController {
         }
     }
 
-    @RequestMapping(value = "/account-service/getAll", method = RequestMethod.GET)
-    public void requestUsersData(){
-
-    }
-
+    @Deprecated
     @GetMapping(value = "/generatemap/{lat}/{lng}/{city}/{blood}")
     public void generateMapURL(@PathVariable String lat, @PathVariable String lng,@PathVariable String city, @PathVariable String blood,HttpServletResponse http){
 
@@ -94,7 +90,7 @@ public class MapController {
             Plot mapPlot = new Plot();
 
             // REST API to account-service GET @all-users
-
+            String allUsers = getAllUsers();
 
             // for each in @all-users, addMarker
             //mapPlot.addMarker(mapPlot.setColour(blood), blood, lat, lng);
