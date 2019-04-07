@@ -11,7 +11,7 @@ public class ConvertJSON {
 
     public ArrayList<User> _usersData = new ArrayList<>();
     private String _JSONDATA = "";
-    private Plot mapPlot;
+    private Plot mapPlot = Singleton.servicePlot;
 
     public ConvertJSON(String data){
         this._JSONDATA = data;
@@ -66,7 +66,6 @@ public class ConvertJSON {
         String lon = "";
         String bloodGroup = "";
         String color = "red";
-        mapPlot = new Plot();
 
         try {
             JSONArray allUsers = new JSONArray(_JSONDATA);

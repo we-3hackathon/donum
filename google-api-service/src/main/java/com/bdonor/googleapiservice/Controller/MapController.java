@@ -2,8 +2,10 @@ package com.bdonor.googleapiservice.Controller;
 
 
 import com.bdonor.googleapiservice.Model.Variables;
+import com.bdonor.googleapiservice.Service.Geocoding;
 import com.bdonor.googleapiservice.Service.Map;
 import com.bdonor.googleapiservice.Service.Plot;
+import com.bdonor.googleapiservice.Service.Singleton;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -87,6 +89,7 @@ public class MapController {
 
             // generate the map
             Plot mapPlot = new Plot();
+            Singleton.servicePlot = mapPlot;
 
             // REST API to account-service GET @all-users
             String allUsers = getAllUsers();
@@ -95,12 +98,10 @@ public class MapController {
 
             // for each in @all-users, addMarker
             //mapPlot.addMarker(mapPlot.setColour(blood), blood, lat, lng);
-            System.out.println("method: " + mapPlot.processPlot(allUsers));
 
             // first part of the URL
             googleMap.buildMapOnlyURL();
 
-            System.out.println("final " + mapPlot.getPlotURL());
             // plots URL
             googleMap.buildMapPlotURL(mapPlot.getPlotURL());
 
