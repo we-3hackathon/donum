@@ -1,6 +1,6 @@
 package com.bdonor.googleapiservice.Service;
 
-import com.bdonor.googleapiservice.Model.Plot;
+import com.bdonor.googleapiservice.Service.Plot;
 import com.bdonor.googleapiservice.Model.User;
 import org.json.*;
 
@@ -11,11 +11,13 @@ public class ConvertJSON {
 
     public ArrayList<User> _usersData = new ArrayList<>();
     private String _JSONDATA = "";
+    private Plot mapPlot;
 
     public ConvertJSON(String data){
         this._JSONDATA = data;
     }
 
+    @Deprecated
     public void readAddData(){
 
         try {
@@ -29,7 +31,7 @@ public class ConvertJSON {
                 String postcode = usersArray.getJSONObject(i).getString("postcode");
                 String bloodgroup = usersArray.getJSONObject(i).getString("blood-group");
 
-                _usersData.add(new Plot(postcode,address,bloodgroup));
+                //_usersData.add(new Plot(postcode,address,bloodgroup));
             }
 
         }catch (Exception ex){
@@ -56,6 +58,46 @@ public class ConvertJSON {
         }
 
         return lat + "," + lon;
+    }
+
+    public String processAllUsersJSON(){
+
+        String lat = "";
+        String lon = "";
+        String bloodGroup = "";
+        String color = "red";
+        mapPlot = new Plot();
+
+        try {
+            JSONArray allUsers = new JSONArray(_JSONDATA);
+
+
+
+            for (int i = 0; i < allUsers.length(); i++) {
+                lat = allUsers.getJSONObject(i).getString("_surname");
+                lon = allUsers.getJSONObject(i).getString("_email");
+                bloodGroup = allUsers.getJSONObject(i).getString("bloodGroup");
+
+                System.out.println(lat);
+                System.out.println(lon);
+                System.out.println(bloodGroup);
+
+                mapPlot.addMarker(mapPlot.setColour(bloodGroup),bloodGroup,lat,lon);
+                //color = usersArray.getJSONObject(i).getString("latitude");
+            }
+
+            System.out.println("here is: " + mapPlot.getPlotURL());
+            return mapPlot.getPlotURL();
+
+        }catch (Exception ex){
+            System.out.println(ex.getMessage());
+            System.out.println("#1");
+        }
+
+        return lat + "," + lon;
+
+
+
     }
 
 }

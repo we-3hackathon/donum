@@ -49,17 +49,4 @@ public class Map {
         return _URL ;
     }
 
-    /*
-    public void checkSize(int donorInMap){
-
-        /* MORE THAN ONE DONOR IN MAP
-        if(donorInMap != 1){
-
-            for(int i=0; i<donorInMap; i++){
-
-                _URL =+ _URL + _
-            }
-
-        }*/
-
     }

@@ -2,7 +2,6 @@ package com.bdonor.googleapiservice.Controller;
 
 
 import com.bdonor.googleapiservice.Model.Variables;
-import com.bdonor.googleapiservice.Service.Geocoding;
 import com.bdonor.googleapiservice.Service.Map;
 import com.bdonor.googleapiservice.Service.Plot;
 import org.springframework.web.bind.annotation.*;
@@ -84,7 +83,7 @@ public class MapController {
 
         try {
             // the default map
-            googleMap = new Map(city, "13", Variables.MEDIUM_RES.toString(), Variables.ROADMAP.toString());
+            googleMap = new Map("New York", "13", Variables.MEDIUM_RES.toString(), Variables.ROADMAP.toString());
 
             // generate the map
             Plot mapPlot = new Plot();
@@ -92,17 +91,22 @@ public class MapController {
             // REST API to account-service GET @all-users
             String allUsers = getAllUsers();
 
+            //System.out.println(allUsers);
+
             // for each in @all-users, addMarker
             //mapPlot.addMarker(mapPlot.setColour(blood), blood, lat, lng);
+            System.out.println("method: " + mapPlot.processPlot(allUsers));
 
             // first part of the URL
             googleMap.buildMapOnlyURL();
 
+            System.out.println("final " + mapPlot.getPlotURL());
             // plots URL
             googleMap.buildMapPlotURL(mapPlot.getPlotURL());
 
+            System.out.println(googleMap.get_URL());
             // redirect to map
-            http.sendRedirect(googleMap.get_URL());
+            //http.sendRedirect(googleMap.get_URL());
 
         }catch (Exception e){
             e.getMessage();
@@ -132,7 +136,7 @@ public class MapController {
 
             System.out.println("Output from Server .... \n");
             while ((output = br.readLine()) != null) {
-                System.out.println(output);
+                //System.out.println(output);
                 jsonData = output;
             }
 
