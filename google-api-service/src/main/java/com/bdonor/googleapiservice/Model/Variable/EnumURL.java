@@ -1,6 +1,6 @@
-package com.bdonor.googleapiservice.Model;
+package com.bdonor.googleapiservice.Model.Variable;
 
-public enum URL_ENV {
+public enum EnumURL {
 
     PROTOCOL("https://"),
     HOST("maps.googleapis.com"),
@@ -14,7 +14,7 @@ public enum URL_ENV {
     /**
      * @param text
      */
-    URL_ENV(final String text) {
+    EnumURL(final String text) {
         this.text = text;
     }
 
