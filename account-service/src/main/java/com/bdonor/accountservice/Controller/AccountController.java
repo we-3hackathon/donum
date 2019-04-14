@@ -2,13 +2,11 @@ package com.bdonor.accountservice.Controller;
 
 import com.bdonor.accountservice.Models.AccountHelper;
 import com.bdonor.accountservice.Models.User;
-import com.bdonor.accountservice.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @Controller
 @Component
@@ -54,10 +52,20 @@ public class AccountController {
     }
 
     @ResponseBody
+    @GetMapping("/checkCredentials/{email}/{password}") // Error - No property email found for type User! Did you mean '_email'?
+    public boolean checkCredentials( @PathVariable String _email, String _password ){
+        if(Service_functions.checkCredentials(_email ,_password)){
+            System.out.println("Login Success");
+            return true;
+        }
+        System.out.println("Login Failed");
+        return false;
+    }
+
+    @ResponseBody
     @RequestMapping("/deleteAll") // Works
     public String deleteAll(){
         Service_functions.deleteAll();
         return "All Users Deleted!";
     }
-
 }

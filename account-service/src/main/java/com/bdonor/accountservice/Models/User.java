@@ -22,6 +22,11 @@ public class User {
 
     public User(){}
 
+    public User(String _email, String _password) {
+        this._email = _email;
+        this._password = _password;
+    }
+
     public User(String bloodGroup, String firstName, String _surname, String _email, String _password, String _addressline, String _postcode) {
         this.bloodGroup = bloodGroup;
         this.firstName = firstName;
