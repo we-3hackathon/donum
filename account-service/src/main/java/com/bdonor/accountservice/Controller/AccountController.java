@@ -52,9 +52,9 @@ public class AccountController {
     }
 
     @ResponseBody
-    @GetMapping("/checkCredentials/{email}/{password}") // Error - No property email found for type User! Did you mean '_email'?
-    public boolean checkCredentials( @PathVariable String _email, String _password ){
-        if(Service_functions.checkCredentials(_email ,_password)){
+    @GetMapping("/checkCredentials/{email}/{_password}") // Error - No property email found for type User! Did you mean '_email'?
+    public boolean checkCredentials( @PathVariable String email, @PathVariable String _password ){
+        if(Service_functions.checkCredentials(email ,_password)){
             System.out.println("Login Success");
             return true;
         }

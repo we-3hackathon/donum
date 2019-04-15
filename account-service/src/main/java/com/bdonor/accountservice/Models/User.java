@@ -15,23 +15,23 @@ public class User {
     private String firstName;
     @Indexed(direction = IndexDirection.ASCENDING)
     private String _surname;
-    private String _email;
+    private String email;
     private String _password;
     private String _addressline;
     private String _postcode;
 
     public User(){}
 
-    public User(String _email, String _password) {
-        this._email = _email;
+    public User(String email, String _password) {
+        this.email = email;
         this._password = _password;
     }
 
-    public User(String bloodGroup, String firstName, String _surname, String _email, String _password, String _addressline, String _postcode) {
+    public User(String bloodGroup, String firstName, String _surname, String email, String _password, String _addressline, String _postcode) {
         this.bloodGroup = bloodGroup;
         this.firstName = firstName;
         this._surname = _surname;
-        this._email = _email;
+        this.email = email;
         this._password = _password;
         this._addressline = _addressline;
         this._postcode = _postcode;
@@ -65,12 +65,12 @@ public class User {
         this._surname = _surname;
     }
 
-    public String get_email() {
-        return _email;
+    public String getEmail() {
+        return email;
     }
 
-    public void set_email(String _email) {
-        this._email = _email;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String get_password() {
@@ -104,7 +104,7 @@ public class User {
                 ", bloodGroup='" + bloodGroup + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", _surname='" + _surname + '\'' +
-                ", _email='" + _email + '\'' +
+                ", email='" + email + '\'' +
                 ", _password='" + _password + '\'' +
                 ", _addressline='" + _addressline + '\'' +
                 ", _postcode='" + _postcode + '\'' +

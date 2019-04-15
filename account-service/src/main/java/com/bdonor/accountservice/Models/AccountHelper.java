@@ -2,6 +2,7 @@ package com.bdonor.accountservice.Models;
 
 import com.bdonor.accountservice.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -19,7 +20,7 @@ public class AccountHelper {
         User user = UserRepo.findByEmail(_email);
         if(user != null) {
             System.out.println("User Exists");
-            // Not sure what i return here
+            return new User();
         }
         return UserRepo.save(new User(bloodGroup, firstname, _surname, _email, bCryptPasswordEncoder.encode(_password), _addressline, _postcode));
     }
@@ -38,7 +39,7 @@ public class AccountHelper {
         SpecificUser.setBloodGroup(bloodGroup);
         SpecificUser.setfirstName(firstname);
         SpecificUser.set_surname(_surname);
-        SpecificUser.set_email(_email);
+        SpecificUser.setEmail(_email);
         SpecificUser.set_password(bCryptPasswordEncoder.encode(_password));
         SpecificUser.set_addressline(_addressline);
         SpecificUser.set_postcode(_postcode);
