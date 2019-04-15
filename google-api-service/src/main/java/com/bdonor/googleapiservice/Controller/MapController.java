@@ -1,6 +1,5 @@
 package com.bdonor.googleapiservice.Controller;
 
-
 import com.bdonor.googleapiservice.Model.Variable.EnumGoogleMap;
 import com.bdonor.googleapiservice.Service.GoogleMap.Map;
 import com.bdonor.googleapiservice.Service.GoogleMap.SingletonPlot;
@@ -50,6 +49,9 @@ public class MapController {
             // the default map
             googleMap = new Map(city, "13", EnumGoogleMap.MEDIUM_RES.toString(), EnumGoogleMap.ROADMAP.toString());
 
+            // generate the map
+            Plot mapPlot = new Plot();
+
             // set the first marker
             mapPlot.addMarker(mapPlot.setColour(blood), blood, lat, lng);
 
@@ -82,6 +84,7 @@ public class MapController {
 
         try {
             // the default map
+
             googleMap = new Map("New York", "13", EnumGoogleMap.MEDIUM_RES.toString(), EnumGoogleMap.ROADMAP.toString());
 
             // REST API to account-service GET @all-users
@@ -91,7 +94,6 @@ public class MapController {
 
             // for each in @all-users, addMarker
             mapPlot.processPlot(allUsers);
-
             // first part of the URL
             googleMap.buildMapOnlyURL();
 
