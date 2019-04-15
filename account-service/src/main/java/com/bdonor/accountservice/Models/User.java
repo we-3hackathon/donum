@@ -5,41 +5,56 @@ import org.springframework.data.mongodb.core.index.IndexDirection;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-
 @Document(collection = "AllUsers")
 public class User {
 
     @Id
-    private String _id;
+    private String id;
     private String bloodGroup;
-    private String firstName;
+    private String firstName; // DO NOT change this, needs to stay firstName
     @Indexed(direction = IndexDirection.ASCENDING)
-    private String _surname;
+    private String surname;
     private String email;
-    private String _password;
-    private String _addressline;
-    private String _postcode;
+    private String password;
+    private String addressline;
+    private String postcode;
+    private String latitude;
+    private String longtitude;
 
-    public User(){}
+    public User() {}
 
-    public User(String email, String _password) {
-        this.email = email;
-        this._password = _password;
-    }
+    public User(String bloodGroup, String firstname, String surname, String email, String encode, String addressline, String postcode, String latitude, String longtitude){}
 
-    public User(String bloodGroup, String firstName, String _surname, String email, String _password, String _addressline, String _postcode) {
+    public User(String bloodGroup, String firstname, String surname, String email, String password, String addressline, String postcode) {
         this.bloodGroup = bloodGroup;
-        this.firstName = firstName;
-        this._surname = _surname;
+        this.firstName = firstname;
+        this.surname = surname;
         this.email = email;
-        this._password = _password;
-        this._addressline = _addressline;
-        this._postcode = _postcode;
+        this.password = password;
+        this.addressline = addressline;
+        this.postcode = postcode;
     }
 
-    public String get_id() { return _id; }
+    public User(String id, String bloodGroup, String firstname, String surname, String email, String password, String addressline, String postcode, String latitude, String longtitude) {
+        this.id = id;
+        this.bloodGroup = bloodGroup;
+        this.firstName = firstname;
+        this.surname = surname;
+        this.email = email;
+        this.password = password;
+        this.addressline = addressline;
+        this.postcode = postcode;
+        this.latitude = latitude;
+        this.longtitude = longtitude;
+    }
 
-    public void set_id(String _id) { this._id = _id; }
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getBloodGroup() {
         return bloodGroup;
@@ -49,20 +64,20 @@ public class User {
         this.bloodGroup = bloodGroup;
     }
 
-    public String getfirstName() {
+    public String getFirstname() {
         return firstName;
     }
 
-    public void setfirstName(String firstName) {
-        this.firstName = firstName;
+    public void setFirstname(String firstname) {
+        this.firstName = firstname;
     }
 
-    public String get_surname() {
-        return _surname;
+    public String getSurname() {
+        return surname;
     }
 
-    public void set_surname(String _surname) {
-        this._surname = _surname;
+    public void setSurname(String surname) {
+        this.surname = surname;
     }
 
     public String getEmail() {
@@ -73,41 +88,58 @@ public class User {
         this.email = email;
     }
 
-    public String get_password() {
-        return _password;
+    public String getPassword() {
+        return password;
     }
 
-    public void set_password(String _password) {
-        this._password = _password;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public String get_addressline() {
-        return _addressline;
+    public String getAddressline() {
+        return addressline;
     }
 
-    public void set_addressline(String _addressline) {
-        this._addressline = _addressline;
+    public void setAddressline(String addressline) {
+        this.addressline = addressline;
     }
 
-    public String get_postcode() {
-        return _postcode;
+    public String getPostcode() {
+        return postcode;
     }
 
-    public void set_postcode(String _postcode) {
-        this._postcode = _postcode;
+    public void setPostcode(String postcode) {
+        this.postcode = postcode;
     }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getLongtitude() {
+        return longtitude;
+    }
+
+    public void setLongtitude(String longtitude) {
+        this.longtitude = longtitude;
+    }
+
 
     @Override
     public String toString() {
-        return "User{" +
-                "_id='" + _id + '\'' +
+        return "NewUser{" +
+                "id='" + id + '\'' +
                 ", bloodGroup='" + bloodGroup + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", _surname='" + _surname + '\'' +
+                ", firstname='" + firstName + '\'' +
+                ", surname='" + surname + '\'' +
                 ", email='" + email + '\'' +
-                ", _password='" + _password + '\'' +
-                ", _addressline='" + _addressline + '\'' +
-                ", _postcode='" + _postcode + '\'' +
+                ", password='" + password + '\'' +
+                ", addressline='" + addressline + '\'' +
+                ", postcode='" + postcode + '\'' +
                 '}';
     }
 }

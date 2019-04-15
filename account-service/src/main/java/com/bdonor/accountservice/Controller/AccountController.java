@@ -16,9 +16,9 @@ public class AccountController {
     private AccountHelper Service_functions;
 
     @ResponseBody // Works
-    @GetMapping(value = "/create/{bloodGroup}/{firstname}/{_surname}/{_email}/{_password}/{_addressline}/{_password}")
-    public String create( @PathVariable String bloodGroup , @PathVariable  String firstname, @PathVariable  String _surname, @PathVariable  String _email, @PathVariable  String _password, @PathVariable  String _addressline, @PathVariable  String _postcode){
-        User CreateUser = Service_functions.create(bloodGroup, firstname,  _surname,  _email,  _password,  _addressline,  _postcode);
+    @GetMapping(value = "/create/{bloodGroup}/{firstname}/{surname}/{email}/{password}/{addressline}/{password}")
+    public String create( @PathVariable String bloodGroup , @PathVariable  String firstname, @PathVariable  String surname, @PathVariable  String email, @PathVariable  String password, @PathVariable  String addressline, @PathVariable  String postcode){
+        User CreateUser = Service_functions.create(bloodGroup, firstname,  surname,  email,  password,  addressline,  postcode);
         System.out.println("this is working");
         return CreateUser.toString();
     }
@@ -38,9 +38,9 @@ public class AccountController {
     }
 
     @ResponseBody
-    @RequestMapping("/updateUser/{bloodGroup}/{firstname}/{_surname}/{_email}/{_password}/{_addressline}/{_password}") // Works Partially - Creates new user instead of updating current
-    public String updateUser( @PathVariable String bloodGroup , @PathVariable  String firstname, @PathVariable  String _surname, @PathVariable  String _email, @PathVariable  String _password, @PathVariable  String _addressline, @PathVariable  String _postcode ){
-        User Update = Service_functions.Update(bloodGroup, firstname,  _surname,  _email,  _password,  _addressline,  _postcode);
+    @RequestMapping("/updateUser/{bloodGroup}/{firstname}/{surname}/{email}/{password}/{addressline}/{password}") // Works Partially - Creates new user instead of updating current
+    public String updateUser( @PathVariable String bloodGroup , @PathVariable  String firstname, @PathVariable  String surname, @PathVariable  String email, @PathVariable  String password, @PathVariable  String addressline, @PathVariable  String postcode ){
+        User Update = Service_functions.Update(bloodGroup, firstname,  surname,  email,  password,  addressline,  postcode);
         return Update.toString();
     }
 
@@ -52,9 +52,9 @@ public class AccountController {
     }
 
     @ResponseBody
-    @GetMapping("/checkCredentials/{email}/{_password}") // Error - No property email found for type User! Did you mean '_email'?
-    public boolean checkCredentials( @PathVariable String email, @PathVariable String _password ){
-        if(Service_functions.checkCredentials(email ,_password)){
+    @GetMapping("/checkCredentials/{email}/{password}")
+    public boolean checkCredentials( @PathVariable String email, @PathVariable String password ){
+        if(Service_functions.checkCredentials(email, password)){
             System.out.println("Login Success");
             return true;
         }
