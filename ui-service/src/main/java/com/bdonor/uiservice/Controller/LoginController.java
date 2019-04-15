@@ -2,15 +2,20 @@ package com.bdonor.uiservice.Controller;
 
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
 @RestController()
 @RequestMapping("/login")
 public class LoginController extends BaseController{
 
-    @ResponseBody()
-    @RequestMapping(value="/verifyCredentials", method= RequestMethod.POST)
-    public String mainLogin(@RequestParam("username") String username, @RequestParam("password") String password) {
 
-        return "You reached";
+    @RequestMapping(value="/verifyCredentials", method= RequestMethod.POST)
+    public void mainLogin(@RequestParam("username") String username, @RequestParam("password") String password, HttpServletResponse http) throws IOException {
+
+        System.out.println(username);
+        System.out.println(password);
+        http.sendRedirect("/map/view/static");
     }
 
     public boolean verifyCredentials(){
