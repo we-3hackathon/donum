@@ -1,6 +1,6 @@
-package com.bdonor.googleapiservice.Model;
+package com.bdonor.googleapiservice.Model.Map;
 
-public interface Map {
+public interface IMap {
 
     void setZoom(String zoom);
 

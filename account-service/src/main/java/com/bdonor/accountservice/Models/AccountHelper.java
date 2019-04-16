@@ -2,8 +2,16 @@ package com.bdonor.accountservice.Models;
 
 import com.bdonor.accountservice.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
 @Service
@@ -12,44 +20,96 @@ public class AccountHelper {
     @Autowired
     private UserRepository UserRepo;
 
-    public User createNew(String firstname){ // This works
-        return UserRepo.save(new User(firstname));
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    public User create(String bloodGroup, String firstname, String surname, String email, String password, String addressline, String postcode) { // This Works
+        User user = UserRepo.findByEmail(email);
+        if(user != null) {
+            System.out.println("User Exists");
+            return new User();
+        }
+
+        String URLink;
+        String[] LatLong = {};
+
+        try {
+
+            URL url = new URL("http://localhost:9090/geocoding/addressline/postcode");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("Accept", "application/String");
+
+            if (conn.getResponseCode() != 200) {
+                throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
+            }
+
+            String output = "E";
+            BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
+
+            System.out.println("Output from Server .... \n");
+            while ((output = br.readLine()) != null) {
+                URLink = output.toString();
+                LatLong = URLink.split(",");
+            }
+
+            conn.disconnect();
+
+        } catch (MalformedURLException e) {
+
+            e.printStackTrace();
+
+        } catch (IOException e) {
+
+            e.printStackTrace();
+        }
+
+        return UserRepo.save(new User(bloodGroup, firstname, surname, email, bCryptPasswordEncoder.encode(password), addressline, postcode, LatLong[0], LatLong[1]));
     }
 
-    public User create( String bloodGroup, String firstname, String _surname, String _email, String _password, String _addressline, String _postcode ){ // This Works
-        return UserRepo.save( new User(bloodGroup, firstname,  _surname,  _email,  _password,  _addressline,  _postcode) );
+    public User getByfirstName(String firstname) {
+        return UserRepo.findByFirstName(firstname);
     }
 
-    public User getByfirstName(String firstName){
-        return UserRepo.findByFirstName(firstName);
-    }
-
-    public List<User> getAll(){
+    public List<User> getAll() {
         return UserRepo.findAll();
     }
 
-    public User Update(String bloodGroup, String firstname, String _surname, String _email, String _password, String _addressline, String _postcode) {
-        User SpecificUser = UserRepo.findByFirstName(firstname);
+    public User Update(String bloodGroup, String firstname, String surname, String email, String password, String addressline, String postcode) {
 
+        User SpecificUser = UserRepo.findByFirstName(firstname);
         SpecificUser.setBloodGroup(bloodGroup);
-        SpecificUser.setfirstName(firstname);
-        SpecificUser.set_surname(_surname);
-        SpecificUser.set_email(_email);
-        SpecificUser.set_password(_password);
-        SpecificUser.set_addressline(_addressline);
-        SpecificUser.set_postcode(_postcode);
+        SpecificUser.setFirstname(firstname);
+        SpecificUser.setSurname(surname);
+        SpecificUser.setEmail(email);
+        SpecificUser.setPassword(bCryptPasswordEncoder.encode(password));
+        SpecificUser.setAddressline(addressline);
+        SpecificUser.setPostcode(postcode);
 
         return UserRepo.save(SpecificUser);
     }
 
-    public void deleteAll(){
+    public void deleteAll() {
         UserRepo.deleteAll();
-    } // This Works
+    }
 
-    public void deleteByfirstName(String firstname){ // This Doesnt Work
+    public void deleteByfirstName(String firstname) {
         User user = UserRepo.findByFirstName(firstname);
         System.out.println(user);
         UserRepo.delete(user);
     }
 
+    public boolean checkCredentials(String email, String password) {
+        try {
+            User user = UserRepo.findByEmail(email);
+            if (user != null) {
+                if (bCryptPasswordEncoder.matches(password, user.getPassword())) {
+                    return true;
+                }
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return false;
+    }
 }

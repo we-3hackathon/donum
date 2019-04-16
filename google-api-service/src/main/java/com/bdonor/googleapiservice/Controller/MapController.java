@@ -1,11 +1,8 @@
 package com.bdonor.googleapiservice.Controller;
 
-
-import com.bdonor.googleapiservice.Model.Variables;
-import com.bdonor.googleapiservice.Service.Geocoding;
-import com.bdonor.googleapiservice.Service.Map;
-import com.bdonor.googleapiservice.Service.Plot;
-import com.bdonor.googleapiservice.Service.Singleton;
+import com.bdonor.googleapiservice.Model.Variable.EnumGoogleMap;
+import com.bdonor.googleapiservice.Service.GoogleMap.Map;
+import com.bdonor.googleapiservice.Service.GoogleMap.SingletonPlot;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -19,13 +16,15 @@ import java.net.URL;
 @RestController
 public class MapController {
 
-    Map googleMap ;
+    private Map googleMap ;
+    private SingletonPlot mapPlot = SingletonPlot.getInstance();
+
 
     /* Test to see controller is called */
     @RequestMapping("/check")
     @ResponseBody
     public String testConnection(){
-        googleMap = new Map("London","13", Variables.MEDIUM_RES.toString(),Variables.ROADMAP.toString());
+        googleMap = new Map("London","13", EnumGoogleMap.MEDIUM_RES.toString(), EnumGoogleMap.ROADMAP.toString());
         //googleMap.buildURL();
         return "ok";
     }
@@ -35,7 +34,7 @@ public class MapController {
     @RequestMapping(value = "/url", method = RequestMethod.GET)
     public void redirect (HttpServletResponse http){
         try{
-            googleMap = new Map("London","13", Variables.MEDIUM_RES.toString(),Variables.ROADMAP.toString());
+            googleMap = new Map("London","13", EnumGoogleMap.MEDIUM_RES.toString(), EnumGoogleMap.ROADMAP.toString());
             //googleMap.buildURL();
         http.sendRedirect(googleMap.get_URL());
         }catch (IOException ex){
@@ -48,7 +47,7 @@ public class MapController {
 
         try {
             // the default map
-            googleMap = new Map(city, "13", Variables.MEDIUM_RES.toString(), Variables.ROADMAP.toString());
+            googleMap = new Map(city, "13", EnumGoogleMap.MEDIUM_RES.toString(), EnumGoogleMap.ROADMAP.toString());
 
             // generate the map
             Plot mapPlot = new Plot();
@@ -85,11 +84,8 @@ public class MapController {
 
         try {
             // the default map
-            googleMap = new Map("New York", "13", Variables.MEDIUM_RES.toString(), Variables.ROADMAP.toString());
 
-            // generate the map
-            Plot mapPlot = new Plot();
-            Singleton.servicePlot = mapPlot;
+            googleMap = new Map("New York", "13", EnumGoogleMap.MEDIUM_RES.toString(), EnumGoogleMap.ROADMAP.toString());
 
             // REST API to account-service GET @all-users
             String allUsers = getAllUsers();
@@ -97,8 +93,7 @@ public class MapController {
             //System.out.println(allUsers);
 
             // for each in @all-users, addMarker
-            //mapPlot.addMarker(mapPlot.setColour(blood), blood, lat, lng);
-
+            mapPlot.processPlot(allUsers);
             // first part of the URL
             googleMap.buildMapOnlyURL();
 

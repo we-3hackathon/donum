@@ -1,7 +1,6 @@
 package com.bdonor.googleapiservice.Controller;
 
-import com.bdonor.googleapiservice.Service.Geocoding;
-import org.springframework.stereotype.Controller;
+import com.bdonor.googleapiservice.Service.Geocoding.Geocoding;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
