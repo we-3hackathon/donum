@@ -1,6 +1,6 @@
-package com.bdonor.googleapiservice.Model;
+package com.bdonor.googleapiservice.Model.Variable;
 
-public enum Variables {
+public enum EnumGoogleMap {
 
 
     API_KEY(""),
@@ -18,7 +18,7 @@ public enum Variables {
     /**
      * @param text
      */
-    Variables(final String text) {
+    EnumGoogleMap(final String text) {
         this.text = text;
     }
 

@@ -1,4 +1,4 @@
-package com.bdonor.googleapiservice.Model;
+package com.bdonor.googleapiservice.Model.Entity;
 
 
 public abstract class User {

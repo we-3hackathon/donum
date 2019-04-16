@@ -1,6 +1,6 @@
-package com.bdonor.googleapiservice.Model;
+package com.bdonor.googleapiservice.Model.Entity;
 
-public class Plot extends User{
+public class Plot extends User {
 
     private String _color;
     private String _lat;
