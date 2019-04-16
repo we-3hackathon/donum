@@ -29,7 +29,7 @@ import java.util.Properties;
 public class MavenWrapperDownloader {
 
     /**
-     * Default URL_ENV to download the maven-wrapper.jar from, if no 'downloadUrl' is provided.
+     * Default EnumURL to download the maven-wrapper.jar from, if no 'downloadUrl' is provided.
      */
     private static final String DEFAULT_DOWNLOAD_URL =
             "https://repo.maven.apache.org/maven2/io/takari/maven-wrapper/0.4.2/maven-wrapper-0.4.2.jar";

@@ -1,12 +1,15 @@
-package com.bdonor.googleapiservice.Model;
+package com.bdonor.googleapiservice.Model.Map;
 
-public class StaticMap implements Map {
+import com.bdonor.googleapiservice.Model.Map.IMap;
+import com.bdonor.googleapiservice.Model.Variable.EnumGoogleMap;
+
+public class StaticMap implements IMap {
 
     private String _zoom;
     private String _plots;
     private String _maptype;
     private String _city;
-    private String _size = Variables.MEDIUM_RES.toString();
+    private String _size = EnumGoogleMap.MEDIUM_RES.toString();
 
 
     @Override
@@ -41,7 +44,7 @@ public class StaticMap implements Map {
 
     @Override
     public String getSize() {
-        return "&size=" + Variables.MEDIUM_RES.toString();
+        return "&size=" + EnumGoogleMap.MEDIUM_RES.toString();
     }
 
     @Override

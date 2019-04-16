@@ -1,7 +1,8 @@
-package com.bdonor.googleapiservice.Service;
+package com.bdonor.googleapiservice.Service.Geocoding;
 
-import com.bdonor.googleapiservice.Model.URL_ENV;
-import com.bdonor.googleapiservice.Model.Variables;
+import com.bdonor.googleapiservice.Model.Variable.EnumURL;
+import com.bdonor.googleapiservice.Model.Variable.EnumGoogleMap;
+import com.bdonor.googleapiservice.Service.Json.Process;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -11,8 +12,6 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URI;
-import java.net.URL;
 
 public class Geocoding extends Thread{
 
@@ -34,9 +33,9 @@ public class Geocoding extends Thread{
         try {
             HttpClient client = HttpClientBuilder.create().build();
 
-            String _URL = URL_ENV.PROTOCOL.toString() + URL_ENV.HOST.toString() + URL_ENV.PATH.toString()
-                    + URL_ENV.ADDRESS.toString() + _address + "," + _postcode
-                    + URL_ENV.KEY.toString() + Variables.PLACES_KEY.toString();
+            String _URL = EnumURL.PROTOCOL.toString() + EnumURL.HOST.toString() + EnumURL.PATH.toString()
+                    + EnumURL.ADDRESS.toString() + _address + "," + _postcode
+                    + EnumURL.KEY.toString() + EnumGoogleMap.PLACES_KEY.toString();
 
             System.out.println(_URL);
             HttpPost post = new HttpPost(_URL);
@@ -46,6 +45,7 @@ public class Geocoding extends Thread{
             inputStream = entity.getContent();
         } catch(Exception e) {
             System.out.println("1");
+            System.out.println(e.getMessage());
         }
 
         try {
@@ -60,10 +60,18 @@ public class Geocoding extends Thread{
             _JSON = sbuild.toString();
         } catch(Exception e) {
             System.out.println("2");
+            System.out.println(e.getMessage());
 
         }
 
-        coordinates = new ConvertJSON(_JSON).readGetCoordinates();
+        Process ProcessThread = new Process(_JSON);
+
+        ProcessThread.setState(2);
+        ProcessThread.run();
+
+        while(ProcessThread.isAlive()){}
+
+        coordinates = ProcessThread.getOutcome();
     }
 
     public String getCoordinates() {

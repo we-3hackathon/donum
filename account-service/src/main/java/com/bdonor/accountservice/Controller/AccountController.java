@@ -2,6 +2,8 @@ package com.bdonor.accountservice.Controller;
 
 import com.bdonor.accountservice.Models.AccountHelper;
 import com.bdonor.accountservice.Models.User;
+import com.bdonor.accountservice.Repository.UserRepository;
+import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
@@ -34,7 +36,9 @@ public class AccountController {
     @GetMapping("/getAll")
     public String getAllUsers(){ // Works
         System.out.println("This Works");
-        return Service_functions.getAll().toString();
+        String json = new Gson().toJson(Service_functions.getAll());
+
+        return json;
     }
 
     @ResponseBody
