@@ -50,10 +50,10 @@ public class MapController {
             googleMap = new Map(city, "13", EnumGoogleMap.MEDIUM_RES.toString(), EnumGoogleMap.ROADMAP.toString());
 
             // generate the map
-            Plot mapPlot = new Plot();
+            //Plot mapPlot = new Plot();
 
             // set the first marker
-            mapPlot.addMarker(mapPlot.setColour(blood), blood, lat, lng);
+            //mapPlot.addMarker(mapPlot.setColour(blood), blood, lat, lng);
 
             // first part of the URL
             googleMap.buildMapOnlyURL();

@@ -1,6 +1,5 @@
 package com.bdonor.googleapiservice.Service;
 
-import com.bdonor.googleapiservice.Model.Variables;
 
 public class Plot {
 
@@ -20,14 +19,14 @@ public class Plot {
         return "";
     }
 
-
+    /*
     public void addMarker(String _markerColor, String _label, String _cordX, String _cordY){
 
         String _markerURL = Variables.MARKER.toString() + _markerColor + "|" + "label:"+ _label +"|"+ _cordX + "," + _cordY;
 
         _plotURL.append(_markerURL);
         System.out.println(_plotURL.toString());
-    }
+    }*/
 
     public String setColour(String bloodGroup){
 

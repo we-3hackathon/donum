@@ -3,7 +3,9 @@ spring:
     name: google-api-service
 eureka:
   client:
-    serviceUrl:
-      defaultZone: ${EUREKA_URI:http://localhost:8001/eureka}
-  instance:
-    preferIpAddress: true
+  registerWithEureka: true
+  fetchRegistry: true
+  serviceUrl:
+    defaultZone: http://localhost:8001/eureka
+
+

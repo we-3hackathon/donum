@@ -1,7 +1,6 @@
 package com.bdonor.googleapiservice.Service;
 
 import com.bdonor.googleapiservice.Service.Plot;
-import com.bdonor.googleapiservice.Model.User;
 import org.json.*;
 
 import java.util.ArrayList;
@@ -9,7 +8,7 @@ import java.util.ArrayList;
 public class ConvertJSON {
 
 
-    public ArrayList<User> _usersData = new ArrayList<>();
+    //public ArrayList<User> _usersData = new ArrayList<>();
     private String _JSONDATA = "";
     private Plot mapPlot = Singleton.servicePlot;
 
@@ -81,7 +80,7 @@ public class ConvertJSON {
                 System.out.println(lon);
                 System.out.println(bloodGroup);
 
-                mapPlot.addMarker(mapPlot.setColour(bloodGroup),bloodGroup,lat,lon);
+                //mapPlot.addMarker(mapPlot.setColour(bloodGroup),bloodGroup,lat,lon);
                 //color = usersArray.getJSONObject(i).getString("latitude");
             }
 
