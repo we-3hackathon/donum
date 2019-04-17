@@ -15,22 +15,34 @@
               <div id="login-row" class="row justify-content-center align-items-center">
                   <div id="login-column" class="col-md-6">
                       <div id="login-box" class="col-md-12">
-                          <form id="login-form" class="form" th:action="@{/login/verifyCredentials}" method="post">
-                              <h3 class="text-center text-info">Login</h3>
+                          <form id="login-form" class="form" th:action="@{/login/create}" method="post">   <!-- need to put proper rest end point here -->
+                              <h3 class="text-center text-info">Register</h3>
+                              <div class="form-group">
+                                  <label for="firstname" class="text-info">Firstname:</label><br>
+                                  <input type="text" name="firstname" id="firstname" class="form-control">
+                              </div>
+                              <div class="form-group">
+                                  <label for="surname" class="text-info">Surname:</label><br>
+                                  <input type="text" name="surname" id="surname" class="form-control">
+                              </div>
                               <div class="form-group">
                                   <label for="email" class="text-info">Email:</label><br>
                                   <input type="text" name="email" id="email" class="form-control">
+                              </div>
+                              <div class="form-group">
+                                  <label for="bloodType" class="text-info">Blood Type:</label><br>
+                                  <input type="text" name="bloodType" id="bloodType" class="form-control">
                               </div>
                               <div class="form-group">
                                   <label for="password" class="text-info">Password:</label><br>
                                   <input type="text" name="password" id="password" class="form-control">
                               </div>
                               <div class="form-group">
-                                  <label for="remember-me" class="text-info"><span>Remember me</span> <span><input id="remember-me" name="remember-me" type="checkbox"></span></label><br>
-                                  <input type="submit" name="submit" class="btn btn-info btn-md" value="submit">
+                                  <label for="confirmPassword" class="text-info">Confirm Password:</label><br>
+                                  <input type="text" name="confirmPassword" id="confirmPassword" class="form-control">
                               </div>
-                              <div id="register-link" class="text-right">
-                                  <a href="#" class="text-info">Register here</a>
+                              <div class="form-group">
+                                  <input type="submit" name="submit" class="btn btn-info btn-md" value="submit">
                               </div>
                           </form>
                       </div>
@@ -53,7 +65,7 @@
     #login .container #login-row #login-column #login-box #login-form {
       padding: 30px;
     }
-    #login .container #login-row #login-column #login-box #login-form #register-link {
+    #login .container #login-row #login-column #login-box #login-form {
       margin-top: -85px;
     }
   </style>
