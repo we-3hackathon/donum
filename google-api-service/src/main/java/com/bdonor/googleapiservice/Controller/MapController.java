@@ -1,5 +1,6 @@
 package com.bdonor.googleapiservice.Controller;
 
+import com.bdonor.googleapiservice.Model.Entity.Plot;
 import com.bdonor.googleapiservice.Model.Variable.EnumGoogleMap;
 import com.bdonor.googleapiservice.Service.GoogleMap.Map;
 import com.bdonor.googleapiservice.Service.GoogleMap.SingletonPlot;
