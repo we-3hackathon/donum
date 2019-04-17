@@ -17,6 +17,7 @@ public class AccountController {
     @Autowired
     private AccountHelper Service_functions;
 
+
     @ResponseBody // Works
     @GetMapping(value = "/create/{bloodGroup}/{firstname}/{surname}/{email}/{password}/{addressline}/{password}")
     public String create( @PathVariable String bloodGroup , @PathVariable  String firstname, @PathVariable  String surname, @PathVariable  String email, @PathVariable  String password, @PathVariable  String addressline, @PathVariable  String postcode){

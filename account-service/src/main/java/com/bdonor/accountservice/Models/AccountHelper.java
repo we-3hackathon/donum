@@ -2,10 +2,8 @@ package com.bdonor.accountservice.Models;
 
 import com.bdonor.accountservice.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -49,7 +47,7 @@ public class AccountHelper {
 
             System.out.println("Output from Server .... \n");
             while ((output = br.readLine()) != null) {
-                URLink = output.toString();
+                URLink = output;
                 LatLong = URLink.split(",");
             }
 
