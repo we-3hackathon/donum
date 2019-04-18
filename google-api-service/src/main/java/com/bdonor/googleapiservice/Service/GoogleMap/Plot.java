@@ -1,7 +1,9 @@
-package com.bdonor.googleapiservice.Service;
+package com.bdonor.googleapiservice.Service.GoogleMap;
 
-import com.bdonor.googleapiservice.Model.Variables;
+import com.bdonor.googleapiservice.Model.Variable.EnumGoogleMap;
+import com.bdonor.googleapiservice.Service.Json.ConvertJSON;
 
+@Deprecated
 public class Plot {
 
     private StringBuilder _plotURL ;
@@ -23,7 +25,7 @@ public class Plot {
 
     public void addMarker(String _markerColor, String _label, String _cordX, String _cordY){
 
-        String _markerURL = Variables.MARKER.toString() + _markerColor + "|" + "label:"+ _label +"|"+ _cordX + "," + _cordY;
+        String _markerURL = EnumGoogleMap.MARKER.toString() + _markerColor + "|" + "label:"+ _label +"|"+ _cordX + "," + _cordY;
 
         _plotURL.append(_markerURL);
         System.out.println(_plotURL.toString());
