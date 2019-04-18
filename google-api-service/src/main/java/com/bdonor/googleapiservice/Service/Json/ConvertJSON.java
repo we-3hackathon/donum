@@ -1,17 +1,13 @@
-package com.bdonor.googleapiservice.Service;
+package com.bdonor.googleapiservice.Service.Json;
 
-import com.bdonor.googleapiservice.Service.Plot;
-import com.bdonor.googleapiservice.Model.User;
+import com.bdonor.googleapiservice.Service.GoogleMap.SingletonPlot;
 import org.json.*;
 
-import java.util.ArrayList;
-
+@Deprecated
 public class ConvertJSON {
 
-
-    public ArrayList<User> _usersData = new ArrayList<>();
     private String _JSONDATA = "";
-    private Plot mapPlot = Singleton.servicePlot;
+    private SingletonPlot mapPlot = SingletonPlot.getInstance();
 
     public ConvertJSON(String data){
         this._JSONDATA = data;
