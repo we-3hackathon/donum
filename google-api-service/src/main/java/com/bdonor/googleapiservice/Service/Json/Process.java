@@ -1,6 +1,5 @@
 package com.bdonor.googleapiservice.Service.Json;
 
-import com.bdonor.googleapiservice.Model.Entity.User;
 import com.bdonor.googleapiservice.Service.GoogleMap.SingletonPlot;
 import org.json.*;
 
@@ -8,8 +7,6 @@ import java.util.ArrayList;
 
 public class Process extends Thread{
 
-
-    public ArrayList<User> _usersData = new ArrayList<>();
     private String _JSONDATA = "";
     private SingletonPlot mapPlot = SingletonPlot.getInstance();
     private int _state = 0;
