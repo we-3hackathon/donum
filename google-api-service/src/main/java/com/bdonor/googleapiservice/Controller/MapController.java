@@ -114,10 +114,10 @@ public class MapController {
 
         try {
 
-            URL url = new URL("http://localhost:9090/getAll");
+            URL url = new URL("http://localhost:8040/getAll");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
-            conn.setRequestProperty("Accept", "application/json");
+            //conn.setRequestProperty("Accept", "application/json");
 
             if (conn.getResponseCode() != 200) {
                 throw new RuntimeException("Failed : HTTP error code : "
@@ -129,7 +129,7 @@ public class MapController {
 
             System.out.println("Output from Server .... \n");
             while ((output = br.readLine()) != null) {
-                //System.out.println(output);
+                System.out.println(output);
                 jsonData = output;
             }
 
