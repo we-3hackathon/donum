@@ -18,7 +18,7 @@ public class AccountController {
     private AccountHelper Service_functions;
 
     @ResponseBody // Works
-    @GetMapping(value = "/create/{bloodGroup}/{firstname}/{surname}/{email}/{password}/{addressline}/{password}")
+    @GetMapping(value = "/create/{bloodGroup}/{firstname}/{surname}/{email}/{password}/{addressline}/{postcode}")
     public String create( @PathVariable String bloodGroup , @PathVariable  String firstname, @PathVariable  String surname, @PathVariable  String email, @PathVariable  String password, @PathVariable  String addressline, @PathVariable  String postcode){
         User CreateUser = Service_functions.create(bloodGroup, firstname,  surname,  email,  password,  addressline,  postcode);
         System.out.println("this is working");
@@ -36,6 +36,7 @@ public class AccountController {
     @GetMapping("/getAll")
     public String getAllUsers(){ // Works
         System.out.println("This Works");
+
         String json = new Gson().toJson(Service_functions.getAll());
 
         return json;
@@ -57,13 +58,13 @@ public class AccountController {
 
     @ResponseBody
     @GetMapping("/checkCredentials/{email}/{password}")
-    public boolean checkCredentials( @PathVariable String email, @PathVariable String password ){
+    public String checkCredentials( @PathVariable String email, @PathVariable String password ){
         if(Service_functions.checkCredentials(email, password)){
             System.out.println("Login Success");
-            return true;
+            return "Success";
         }
         System.out.println("Login Failed");
-        return false;
+        return "Failed";
     }
 
     @ResponseBody
