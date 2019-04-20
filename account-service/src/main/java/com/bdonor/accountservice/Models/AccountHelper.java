@@ -1,8 +1,9 @@
 package com.bdonor.accountservice.Models;
 
 import com.bdonor.accountservice.Repository.UserRepository;
+import com.bdonor.accountservice.Service.passwordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -18,12 +19,12 @@ public class AccountHelper {
     @Autowired
     private UserRepository UserRepo;
 
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+//    @Autowired
+//    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public User create(String bloodGroup, String firstname, String surname, String email, String password, String addressline, String postcode) { // This Works
         User user = UserRepo.findByEmail(email);
-        if(user != null) {
+        if (user != null) {
             System.out.println("User Exists");
             return new User();
         }
@@ -33,7 +34,8 @@ public class AccountHelper {
 
         try {
 
-            URL url = new URL("http://localhost:9090/geocoding/addressline/postcode");
+            URL url = new URL(String.format("http://localhost:8110/geocoding/%s/%s", addressline, postcode));
+            //System.out.println(url.toString());
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Accept", "application/String");
@@ -48,6 +50,7 @@ public class AccountHelper {
             System.out.println("Output from Server .... \n");
             while ((output = br.readLine()) != null) {
                 URLink = output;
+                System.out.println(URLink);
                 LatLong = URLink.split(",");
             }
 
@@ -62,29 +65,43 @@ public class AccountHelper {
             e.printStackTrace();
         }
 
-        return UserRepo.save(new User(bloodGroup, firstname, surname, email, bCryptPasswordEncoder.encode(password), addressline, postcode, LatLong[0], LatLong[1]));
+        try {
+            passwordEncoder Encoder = new passwordEncoder();
+            return UserRepo.save(new User(bloodGroup, firstname, surname, email, Encoder.encrypt(password), addressline, postcode, LatLong[0], LatLong[1]));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
+
 
     public User getByfirstName(String firstname) {
         return UserRepo.findByFirstName(firstname);
     }
 
-    public List<User> getAll() {
-        return UserRepo.findAll();
-    }
+    public List<User> getAll() { return UserRepo.findAll(); }
 
     public User Update(String bloodGroup, String firstname, String surname, String email, String password, String addressline, String postcode) {
 
-        User SpecificUser = UserRepo.findByFirstName(firstname);
-        SpecificUser.setBloodGroup(bloodGroup);
-        SpecificUser.setFirstname(firstname);
-        SpecificUser.setSurname(surname);
-        SpecificUser.setEmail(email);
-        SpecificUser.setPassword(bCryptPasswordEncoder.encode(password));
-        SpecificUser.setAddressline(addressline);
-        SpecificUser.setPostcode(postcode);
+        try {
 
-        return UserRepo.save(SpecificUser);
+            passwordEncoder aa = new passwordEncoder();
+            User SpecificUser = UserRepo.findByFirstName(firstname);
+            SpecificUser.setBloodGroup(bloodGroup);
+            SpecificUser.setFirstname(firstname);
+            SpecificUser.setSurname(surname);
+            SpecificUser.setEmail(email);
+            SpecificUser.setPassword(aa.encrypt(password));
+            SpecificUser.setAddressline(addressline);
+            SpecificUser.setPostcode(postcode);
+
+            return UserRepo.save(SpecificUser);
+
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public void deleteAll() {
@@ -100,8 +117,9 @@ public class AccountHelper {
     public boolean checkCredentials(String email, String password) {
         try {
             User user = UserRepo.findByEmail(email);
+            passwordEncoder Decoder = new passwordEncoder();
             if (user != null) {
-                if (bCryptPasswordEncoder.matches(password, user.getPassword())) {
+                if (Decoder.decrypt(password).equals(user.getPassword())) {
                     return true;
                 }
             }
