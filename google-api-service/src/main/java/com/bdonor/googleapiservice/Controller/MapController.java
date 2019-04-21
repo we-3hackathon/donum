@@ -82,7 +82,7 @@ public class MapController {
         try {
             // the default map
 
-            googleMap = new Map("New York", "13", EnumGoogleMap.MEDIUM_RES.toString(), EnumGoogleMap.ROADMAP.toString());
+            googleMap = new Map(city, "13", EnumGoogleMap.MEDIUM_RES.toString(), EnumGoogleMap.ROADMAP.toString());
 
             // REST API to account-service GET @all-users
             String allUsers = getAllUsers();
@@ -114,7 +114,7 @@ public class MapController {
 
         try {
 
-            URL url = new URL("http://localhost:8040/getAll");
+            URL url = new URL("http://localhost:8020/getAll");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             //conn.setRequestProperty("Accept", "application/json");
