@@ -2,7 +2,7 @@ package com.bdonor.accountservice.Controller;
 
 import com.bdonor.accountservice.Models.AccountHelper;
 import com.bdonor.accountservice.Models.User;
-import com.bdonor.accountservice.Repository.UserRepository;
+//import com.bdonor.accountservice.Repository.UserRepository;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -18,7 +18,8 @@ public class AccountController {
     private AccountHelper Service_functions;
 
     @ResponseBody // Works
-    @GetMapping(value = "/create/{bloodGroup}/{firstname}/{surname}/{email}/{password}/{addressline}/{postcode}")
+    //@GetMapping(value = "/create/{bloodGroup}/{firstname}/{surname}/{email}/{password}/{addressline}/{postcode}")
+    @PostMapping(value = "/create/{bloodGroup}/{firstname}/{surname}/{email}/{password}/{addressline}/{postcode}")
     public String create( @PathVariable String bloodGroup , @PathVariable  String firstname, @PathVariable  String surname, @PathVariable  String email, @PathVariable  String password, @PathVariable  String addressline, @PathVariable  String postcode){
         User CreateUser = Service_functions.create(bloodGroup, firstname,  surname,  email,  password,  addressline,  postcode);
         System.out.println("this is working");
@@ -32,15 +33,15 @@ public class AccountController {
         return Service_functions.getByfirstName(firstname).toString();
     }
 
-    @ResponseBody
-    @GetMapping("/getAll")
-    public String getAllUsers(){ // Works
-        System.out.println("This Works");
-
-        String json = new Gson().toJson(Service_functions.getAll());
-
-        return json;
-    }
+//    @ResponseBody
+//    @GetMapping("/getAll")
+//    public String getAllUsers(){ // Works
+//        System.out.println("This Works");
+//
+//        String json = new Gson().toJson(Service_functions.getAll());
+//
+//        return json;
+//    }
 
     @ResponseBody
     @RequestMapping("/updateUser/{bloodGroup}/{firstname}/{surname}/{email}/{password}/{addressline}/{password}") // Works Partially - Creates new user instead of updating current

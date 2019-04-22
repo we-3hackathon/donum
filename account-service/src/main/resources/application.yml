@@ -1,6 +1,8 @@
 spring:
   application:
     name: account-service
+  main:
+    allow-bean-definition-overriding: true
 
 server:
   port: 8020
@@ -9,3 +11,11 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8001/eureka
+
+amazon:
+  access:
+    key:
+    secret-key: 
+  region: eu-west-2a
+  end-point:
+    url: apigateway.eu-west-2.amazonaws.com
