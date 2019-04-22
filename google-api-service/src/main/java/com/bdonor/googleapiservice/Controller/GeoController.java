@@ -4,7 +4,7 @@ import com.bdonor.googleapiservice.Service.Geocoding.Geocoding;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-public class GeoController {
+public class GeoController extends BaseController{
 
 
     boolean inProgress;
@@ -31,5 +31,10 @@ public class GeoController {
         }
 
         return  convertAddress.getCoordinates();
+    }
+
+    @Override
+    public void loadController() {
+            _controllerName = "GeoController";
     }
 }
