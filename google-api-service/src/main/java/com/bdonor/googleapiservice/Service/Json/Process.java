@@ -92,6 +92,13 @@ public class Process extends Thread{
                 System.out.println(lon);
                 System.out.println(bloodGroup);
 
+                /* defense against AB blood group,
+                * google marker cannot support 2 or more characters in single plot
+                * */
+                if(bloodGroup.contains("AB")){
+                    bloodGroup = "Z";
+                }
+
                 mapPlot.addMarker(mapPlot.setColour(bloodGroup),bloodGroup,lat,lon);
                 //color = usersArray.getJSONObject(i).getString("latitude");
             }

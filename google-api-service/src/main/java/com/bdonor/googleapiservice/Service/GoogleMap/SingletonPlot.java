@@ -40,22 +40,14 @@ public class SingletonPlot {
      * */
     public String setColour(String bloodGroup){
 
-        /* Other bloodGroups missing */
-        switch (bloodGroup){
-
-            case "A":
-                return "red";
-
-            case "B":
-                return "red";
-
-            case "O":
-                return "red";
-
-            default:
-                return "grey";
-
+        if(bloodGroup.contains("+")){
+            return "green";
+        }else if(bloodGroup.contains("-")){
+            return "red";
+        }else{
+            return "grey";
         }
+
     }
 
     public String getPlotURL(){return _plotURL.toString();}

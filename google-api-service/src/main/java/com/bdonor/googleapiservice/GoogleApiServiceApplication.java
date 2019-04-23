@@ -25,11 +25,6 @@ public class GoogleApiServiceApplication {
 		SpringApplication.run(GoogleApiServiceApplication.class, args);
 	}
 
-	/*
-	@Override
-	public String greeting() {
-		return String.format("Hello from '%s'!", eurekaClient.getApplication(appName).getName());
-	}*/
 }
 
 @RestController

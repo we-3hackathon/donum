@@ -45,7 +45,7 @@ public class Map {
         return "&key=" + EnumAPIKey.MAP_KEY.toString();
     }
 
-    public String get_URL() {
+    public String getURL() {
         return _URL ;
     }
 
