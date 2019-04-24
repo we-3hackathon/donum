@@ -19,7 +19,6 @@ public class MapController extends BaseController{
     private Map googleMap ;
     private SingletonPlot mapPlot = SingletonPlot.getInstance();
 
-
     @GetMapping(value = "/editmap/zoom/{zoom}")
     public void changeMapZoom(@PathVariable String zoom){
 
