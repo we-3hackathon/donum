@@ -11,7 +11,6 @@ public class StaticMap implements IMap {
     private String _city;
     private String _size = EnumGoogleMap.MEDIUM_RES.toString();
 
-
     @Override
     public void setZoom(String zoom) {
         _zoom = zoom;

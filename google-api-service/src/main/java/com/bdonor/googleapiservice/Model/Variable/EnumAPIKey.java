@@ -1,21 +1,16 @@
 package com.bdonor.googleapiservice.Model.Variable;
 
-public enum EnumGoogleMap {
+public enum EnumAPIKey {
 
-    HIGH_RES("900x600"),
-    MEDIUM_RES("600x480"),
-    LOW_RES("480x240"),
-    ROADMAP("roadmap"),
-    STATIC_MAP("https://maps.googleapis.com/maps/api/staticmap?"),
-    MARKER("&markers=color:")
-    ;
+    MAP_KEY("AIzaSyBz-en4IzG0aeAxcGWc3Xo0fURt-Fb2-sU"),
+    PLACES_KEY("AIzaSyCKMh-4IFwLRnoQSDQOuvhwj0QM7rGm8m8");
 
     private final String text;
 
     /**
      * @param text
      */
-    EnumGoogleMap(final String text) {
+    EnumAPIKey(final String text) {
         this.text = text;
     }
 

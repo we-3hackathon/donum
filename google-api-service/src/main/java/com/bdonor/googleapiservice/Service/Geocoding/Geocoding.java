@@ -1,5 +1,6 @@
 package com.bdonor.googleapiservice.Service.Geocoding;
 
+import com.bdonor.googleapiservice.Model.Variable.EnumAPIKey;
 import com.bdonor.googleapiservice.Model.Variable.EnumURL;
 import com.bdonor.googleapiservice.Model.Variable.EnumGoogleMap;
 import com.bdonor.googleapiservice.Service.Json.Process;
@@ -35,7 +36,7 @@ public class Geocoding extends Thread{
 
             String _URL = EnumURL.PROTOCOL.toString() + EnumURL.HOST.toString() + EnumURL.PATH.toString()
                     + EnumURL.ADDRESS.toString() + _address + "," + _postcode
-                    + EnumURL.KEY.toString() + EnumGoogleMap.PLACES_KEY.toString();
+                    + EnumURL.KEY.toString() + EnumAPIKey.PLACES_KEY.toString();
 
             System.out.println(_URL);
             HttpPost post = new HttpPost(_URL);

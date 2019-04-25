@@ -23,8 +23,6 @@ public class User {
 
     public User() {}
 
-    public User(String bloodGroup, String firstname, String surname, String email, String encode, String addressline, String postcode, String latitude, String longtitude){}
-
     public User(String bloodGroup, String firstname, String surname, String email, String password, String addressline, String postcode) {
         this.bloodGroup = bloodGroup;
         this.firstName = firstname;
@@ -35,8 +33,7 @@ public class User {
         this.postcode = postcode;
     }
 
-    public User(String id, String bloodGroup, String firstname, String surname, String email, String password, String addressline, String postcode, String latitude, String longtitude) {
-        this.id = id;
+    public User(String bloodGroup, String firstname, String surname, String email, String password, String addressline, String postcode, String latitude, String longtitude) {
         this.bloodGroup = bloodGroup;
         this.firstName = firstname;
         this.surname = surname;

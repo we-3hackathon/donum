@@ -1,6 +1,7 @@
 package com.bdonor.googleapiservice.Service.GoogleMap;
 
 import com.bdonor.googleapiservice.Model.Map.StaticMap;
+import com.bdonor.googleapiservice.Model.Variable.EnumAPIKey;
 import com.bdonor.googleapiservice.Model.Variable.EnumGoogleMap;
 
 public class Map {
@@ -41,10 +42,10 @@ public class Map {
     }
 
     private String buildKeyURL(){
-        return "&key=" + EnumGoogleMap.API_KEY.toString();
+        return "&key=" + EnumAPIKey.MAP_KEY.toString();
     }
 
-    public String get_URL() {
+    public String getURL() {
         return _URL ;
     }
 
