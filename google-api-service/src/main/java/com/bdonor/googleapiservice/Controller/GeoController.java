@@ -33,8 +33,11 @@ public class GeoController extends BaseController{
         return  convertAddress.getCoordinates();
     }
 
-    @Override
-    public void loadController() {
+
+
+        @Override
+        public void loadController() {
             _controllerName = "GeoController";
-    }
+        }
+
 }

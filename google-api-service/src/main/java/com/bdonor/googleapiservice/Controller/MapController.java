@@ -14,7 +14,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 @RestController
-public class MapController extends BaseController{
+public class MapController {
 
     private Map googleMap ;
     private SingletonPlot mapPlot = SingletonPlot.getInstance();
@@ -105,11 +105,6 @@ public class MapController extends BaseController{
         return "Bad Request";
     }
 
-    @Override
-    public void loadController() {
-            _controllerName = "MapController";
-
-    }
 }
 
 
