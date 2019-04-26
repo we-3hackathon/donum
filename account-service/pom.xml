@@ -2,29 +2,33 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.1.3.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.bdonor.account-service</groupId>
-	<artifactId>account-service</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>account-service</name>
+		<groupId>com.bdonor.account-service</groupId>
+		<artifactId>account-service</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+		<name>account-service</name>
 	<description>Demo project for Spring Boot</description>
 
 	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
-		<!--<spring-cloud.version>Greenwich.RELEASE</spring-cloud.version>-->
-		<spring-cloud.version>Greenwich.SR1</spring-cloud.version>
+		<spring-cloud.version>Finchley.SR1</spring-cloud.version>
 	</properties>
 
+	<!--<properties>-->
+		<!--<java.version>1.8</java.version>-->
+		<!--&lt;!&ndash;<spring-cloud.version>Greenwich.RELEASE</spring-cloud.version>&ndash;&gt;-->
+		<!--<spring-cloud.version>Greenwich.SR1</spring-cloud.version>-->
+	<!--</properties>-->
+
 	<dependencies>
-		<!--<dependency>-->
-			<!--<groupId>org.springframework.boot</groupId>-->
-			<!--<artifactId>spring-boot-starter-data-mongodb</artifactId>-->
-		<!--</dependency>-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -35,20 +39,25 @@
 		<!--</dependency>-->
 
 		<dependency>
-			<groupId>com.github.derjust</groupId>
-			<artifactId>spring-data-dynamodb</artifactId>
-			<version>5.1.0</version>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-java-sdk-dynamodb</artifactId>
+			<version> LATEST </version>
 		</dependency>
 
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-security</artifactId>
-		</dependency>
+		<!--<dependency>-->
+			<!--<groupId>org.springframework.boot</groupId>-->
+			<!--<artifactId>spring-boot-starter-security</artifactId>-->
+		<!--</dependency>-->
+
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+
+
 		<!--https://mvnrepository.com/artifact/com.google.code.gson/gson-->
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
@@ -66,7 +75,12 @@
             <artifactId>xstream</artifactId>
             <version>1.4.10</version>
         </dependency>
-    </dependencies>
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-commons</artifactId>
+			<version>2.1.5.RELEASE</version>
+		</dependency>
+	</dependencies>
 
 
 	<dependencyManagement>

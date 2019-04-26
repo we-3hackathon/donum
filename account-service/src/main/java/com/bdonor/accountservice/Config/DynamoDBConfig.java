@@ -1,55 +1,42 @@
 package com.bdonor.accountservice.Config;
 
-import com.amazonaws.auth.AWSCredentials;
-import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.regions.Regions;
+import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
-import com.bdonor.accountservice.Repository.DynamoDBRepo;
-//import com.bdonor.accountservice.Repository.UserRepository;
-import org.socialsignin.spring.data.dynamodb.repository.config.EnableDynamoDBRepositories;
+//import com.bdonor.accountservice.Repository.DynamoDBRepo;
+//import org.socialsignin.spring.data.dynamodb.repository.config.EnableDynamoDBRepositories;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
 
 
-@EnableDynamoDBRepositories(includeFilters = {@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = {DynamoDBRepo.class})})
 @Configuration
 public class DynamoDBConfig {
 
-    @Value("${amazon.aws.accesskey}")
-    private String amazonAWSAccessKey;
+    @Value("${amazon.access.key}")
+    private String awsAccessKey;
 
-    @Value("${amazon.aws.secretkey}")
-    private String amazonAWSSecretKey;
+    @Value("${amazon.access.secret-key}")
+    private String awsSecretKey;
 
-    public AWSCredentialsProvider amazonAWSCredentialsProvider() {
-        return new AWSStaticCredentialsProvider(amazonAWSCredentials());
-    }
+    @Value("${amazon.region}")
+    private String awsRegion;
 
-    @Bean
-    public AWSCredentials amazonAWSCredentials() {
-        return new BasicAWSCredentials(amazonAWSAccessKey, amazonAWSSecretKey);
-    }
-
-    @Primary
-    @Bean
-    public DynamoDBMapperConfig dynamoDBMapperConfig() {
-        return DynamoDBMapperConfig.DEFAULT;
-    }
+    @Value("${amazon.end-point.url}")
+    private String awsDynamoDBEndPoint;
 
     @Bean
-    public DynamoDBMapper dynamoDBMapper(AmazonDynamoDB amazonDynamoDB, DynamoDBMapperConfig config) {
-        return new DynamoDBMapper(amazonDynamoDB, config);
+    public DynamoDBMapper mapper() {
+        return new DynamoDBMapper(amazonDynamoDBConfig());
     }
 
-    @Bean
-    public AmazonDynamoDB amazonDynamoDB() {
-        return AmazonDynamoDBClientBuilder.standard().withCredentials(amazonAWSCredentialsProvider())
-                    .withRegion(Regions.US_EAST_1).build();
+    public AmazonDynamoDB amazonDynamoDBConfig() {
+        return AmazonDynamoDBClientBuilder.standard()
+                .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(awsDynamoDBEndPoint, awsRegion))
+                .withCredentials(new AWSStaticCredentialsProvider(new BasicAWSCredentials(awsAccessKey, awsSecretKey)))
+                .build();
     }
 }
 
