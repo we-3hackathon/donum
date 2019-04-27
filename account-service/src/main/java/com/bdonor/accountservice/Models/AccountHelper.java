@@ -1,6 +1,6 @@
 //package com.bdonor.accountservice.Models;
 //
-//import com.bdonor.accountservice.Repository.DynamoDBRepo;
+//import com.bdonor.accountservice.Repository.CrudRepo;
 ////import com.bdonor.accountservice.Repository.UserRepository;
 ////import com.bdonor.accountservice.Service.passwordEncoder;
 //import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@
 ////    @Autowired
 ////    private UserRepository UserRepo;
 //
-//    private DynamoDBRepo dynamoDBRepo;
+//    private CrudRepo dynamoDBRepo;
 //
 //    @Autowired
 //    private BCryptPasswordEncoder bCryptPasswordEncoder;

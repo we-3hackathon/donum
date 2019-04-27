@@ -3,29 +3,57 @@ package com.bdonor.accountservice.Controller;
 //import com.bdonor.accountservice.Models.AccountHelper;
 import com.bdonor.accountservice.Models.User;
 //import com.bdonor.accountservice.Repository.UserRepository;
-import com.bdonor.accountservice.Repository.DynamoDbRepository;
+import com.bdonor.accountservice.Repository.CrudRepo;
+import com.bdonor.accountservice.Repository.DynamoRepo;
 //import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 
-//@Controller
-//@Component
 @RestController
 public class AccountController {
 
     @Autowired
-    private DynamoDbRepository dynamoDbRepository;
+    private DynamoRepo dynamoRepo;
+
+    @Autowired
+    private CrudRepo crudRepo;
 
     @ResponseBody
     @PostMapping(value = "/create/{bloodGroup}/{firstname}/{surname}/{email}/{password}/{addressline}/{postcode}")
-    public String create( @PathVariable String bloodGroup , @PathVariable  String firstname, @PathVariable  String surname, @PathVariable  String email, @PathVariable  String password, @PathVariable  String addressline, @PathVariable  String postcode){
-        dynamoDbRepository.createUserTest(bloodGroup, firstname,  surname,  email,  password,  addressline,  postcode);
+    public String Register( @PathVariable String bloodGroup , @PathVariable  String firstname, @PathVariable  String surname, @PathVariable  String email, @PathVariable  String password, @PathVariable  String addressline, @PathVariable  String postcode){
+        dynamoRepo.createUserTest(bloodGroup, firstname,  surname,  email,  password,  addressline,  postcode);
         return "User added to Dynamo Database";
     }
+
+
+    @ResponseBody
+    @GetMapping(value = "/getUser/{email}")
+    public String getUser(@PathVariable String email){
+        System.out.println("getUser Running");
+        User user = dynamoRepo.getSingleUser(crudRepo.findByEmail(email).get_id(), crudRepo.findByEmail(email).getEmail());
+        return user.toString();
+    }
+
+    @GetMapping(value = "/deleteUser/{email}")
+    public String deleteUser(@PathVariable String email) {
+        User user = crudRepo.findByEmail(email);
+        dynamoRepo.deleteUserDetails(user);
+        return "User" + user.toString() + "Details deleted";
+    }
+
+//    public String Login(@PathVariable String email, String password) {
 //
+//        if(){
+//
+//        }
+//
+//        return "OK";
+//    }
+//
+
+
+
 //    @ResponseBody
 //    @GetMapping("/getUser/{firstname}") // Works Partially - Only works for one user within database, if there are more with the same name, error is given
 //    public String getUser( @PathVariable String firstname ){
