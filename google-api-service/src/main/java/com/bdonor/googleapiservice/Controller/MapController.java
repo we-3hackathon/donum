@@ -3,6 +3,7 @@ package com.bdonor.googleapiservice.Controller;
 import com.bdonor.googleapiservice.Model.Variable.EnumGoogleMap;
 import com.bdonor.googleapiservice.Service.GoogleMap.Map;
 import com.bdonor.googleapiservice.Service.GoogleMap.SingletonPlot;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -14,6 +15,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 @RestController
+@RequestMapping("/map")
 public class MapController extends BaseController{
 
     private Map googleMap ;
@@ -108,7 +110,6 @@ public class MapController extends BaseController{
     @Override
     public void loadController() {
             _controllerName = "MapController";
-
     }
 }
 
