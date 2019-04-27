@@ -3,7 +3,6 @@ package com.bdonor.googleapiservice.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController()
 public abstract class BaseController {
 
     protected String _controllerName = "";

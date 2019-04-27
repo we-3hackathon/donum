@@ -1,9 +1,11 @@
 package com.bdonor.googleapiservice.Controller;
 
 import com.bdonor.googleapiservice.Service.Geocoding.Geocoding;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
+@RestController()
+@RequestMapping("/geo")
 public class GeoController extends BaseController{
 
 
@@ -35,6 +37,6 @@ public class GeoController extends BaseController{
 
     @Override
     public void loadController() {
-            _controllerName = "GeoController";
+        _controllerName = "GeoController";
     }
 }
