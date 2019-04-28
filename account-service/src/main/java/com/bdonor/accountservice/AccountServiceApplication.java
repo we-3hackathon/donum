@@ -7,6 +7,7 @@ import org.springframework.context.annotation.ComponentScan;
 
 //@EnableEurekaClient
 @SpringBootApplication
+@ComponentScan(value = "com.bdonor.accountservice.Repository")
 public class AccountServiceApplication {
 
 	public static void main(String[] args) {

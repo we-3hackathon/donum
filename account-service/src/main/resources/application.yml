@@ -15,7 +15,7 @@ eureka:
 amazon:
   access:
     key:
-    secret-key: 
+    secret-key:
   region: eu-west-2
   end-point:
     url: dynamodb.eu-west-2.amazonaws.com

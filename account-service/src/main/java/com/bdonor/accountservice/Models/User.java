@@ -12,7 +12,6 @@ public class User implements Serializable {
     private String bloodGroup;
     private String firstName;
     private String lastName;
-    @DynamoDBIndexHashKey(globalSecondaryIndexName = "idx_global_emailAddress")
     private String email;
     private String password;
     private String addressline;

@@ -7,7 +7,8 @@ import com.bdonor.accountservice.Models.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
@@ -25,20 +26,17 @@ public class DynamoRepo {
     private static final Logger LOGGER = LoggerFactory.getLogger(DynamoRepo.class);
 
     @Autowired
-    private CrudRepo crudRepo; // Autowiring gives error.
-
-    @Autowired
     private DynamoDBMapper mapper;
 
-    @Autowired
-	private BCryptPasswordEncoder bCryptPasswordEncoder; // Autowiring this gives me an error for some reason, when it is not autowired, createUser does not work
+//    @Autowired
+//	private BCryptPasswordEncoder bCryptPasswordEncoder; // Autowiring this gives me an error for some reason, when it is not autowired, createUser does not work
 
     public void createUserTest(String bloodGroup, String firstName, String lastName, String email, String password, String addressline, String postcode) { // Test Function without google api service
         mapper.save(new User(bloodGroup, firstName, lastName, email, password, addressline, postcode)); // need to add encryption
     }
 
 //    public void createUser(String bloodGroup, String firstName, String lastName, String email, String password, String addressline, String postcode, String latitude, String longitude) { //  Official
-//        mapper.save(new User(bloodGroup, firstName, lastName, email, password, addressline, postcode, latitude, longitude));
+//        mapper.save(new User(bloodGroup, firstName, lastName, email, bCryptPasswordEncoder.encode(password), addressline, postcode, latitude, longitude));
 //    }
 
 

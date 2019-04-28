@@ -1,12 +1,11 @@
 package com.bdonor.accountservice.Controller;
 
-//import com.bdonor.accountservice.Models.AccountHelper;
 import com.bdonor.accountservice.Models.User;
-//import com.bdonor.accountservice.Repository.UserRepository;
-import com.bdonor.accountservice.Repository.CrudRepo;
 import com.bdonor.accountservice.Repository.DynamoRepo;
 //import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -16,9 +15,6 @@ public class AccountController {
     @Autowired
     private DynamoRepo dynamoRepo;
 
-    @Autowired
-    private CrudRepo crudRepo;
-
     @ResponseBody
     @PostMapping(value = "/create/{bloodGroup}/{firstname}/{surname}/{email}/{password}/{addressline}/{postcode}")
     public String Register( @PathVariable String bloodGroup , @PathVariable  String firstname, @PathVariable  String surname, @PathVariable  String email, @PathVariable  String password, @PathVariable  String addressline, @PathVariable  String postcode){
@@ -26,80 +22,24 @@ public class AccountController {
         return "User added to Dynamo Database";
     }
 
-
-    @ResponseBody
-    @GetMapping(value = "/getUser/{email}")
-    public String getUser(@PathVariable String email){
-        System.out.println("getUser Running");
-        User user = dynamoRepo.getSingleUser(crudRepo.findByEmail(email).get_id(), crudRepo.findByEmail(email).getEmail());
-        return user.toString();
+    @GetMapping(value = "/getUser/{_id}/{lastName}")
+    public ResponseEntity<User> getUserDetails(@RequestParam String _id, @RequestParam String lastName) {
+        User user = dynamoRepo.getSingleUser(_id, lastName);
+        return new ResponseEntity<User>(user, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/deleteUser/{email}")
-    public String deleteUser(@PathVariable String email) {
-        User user = crudRepo.findByEmail(email);
+    @PutMapping(value = "/updateUser")
+    public void updateUserDetails(@RequestBody User user) {
+        dynamoRepo.updateUserDetails(user);
+    }
+
+    @DeleteMapping(value = "/delete/{_id}/{email}")
+    public void deleteUserDetails(@PathVariable String _id, @PathVariable String email) {
+        User user = new User();
+        user.set_id(_id);
+        user.setEmail(email);
         dynamoRepo.deleteUserDetails(user);
-        return "User" + user.toString() + "Details deleted";
+        System.out.println(user.toString() + "Deleted");
     }
 
-//    public String Login(@PathVariable String email, String password) {
-//
-//        if(){
-//
-//        }
-//
-//        return "OK";
-//    }
-//
-
-
-
-//    @ResponseBody
-//    @GetMapping("/getUser/{firstname}") // Works Partially - Only works for one user within database, if there are more with the same name, error is given
-//    public String getUser( @PathVariable String firstname ){
-//        System.out.println("Working");
-//        return Service_functions.getByfirstName(firstname).toString();
-//    }
-//
-////    @ResponseBody
-////    @GetMapping("/getAll")
-////    public String getAllUsers(){ // Works
-////        System.out.println("This Works");
-////
-////        String json = new Gson().toJson(Service_functions.getAll());
-////
-////        return json;
-////    }
-//
-//    @ResponseBody
-//    @RequestMapping("/updateUser/{bloodGroup}/{firstname}/{surname}/{email}/{password}/{addressline}/{password}") // Works Partially - Creates new user instead of updating current
-//    public String updateUser( @PathVariable String bloodGroup , @PathVariable  String firstname, @PathVariable  String surname, @PathVariable  String email, @PathVariable  String password, @PathVariable  String addressline, @PathVariable  String postcode ){
-//        User Update = Service_functions.Update(bloodGroup, firstname,  surname,  email,  password,  addressline,  postcode);
-//        return Update.toString();
-//    }
-//
-//    @ResponseBody
-//    @GetMapping("/deleteUser/{firstname}") // Works
-//    public String deleteUser(@PathVariable String firstname ){
-//        Service_functions.deleteByfirstName(firstname);
-//        return "Deleted" + firstname;
-//    }
-//
-//    @ResponseBody
-//    @GetMapping("/checkCredentials/{email}/{password}")
-//    public String checkCredentials( @PathVariable String email, @PathVariable String password ){
-//        if(Service_functions.checkCredentials(email, password)){
-//            System.out.println("Login Success");
-//            return "Success";
-//        }
-//        System.out.println("Login Failed");
-//        return "Failed";
-//    }
-//
-//    @ResponseBody
-//    @RequestMapping("/deleteAll") // Works
-//    public String deleteAll(){
-//        Service_functions.deleteAll();
-//        return "All Users Deleted!";
-//    }
 }
