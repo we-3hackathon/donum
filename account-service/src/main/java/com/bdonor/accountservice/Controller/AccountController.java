@@ -22,9 +22,9 @@ public class AccountController {
         return "User added to Dynamo Database";
     }
 
-    @GetMapping(value = "/getUser/{_id}/{lastName}")
-    public ResponseEntity<User> getUserDetails(@RequestParam String _id, @RequestParam String lastName) {
-        User user = dynamoRepo.getSingleUser(_id, lastName);
+    @GetMapping(value = "/getUser/{firstName}/{email}")
+    public ResponseEntity<User> getUserDetails(@RequestParam String firstName, @RequestParam String email) {
+        User user = dynamoRepo.getSingleUser(firstName, email); // Hash Key and Range Key
         return new ResponseEntity<User>(user, HttpStatus.OK);
     }
 
@@ -33,13 +33,22 @@ public class AccountController {
         dynamoRepo.updateUserDetails(user);
     }
 
-    @DeleteMapping(value = "/delete/{_id}/{email}")
-    public void deleteUserDetails(@PathVariable String _id, @PathVariable String email) {
+    @DeleteMapping(value = "/delete/{firstName}/{email}")
+    public void deleteUserDetails(@PathVariable String firstName, @PathVariable String email) {
         User user = new User();
-        user.set_id(_id);
+        user.set_id(firstName);
         user.setEmail(email);
         dynamoRepo.deleteUserDetails(user);
         System.out.println(user.toString() + "Deleted");
+    }
+
+    @GetMapping(value = "/login/{firstName}/{email}/{password}")
+    public String Login(@PathVariable String firstName, @PathVariable String email, @PathVariable String password) { // Works
+        System.out.println("runnign");
+        if(dynamoRepo.checkCredentials(firstName, email, password)){
+            return "Login Successful";
+        }
+        return "Login Failed";
     }
 
 }

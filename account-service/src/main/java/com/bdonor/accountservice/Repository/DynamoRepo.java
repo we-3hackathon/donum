@@ -7,10 +7,11 @@ import com.bdonor.accountservice.Models.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+//import org.springframework.context.annotation.ComponentScan;
+//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+//import org.springframework.stereotype.Component;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
@@ -28,11 +29,11 @@ public class DynamoRepo {
     @Autowired
     private DynamoDBMapper mapper;
 
-//    @Autowired
-//	private BCryptPasswordEncoder bCryptPasswordEncoder; // Autowiring this gives me an error for some reason, when it is not autowired, createUser does not work
+    @Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder; // Autowiring this gives me an error for some reason, when it is not autowired, createUser does not work
 
     public void createUserTest(String bloodGroup, String firstName, String lastName, String email, String password, String addressline, String postcode) { // Test Function without google api service
-        mapper.save(new User(bloodGroup, firstName, lastName, email, password, addressline, postcode)); // need to add encryption
+        mapper.save(new User(bloodGroup, firstName, lastName, email, bCryptPasswordEncoder.encode(password), addressline, postcode)); // need to add encryption
     }
 
 //    public void createUser(String bloodGroup, String firstName, String lastName, String email, String password, String addressline, String postcode, String latitude, String longitude) { //  Official
@@ -40,8 +41,8 @@ public class DynamoRepo {
 //    }
 
 
-    public User getSingleUser(String _id, String email) { // Hash key and range key
-        return mapper.load(User.class, _id, email);
+    public User getSingleUser(String firstName, String email) { // Hash key and range key
+        return mapper.load(User.class, firstName, email);
     }
 
     public void updateUserDetails(User user) {
@@ -65,18 +66,18 @@ public class DynamoRepo {
         return saveExpression;
     }
 
-//    public boolean checkCredentials(String email, String password) { // To test i need to first add a user with ecrypted password, must fix BCryptPasswordEncoder error first
-//        try {
-//            User user = crudRepo.findByEmail(email);
-//            if (user != null) {
-//                if (bCryptPasswordEncoder.matches(password,user.getPassword())) {
-//                    return true;
-//                }
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        return false;
-//    }
+    public boolean checkCredentials(String firstName, String email, String password){
+        try{
+            User user = mapper.load(User.class, firstName, email);
+            if(user != null){
+                if(bCryptPasswordEncoder.matches(password, user.getPassword())){ // Need to make sure i do the decoding thing
+                    return true;
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return false;
+    }
 
 }
