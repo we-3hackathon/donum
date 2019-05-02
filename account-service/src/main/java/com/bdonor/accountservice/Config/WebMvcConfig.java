@@ -1,4 +1,4 @@
-package com.bdonor.accountservice.Models;
+package com.bdonor.accountservice.Config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,16 +27,4 @@ public class WebMvcConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
     }
 
-    @Override
-    protected void configure(final AuthenticationManagerBuilder auth) throws Exception{
-        auth
-                .inMemoryAuthentication()
-                .withUser("user")
-                .password(passwordEncoder().encode("password"))
-                .roles("USER")
-                .and()
-                .withUser("admin")
-                .password(passwordEncoder().encode("admin"))
-                .roles("USER", "ADMIN");
-    }
 }
