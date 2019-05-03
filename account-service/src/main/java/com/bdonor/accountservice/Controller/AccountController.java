@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-public class AccountController {
+public class AccountController extends BaseController{
 
     @Autowired
     private DynamoRepo dynamoRepo;
@@ -59,4 +59,8 @@ public class AccountController {
         return "Login Failed";
     }
 
+    @Override
+    public void loadController() {
+        _controllerName = "AccountController ";
+    }
 }
