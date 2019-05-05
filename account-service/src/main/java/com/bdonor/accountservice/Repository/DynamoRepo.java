@@ -1,16 +1,11 @@
 package com.bdonor.accountservice.Repository;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
+import com.bdonor.accountservice.InternalServiceHelper.GoogleApiService;
 import com.bdonor.accountservice.Models.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,50 +31,19 @@ public class DynamoRepo {
     @Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public boolean createUser(String bloodGroup, String firstName, String lastName, String email, String password, String addressline, String postcode){
+    public int createUser(String bloodGroup, String firstName, String lastName, String email, String password, String addressline, String postcode){
         User checkEmail = mapper.load(User.class, firstName, email);
         if (checkEmail != null) {
             System.out.println("User " + checkEmail.toString() + "Already exists!");
-            return false;
+            return 1;
         }
 
-        String URLink;
-        String[] LatLong = {};
+        String[] LatLong = GoogleApiService.convertToCoordinates(addressline,postcode);
 
-        try {
+        if (LatLong[0].contains("Not Found") || LatLong[1].contains("Not Found")){return 2;}
 
-            URL url = new URL(String.format("http://localhost:8110/geocoding/%s/%s", addressline, postcode)); // Had to do this stuff here as i was "duplicate id" error in DynamoRepo
-            //System.out.println(url.toString());
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-            conn.setRequestProperty("Accept", "application/String");
-
-            if (conn.getResponseCode() != 200) {
-                throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
-            }
-
-            String output = "E";
-            BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
-
-            System.out.println("Output from Server .... \n");
-            while ((output = br.readLine()) != null) {
-                URLink = output;
-                System.out.println(URLink);
-                LatLong = URLink.split(",");
-            }
-
-            conn.disconnect();
-
-        } catch (MalformedURLException e) {
-
-            e.printStackTrace();
-
-        } catch (IOException e) {
-
-            e.printStackTrace();
-        }
         mapper.save(new User(bloodGroup, firstName, lastName, email, bCryptPasswordEncoder.encode(password), addressline, postcode, LatLong[0], LatLong[1]));
-        return true;
+        return 0;
     }
 
     public List<User> getAllUsers(){

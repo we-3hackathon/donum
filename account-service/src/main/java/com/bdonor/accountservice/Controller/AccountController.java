@@ -16,12 +16,18 @@ public class AccountController extends BaseController{
     private DynamoRepo dynamoRepo;
 
     @ResponseBody
-    @PostMapping(value = "/create/{bloodGroup}/{firstName}/{lastName}/{email}/{password}/{addressline}/{postcode}") // Need to test once google-api-serivce is merged
+    @GetMapping(value = "/create/{bloodGroup}/{firstName}/{lastName}/{email}/{password}/{addressline}/{postcode}") // Need to test once google-api-serivce is merged
     public String Register( @PathVariable String bloodGroup , @PathVariable  String firstName, @PathVariable  String lastName, @PathVariable  String email, @PathVariable  String password, @PathVariable  String addressline, @PathVariable  String postcode){
-        if(dynamoRepo.createUser(bloodGroup, firstName, lastName, email, password, addressline, postcode)){
-            return "User added to Database";
+
+        switch (dynamoRepo.createUser(bloodGroup, firstName, lastName, email, password, addressline, postcode)){
+
+            case 1:
+                return "Email in sure. Try another email";
+            case 2:
+                return "Postcode not recognised";
+            default:
+                return "User added to Database";
         }
-        return "Email in use. Try another email";
     }
 
     @GetMapping(value = "/getAll") // Working

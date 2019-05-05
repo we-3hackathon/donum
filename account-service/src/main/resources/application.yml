@@ -6,8 +6,8 @@ spring:
 
 amazon:
   access:
-    key:
-    secret-key:
+    key: AKIA5WGTTYKE5JFKG4WZ
+    secret-key: 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
   region: eu-west-2
   end-point:
     url: dynamodb.eu-west-2.amazonaws.com
