@@ -1,75 +1,72 @@
 package com.bdonor.accountservice.Controller;
 
-import com.bdonor.accountservice.Models.AccountHelper;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.bdonor.accountservice.Models.User;
-import com.bdonor.accountservice.Repository.UserRepository;
+import com.bdonor.accountservice.Repository.DynamoRepo;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-
-@Controller
-@Component
-public class AccountController {
+@RestController
+public class AccountController extends BaseController{
 
     @Autowired
-    private AccountHelper Service_functions;
-
-    @ResponseBody // Works
-    @GetMapping(value = "/create/{bloodGroup}/{firstname}/{surname}/{email}/{password}/{addressline}/{password}")
-    public String create( @PathVariable String bloodGroup , @PathVariable  String firstname, @PathVariable  String surname, @PathVariable  String email, @PathVariable  String password, @PathVariable  String addressline, @PathVariable  String postcode){
-        User CreateUser = Service_functions.create(bloodGroup, firstname,  surname,  email,  password,  addressline,  postcode);
-        System.out.println("this is working");
-        return CreateUser.toString();
-    }
+    private DynamoRepo dynamoRepo;
 
     @ResponseBody
-    @GetMapping("/getUser/{firstname}") // Works Partially - Only works for one user within database, if there are more with the same name, error is given
-    public String getUser( @PathVariable String firstname ){
-        System.out.println("Working");
-        return Service_functions.getByfirstName(firstname).toString();
-    }
+    @GetMapping(value = "/create/{bloodGroup}/{firstName}/{lastName}/{email}/{password}/{addressline}/{postcode}") // Need to test once google-api-serivce is merged
+    public String Register( @PathVariable String bloodGroup , @PathVariable  String firstName, @PathVariable  String lastName, @PathVariable  String email, @PathVariable  String password, @PathVariable  String addressline, @PathVariable  String postcode){
 
-    @ResponseBody
-    @GetMapping("/getAll")
-    public String getAllUsers(){ // Works
-        System.out.println("This Works");
-        String json = new Gson().toJson(Service_functions.getAll());
+        switch (dynamoRepo.createUser(bloodGroup, firstName, lastName, email, password, addressline, postcode)){
 
-        return json;
-    }
-
-    @ResponseBody
-    @RequestMapping("/updateUser/{bloodGroup}/{firstname}/{surname}/{email}/{password}/{addressline}/{password}") // Works Partially - Creates new user instead of updating current
-    public String updateUser( @PathVariable String bloodGroup , @PathVariable  String firstname, @PathVariable  String surname, @PathVariable  String email, @PathVariable  String password, @PathVariable  String addressline, @PathVariable  String postcode ){
-        User Update = Service_functions.Update(bloodGroup, firstname,  surname,  email,  password,  addressline,  postcode);
-        return Update.toString();
-    }
-
-    @ResponseBody
-    @GetMapping("/deleteUser/{firstname}") // Works
-    public String deleteUser(@PathVariable String firstname ){
-        Service_functions.deleteByfirstName(firstname);
-        return "Deleted" + firstname;
-    }
-
-    @ResponseBody
-    @GetMapping("/checkCredentials/{email}/{password}")
-    public boolean checkCredentials( @PathVariable String email, @PathVariable String password ){
-        if(Service_functions.checkCredentials(email, password)){
-            System.out.println("Login Success");
-            return true;
+            case 1:
+                return "Email in sure. Try another email";
+            case 2:
+                return "Postcode not recognised";
+            default:
+                return "User added to Database";
         }
-        System.out.println("Login Failed");
-        return false;
     }
 
-    @ResponseBody
-    @RequestMapping("/deleteAll") // Works
-    public String deleteAll(){
-        Service_functions.deleteAll();
-        return "All Users Deleted!";
+    @GetMapping(value = "/getAll") // Working
+    public String getUsers() {
+        String Users = new Gson().toJson(dynamoRepo.getAllUsers());
+        return Users;
+    }
+
+    @GetMapping(value = "/getUser/{firstName}/{email}")
+    public ResponseEntity<User> getUserDetails(@PathVariable String firstName, @PathVariable String email) { // Working
+        User user = dynamoRepo.getSingleUser(firstName, email);
+        System.out.println(user.toString());
+        return new ResponseEntity<User>(user, HttpStatus.OK);
+    }
+
+    @PutMapping(value = "/updateUser")
+    public void updateUserDetails(@RequestBody User user) { // Working -- Not sure how i will re-encrypt new users password
+        dynamoRepo.updateUserDetails(user);
+    }
+
+    @DeleteMapping(value = "/delete/{firstName}/{email}")
+    public void deleteUserDetails(@PathVariable String firstName, @PathVariable String email) { // Working
+        User user = new User();
+        user.setFirstName(firstName);
+        user.setEmail(email);
+        dynamoRepo.deleteUserDetails(user);
+        System.out.println(user.toString() + " Deleted");
+    }
+
+    @GetMapping(value = "/login/{firstName}/{email}/{password}")
+    public String Login(@PathVariable String firstName, @PathVariable String email, @PathVariable String password) { // Working
+        if(dynamoRepo.checkCredentials(firstName, email, password)){
+            return "Login Successful";
+        }
+        return "Login Failed";
+    }
+
+    @Override
+    public void loadController() {
+        _controllerName = "AccountController ";
     }
 }

@@ -1,9 +1,9 @@
 package com.bdonor.googleapiservice.Controller;
 
-import com.bdonor.googleapiservice.Model.Entity.Plot;
 import com.bdonor.googleapiservice.Model.Variable.EnumGoogleMap;
 import com.bdonor.googleapiservice.Service.GoogleMap.Map;
 import com.bdonor.googleapiservice.Service.GoogleMap.SingletonPlot;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -15,60 +15,12 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 @RestController
-public class MapController {
+
+@RequestMapping("/map")
+public class MapController extends BaseController{
 
     private Map googleMap ;
     private SingletonPlot mapPlot = SingletonPlot.getInstance();
-
-
-    /* Test to see controller is called */
-    @RequestMapping("/check")
-    @ResponseBody
-    public String testConnection(){
-        googleMap = new Map("London","13", EnumGoogleMap.MEDIUM_RES.toString(), EnumGoogleMap.ROADMAP.toString());
-        //googleMap.buildURL();
-        return "ok";
-    }
-
-
-    /* Test to check Helper class is OK */
-    @RequestMapping(value = "/url", method = RequestMethod.GET)
-    public void redirect (HttpServletResponse http){
-        try{
-            googleMap = new Map("London","13", EnumGoogleMap.MEDIUM_RES.toString(), EnumGoogleMap.ROADMAP.toString());
-            //googleMap.buildURL();
-        http.sendRedirect(googleMap.get_URL());
-        }catch (IOException ex){
-        }
-    }
-
-    @Deprecated
-    @GetMapping(value = "/generatemap/{lat}/{lng}/{city}/{blood}")
-    public void generateMapURL(@PathVariable String lat, @PathVariable String lng,@PathVariable String city, @PathVariable String blood,HttpServletResponse http){
-
-        try {
-            // the default map
-            googleMap = new Map(city, "13", EnumGoogleMap.MEDIUM_RES.toString(), EnumGoogleMap.ROADMAP.toString());
-
-            // generate the map
-            Plot mapPlot = new Plot();
-
-            // set the first marker
-            mapPlot.addMarker(mapPlot.setColour(blood), blood, lat, lng);
-
-            // first part of the URL
-            googleMap.buildMapOnlyURL();
-
-            // plots URL
-            googleMap.buildMapPlotURL(mapPlot.getPlotURL());
-
-            // redirect to map
-            http.sendRedirect(googleMap.get_URL());
-
-        }catch (Exception e){
-            e.getMessage();
-        }
-    }
 
     @GetMapping(value = "/editmap/zoom/{zoom}")
     public void changeMapZoom(@PathVariable String zoom){
@@ -81,47 +33,50 @@ public class MapController {
     }
 
     @GetMapping(value = "/generatemap/{city}")
-    public void generateAllMarkerMapURL(@PathVariable String city, HttpServletResponse http){
+    public String generateAllMarkerMapURL(@PathVariable String city, HttpServletResponse http){
 
         try {
             // the default map
-
-            googleMap = new Map("New York", "13", EnumGoogleMap.MEDIUM_RES.toString(), EnumGoogleMap.ROADMAP.toString());
+            googleMap = new Map(city, "13", EnumGoogleMap.MEDIUM_RES.toString(), EnumGoogleMap.ROADMAP.toString());
 
             // REST API to account-service GET @all-users
             String allUsers = getAllUsers();
 
-            //System.out.println(allUsers);
 
             // for each in @all-users, addMarker
             mapPlot.processPlot(allUsers);
+
             // first part of the URL
             googleMap.buildMapOnlyURL();
 
             // plots URL
             googleMap.buildMapPlotURL(mapPlot.getPlotURL());
 
-            System.out.println(googleMap.get_URL());
+            System.out.println(googleMap.getURL());
+
             // redirect to map
             //http.sendRedirect(googleMap.get_URL());
 
+            return googleMap.getURL();
         }catch (Exception e){
             e.getMessage();
         }
+            return "Issue with generateAllMarkerURL()";
     }
 
     @ResponseBody
     @RequestMapping("/account-service/all-users")
+    /* Gets all the users in DB from account-service */
     public String getAllUsers(){
 
         String jsonData = "error";
 
         try {
 
-            URL url = new URL("http://localhost:9090/getAll");
+            URL url = new URL("http://localhost:8020/getAll");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
-            conn.setRequestProperty("Accept", "application/json");
+            //conn.setRequestProperty("Accept", "application/json");
 
             if (conn.getResponseCode() != 200) {
                 throw new RuntimeException("Failed : HTTP error code : "
@@ -133,7 +88,7 @@ public class MapController {
 
             System.out.println("Output from Server .... \n");
             while ((output = br.readLine()) != null) {
-                //System.out.println(output);
+                System.out.println(output);
                 jsonData = output;
             }
 
@@ -153,7 +108,10 @@ public class MapController {
         return "Bad Request";
     }
 
-
+    @Override
+    public void loadController() {
+            _controllerName = "MapController";
+    }
 
 }
 

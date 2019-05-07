@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,11 +26,6 @@ public class GoogleApiServiceApplication {
 		SpringApplication.run(GoogleApiServiceApplication.class, args);
 	}
 
-	/*
-	@Override
-	public String greeting() {
-		return String.format("Hello from '%s'!", eurekaClient.getApplication(appName).getName());
-	}*/
 }
 
 @RestController
