@@ -2,8 +2,8 @@ package com.bdonor.googleapiservice.Model.Variable;
 
 public enum EnumAPIKey {
 
-    MAP_KEY("AIzaSyBz-en4IzG0aeAxcGWc3Xo0fURt-Fb2-sU"),
-    PLACES_KEY("AIzaSyCKMh-4IFwLRnoQSDQOuvhwj0QM7rGm8m8");
+    MAP_KEY(""),
+    PLACES_KEY("");
 
     private final String text;
 

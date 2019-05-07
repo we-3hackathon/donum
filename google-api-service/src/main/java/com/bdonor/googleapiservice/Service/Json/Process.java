@@ -50,8 +50,8 @@ public class Process extends Thread{
      */
     private String readGetCoordinates(){
 
-        String lat = "E_CONVERTJSON";
-        String lon = "E_CONVERTJSON";
+        String lat = "Not Found";
+        String lon = "Not Found";
         try {
             JSONObject obj = new JSONObject(_JSONDATA);
 

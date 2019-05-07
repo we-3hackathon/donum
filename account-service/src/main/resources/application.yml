@@ -4,6 +4,14 @@ spring:
   main:
     allow-bean-definition-overriding: true
 
+amazon:
+  access:
+    key:
+    secret-key:
+  region: eu-west-2
+  end-point:
+    url: dynamodb.eu-west-2.amazonaws.com
+
 server:
   port: 8020
 
@@ -12,10 +20,3 @@ eureka:
     serviceUrl:
       defaultZone: http://localhost:8001/eureka
 
-amazon:
-  access:
-    key:
-    secret-key: 
-  region: eu-west-2a
-  end-point:
-    url: apigateway.eu-west-2.amazonaws.com

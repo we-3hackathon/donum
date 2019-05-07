@@ -111,6 +111,7 @@ public class MapController extends BaseController{
     public void loadController() {
             _controllerName = "MapController";
     }
+
 }
 
 
