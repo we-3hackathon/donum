@@ -5,12 +5,12 @@ public enum EnumAPIKey {
     MAP_KEY(""),
     PLACES_KEY("");
 
-    private final String text;
+    private String text;
 
     /**
      * @param text
      */
-    EnumAPIKey(final String text) {
+    EnumAPIKey(String text) {
         this.text = text;
     }
 
@@ -20,5 +20,9 @@ public enum EnumAPIKey {
     @Override
     public String toString() {
         return text;
+    }
+
+    public void updateKeyWith(String text) {
+        this.text = text;
     }
 }
