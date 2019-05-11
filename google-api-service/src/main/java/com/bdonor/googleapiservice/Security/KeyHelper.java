@@ -46,9 +46,20 @@ public class KeyHelper {
             }
 
             conn.disconnect();
-            EnumAPIKey.MAP_KEY.updateKeyWith(jsonData);
 
-            return EnumAPIKey.MAP_KEY.toString();
+
+            switch (path){
+                case "/load/google-map":
+                    EnumAPIKey.MAP_KEY.updateKeyWith(jsonData);
+                    return EnumAPIKey.MAP_KEY.toString();
+                case "/load/google-places":
+                    EnumAPIKey.PLACES_KEY.updateKeyWith(jsonData);
+                    return EnumAPIKey.PLACES_KEY.toString();
+            }
+
+            EnumAPIKey.PLACES_KEY.updateKeyWith(jsonData);
+
+            return EnumAPIKey.PLACES_KEY.toString();
 
         } catch (
                 MalformedURLException e) {
