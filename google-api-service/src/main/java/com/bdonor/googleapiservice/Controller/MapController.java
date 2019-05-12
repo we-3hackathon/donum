@@ -1,5 +1,6 @@
 package com.bdonor.googleapiservice.Controller;
 
+import com.bdonor.googleapiservice.InternalService.AccountServiceHelper;
 import com.bdonor.googleapiservice.Model.Variable.EnumGoogleMap;
 import com.bdonor.googleapiservice.Service.GoogleMap.Map;
 import com.bdonor.googleapiservice.Service.GoogleMap.SingletonPlot;
@@ -68,43 +69,7 @@ public class MapController extends BaseController{
     /* Gets all the users in DB from account-service */
     public String getAllUsers(){
 
-        String jsonData = "error";
-
-        try {
-
-            URL url = new URL("http://localhost:8020/getAll");
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-            //conn.setRequestProperty("Accept", "application/json");
-
-            if (conn.getResponseCode() != 200) {
-                throw new RuntimeException("Failed : HTTP error code : "
-                        + conn.getResponseCode());
-            }
-            String output = "E";
-            BufferedReader br = new BufferedReader(new InputStreamReader(
-                    (conn.getInputStream())));
-
-            System.out.println("Output from Server .... \n");
-            while ((output = br.readLine()) != null) {
-                System.out.println(output);
-                jsonData = output;
-            }
-
-            conn.disconnect();
-            return jsonData;
-
-        } catch (MalformedURLException e) {
-
-            e.printStackTrace();
-
-        } catch (IOException e) {
-
-            e.printStackTrace();
-
-        }
-
-        return "Bad Request";
+        return AccountServiceHelper.requestAllUsers();
     }
 
     @Override

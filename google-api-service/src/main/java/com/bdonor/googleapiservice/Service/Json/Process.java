@@ -57,16 +57,20 @@ public class Process extends Thread{
 
             JSONArray usersArray = obj.getJSONArray("results");
 
-            for (int i = 0; i < usersArray.length(); i++) {
-                lat = usersArray.getJSONObject(i).getJSONObject("geometry").getJSONObject("location").getString("lat");
-                lon = usersArray.getJSONObject(i).getJSONObject("geometry").getJSONObject("location").getString("lng");
+            if (!(usersArray.length() == 0)) {
+                for (int i = 0; i < usersArray.length(); i++) {
+                    lat = usersArray.getJSONObject(i).getJSONObject("geometry").getJSONObject("location").getString("lat");
+                    lon = usersArray.getJSONObject(i).getJSONObject("geometry").getJSONObject("location").getString("lng");
+                }
+                return lat + "," + lon;
             }
+
+            return obj.getString("error_message")+ " /n use /api-key/load/{api}";
 
         }catch (Exception ex){
             System.out.println(ex.getMessage());
+            return ex.getMessage();
         }
-
-        return lat + "," + lon;
     }
 
     /**

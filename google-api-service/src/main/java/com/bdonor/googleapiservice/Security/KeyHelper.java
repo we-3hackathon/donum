@@ -49,17 +49,13 @@ public class KeyHelper {
 
 
             switch (path){
-                case "/load/google-map":
+                case "google/map":
                     EnumAPIKey.MAP_KEY.updateKeyWith(jsonData);
                     return EnumAPIKey.MAP_KEY.toString();
-                case "/load/google-places":
+                case "google/geocoding":
                     EnumAPIKey.PLACES_KEY.updateKeyWith(jsonData);
                     return EnumAPIKey.PLACES_KEY.toString();
             }
-
-            EnumAPIKey.PLACES_KEY.updateKeyWith(jsonData);
-
-            return EnumAPIKey.PLACES_KEY.toString();
 
         } catch (
                 MalformedURLException e) {
