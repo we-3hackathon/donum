@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
-import com.bdonor.accountservice.InternalServiceHelper.GoogleApiService;
+import com.bdonor.accountservice.InternalService.GoogleApiServiceHelper;
 import com.bdonor.accountservice.Models.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,7 +38,7 @@ public class DynamoRepo {
             return 1;
         }
 
-        String[] LatLong = GoogleApiService.convertToCoordinates(addressline,postcode);
+        String[] LatLong = GoogleApiServiceHelper.convertToCoordinates(addressline,postcode);
 
         if (LatLong[0].contains("Not Found") || LatLong[1].contains("Not Found")){return 2;}
 
