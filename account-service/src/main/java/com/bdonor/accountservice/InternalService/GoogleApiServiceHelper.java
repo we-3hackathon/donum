@@ -30,6 +30,11 @@ public class GoogleApiServiceHelper {
             BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
 
             System.out.println("Output from Server .... \n");
+
+            // some defensive coding required here in cases:
+            // 1 - Response has "Not found" -> allow save to database with 'null' latitudes and longitudes
+            // 2 - Response has "API not set" -> save to database not permitted
+            // 3 - Any other errors
             while ((output = br.readLine()) != null) {
                 URLink = output;
                 System.out.println(URLink);
