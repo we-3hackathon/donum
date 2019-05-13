@@ -1,9 +1,9 @@
-package com.bdonor.googleapiservice.Model.Variable;
+package com.bdonor.accountservice.Model.Variable;
 
 public enum EnumAPIKey {
 
-    MAP_KEY(""),
-    PLACES_KEY("");
+    DYNAMO_KEY(""),
+    DYNAMO_SECRET_KEY("");
 
     private String text;
 

@@ -1,6 +1,8 @@
 package com.bdonor.accountservice.Config;
 
+import com.bdonor.accountservice.Model.Variable.EnumAPIKey;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -11,13 +13,11 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 
-@Configuration
+
 public class DynamoDBConfig {
 
-    @Value("${amazon.access.key}")
     private String awsAccessKey;
 
-    @Value("${amazon.access.secret-key}")
     private String awsSecretKey;
 
     @Value("${amazon.region}")
@@ -32,8 +32,19 @@ public class DynamoDBConfig {
     }
 
     public AmazonDynamoDB amazonDynamoDBConfig() {
+        System.out.println("**********************************************i am running*********************************************");
+        System.out.println("**********************************************i am running*********************************************");
+
+        System.out.println("**********************************************i am running*********************************************");
+
+        System.out.println("**********************************************i am running*********************************************");
+
+        System.out.println("**********************************************i am running*********************************************");
+
+        awsAccessKey = EnumAPIKey.DYNAMO_KEY.toString();
+        awsSecretKey = EnumAPIKey.DYNAMO_SECRET_KEY.toString();
         return AmazonDynamoDBClientBuilder.standard()
-                .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(awsDynamoDBEndPoint, awsRegion))
+                .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration("dynamodb.eu-west-2.amazonaws.com", awsRegion))
                 .withCredentials(new AWSStaticCredentialsProvider(new BasicAWSCredentials(awsAccessKey, awsSecretKey)))
                 .build();
     }

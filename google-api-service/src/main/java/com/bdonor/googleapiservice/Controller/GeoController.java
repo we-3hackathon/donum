@@ -5,7 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @RestController()
-@RequestMapping("/geo")
+@RequestMapping("/geocoding")
 public class GeoController extends BaseController{
 
 
@@ -20,7 +20,7 @@ public class GeoController extends BaseController{
      *
      * return @param latitude and longitude
      */
-    @GetMapping(value = "/geocoding/{address}/{postcode}")
+    @GetMapping(value = "get-coordinates/{address}/{postcode}")
     @ResponseBody
     public String convertToGeo(@PathVariable String address, @PathVariable String postcode){
 

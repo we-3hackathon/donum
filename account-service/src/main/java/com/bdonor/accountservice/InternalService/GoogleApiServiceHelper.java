@@ -1,4 +1,4 @@
-package com.bdonor.accountservice.InternalServiceHelper;
+package com.bdonor.accountservice.InternalService;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -7,7 +7,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class GoogleApiService {
+public class GoogleApiServiceHelper {
 
     public static String[] convertToCoordinates(String address, String postcode){
 
@@ -16,7 +16,7 @@ public class GoogleApiService {
 
         try {
 
-            URL url = new URL(String.format("http://localhost:8000/google-api-service/geo/geocoding/%s/%s", address, postcode)); // Had to do this stuff here as i was "duplicate id" error in DynamoRepo
+            URL url = new URL(String.format("http://localhost:8000/google-api-service/geocoding/get-coordinates/%s/%s", address, postcode)); // Had to do this stuff here as i was "duplicate id" error in DynamoRepo
             //System.out.println(url.toString());
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
@@ -30,6 +30,11 @@ public class GoogleApiService {
             BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
 
             System.out.println("Output from Server .... \n");
+
+            // some defensive coding required here in cases:
+            // 1 - Response has "Not found" -> allow save to database with 'null' latitudes and longitudes
+            // 2 - Response has "API not set" -> save to database not permitted
+            // 3 - Any other errors
             while ((output = br.readLine()) != null) {
                 URLink = output;
                 System.out.println(URLink);
