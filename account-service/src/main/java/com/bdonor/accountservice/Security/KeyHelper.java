@@ -25,7 +25,7 @@ public class KeyHelper {
         try {
 
 
-            URL url = new URL("http://3.8.143.207:5444/get-key/google/geocoding"); // special permissions set
+            URL url = new URL("http://52.56.76.0:5444/get-key/google/geocoding"); // special permissions set
 
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
