@@ -23,7 +23,7 @@ public class basicControllerConnectionTest {
 
     @Test
     public void testGeocodingController() throws Exception {
-        this.mockMvc.perform(get("/geo/test")).andDo(print()).andExpect(status().isOk())
+        this.mockMvc.perform(get("/geocoding/test")).andDo(print()).andExpect(status().isOk())
                 .andExpect(content().string(containsString("GeoController")));
     }
 

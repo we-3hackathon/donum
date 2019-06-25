@@ -24,7 +24,7 @@ public class KeyHelper {
 
         try {
 
-            URL url = new URL("http://52.56.76.0:5444/get-key/"+ path); // special permissions set
+            URL url = new URL("http://18.130.137.35:5333/get-key/"+ path); // special permissions set
 
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
