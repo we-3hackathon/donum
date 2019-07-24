@@ -54,7 +54,7 @@ public class AccountController extends BaseController{
     @GetMapping(value = "/login/{firstName}/{email}/{password}")
     public String Login(@PathVariable String firstName, @PathVariable String email, @PathVariable String password) { // Working
         if(APIKeyController._singleDynamoRepo.checkCredentials(firstName, email, password)){
-            return "Login Successful";
+            return new Gson().toJson(APIKeyController._singleDynamoRepo.getSingleUser(firstName, email));
         }
         return "Login Failed";
     }
