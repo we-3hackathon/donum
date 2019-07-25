@@ -1,13 +1,18 @@
 package com.bdonor.accountservice.Controller;
 
+import com.bdonor.accountservice.InternalService.UsersInRange;
 import com.bdonor.accountservice.Model.User;
 import com.google.gson.Gson;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class AccountController extends BaseController{
+
+    @Autowired
+    public UsersInRange usersInRange;
 
     @ResponseBody
     @GetMapping(value = "/create/{bloodGroup}/{firstName}/{lastName}/{email}/{password}/{addressline}/{postcode}") // Need to test once google-api-serivce is merged
@@ -57,6 +62,14 @@ public class AccountController extends BaseController{
             return new Gson().toJson(APIKeyController._singleDynamoRepo.getSingleUser(firstName, email));
         }
         return "Login Failed";
+    }
+
+    @GetMapping(value = "/usersInRange/longitude/latitude/radius")
+    public String UsersInRangeOfRadius(@PathVariable float longitude, @PathVariable float latitude, @PathVariable int radius){
+        if(usersInRange.getRadiusPostcodes(longitude, latitude, radius) != null){
+            return usersInRange.getRadiusPostcodes(longitude, latitude, radius);
+        }
+        return "No users in given radius";
     }
 
     @Override
