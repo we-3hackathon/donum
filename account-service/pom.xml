@@ -83,7 +83,13 @@
 			<artifactId>spring-data-commons</artifactId>
 			<version>2.1.6.RELEASE</version>
 		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>com.vaadin.external.google</groupId>
+            <artifactId>android-json</artifactId>
+            <version>0.0.20131108.vaadin1</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
 
 
 	<build>
