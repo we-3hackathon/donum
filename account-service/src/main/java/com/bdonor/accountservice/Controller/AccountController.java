@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 public class AccountController extends BaseController{
 
     @Autowired
-    private UsersInRange usersInRange;
+    private UsersInRange _usersInRange;
 
     @ResponseBody
     @GetMapping(value = "/create/{bloodGroup}/{firstName}/{lastName}/{email}/{password}/{addressline}/{postcode}") // Need to test once google-api-serivce is merged
@@ -65,9 +65,9 @@ public class AccountController extends BaseController{
     }
 
     @GetMapping(value = "/usersInRange/{longitude}/{latitude}/{radius}")
-    public String UsersInRangeOfRadius(@PathVariable float longitude, @PathVariable float latitude, @PathVariable int radius){
-        if(usersInRange.getRadiusPostcodes(longitude, latitude, radius) != null){
-            return usersInRange.getRadiusPostcodes(longitude, latitude, radius);
+    public String UsersInRangeOfRadius(@PathVariable double longitude, @PathVariable double latitude, @PathVariable int radius){
+        if(_usersInRange.getRadiusPostcodes(longitude, latitude, radius) != ""){
+            return _usersInRange.getRadiusPostcodes(longitude, latitude, radius);
         }
         return "No users in given radius";
     }
