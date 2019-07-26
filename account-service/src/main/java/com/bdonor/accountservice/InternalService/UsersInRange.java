@@ -18,7 +18,64 @@ import java.util.List;
 public class UsersInRange {
 
     @Autowired
-    private static DynamoRepo dynamoRepo;
+    private DynamoRepo dynamoRepo;
+
+    public String getRadiusPostcodes(float longitude, float latitude, int radius){
+
+        StringBuffer Postcodes = new StringBuffer();
+        List<User> allUsers = dynamoRepo.getAllUsers();
+        ArrayList<JSONObject> returnedUsers = new ArrayList<>();
+
+        try {
+
+            URL url = new URL(String.format("https://api.postcodes.io/postcodes?lon=%slat=%sradius=%s",longitude,latitude,radius)); // Get Long and Lat
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("Accept", "application/String");
+
+            if (conn.getResponseCode() != 200) {
+                throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
+            }
+
+            String output = "E";
+
+            BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
+
+            System.out.println("Output from Server .... \n");
+
+            while ((output = br.readLine()) != null) {
+                Postcodes.append(output);
+            }
+
+            conn.disconnect();
+
+            try {
+
+                JSONObject jsonObject = new JSONObject(Postcodes.toString());
+                JSONArray Results = jsonObject.getJSONArray("result");
+
+                for(User Users: allUsers) {
+                    for(int j = 0; j < Results.length(); j++ ){
+                        if(Users.getPostcode().equals(Results.getJSONObject(j).getString("postcode"))){
+                            returnedUsers.add(Results.getJSONObject(j));
+                        }
+                    }
+                }
+
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+
+        } catch (MalformedURLException e) {
+
+            e.printStackTrace();
+
+        } catch (IOException e) {
+
+            e.printStackTrace();
+        }
+        return new Gson().toJson(returnedUsers);
+    }
 
 //    public static String returnUsersInRange(){
 //
@@ -81,61 +138,5 @@ public class UsersInRange {
 //    }
 
 
-    public static String getRadiusPostcodes(float longitude, float latitude, int radius){
-
-        StringBuffer Postcodes = new StringBuffer();
-        List<User> allUsers = dynamoRepo.getAllUsers();
-        ArrayList<JSONObject> returnedUsers = new ArrayList<>();
-
-        try {
-
-            URL url = new URL(String.format("api.postcodes.io/postcodes?lon=%slat=%sradius=%s",longitude,latitude,radius)); // Get Long and Lat
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-            conn.setRequestProperty("Accept", "application/String");
-
-            if (conn.getResponseCode() != 200) {
-                throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
-            }
-
-            String output = "E";
-
-            BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
-
-            System.out.println("Output from Server .... \n");
-
-            while ((output = br.readLine()) != null) {
-                Postcodes.append(output);
-            }
-
-            conn.disconnect();
-
-            try {
-
-                JSONObject jsonObject = new JSONObject(Postcodes.toString());
-                JSONArray Results = jsonObject.getJSONArray("result");
-
-                for(User Users: allUsers) {
-                    for(int j = 0; j < Results.length(); j++ ){
-                        if(Users.getPostcode().equals(Results.getJSONObject(j).getString("postcode"))){
-                            returnedUsers.add(Results.getJSONObject(j));
-                        }
-                    }
-                }
-
-            } catch (Exception e) {
-                System.out.println(e);
-            }
-
-        } catch (MalformedURLException e) {
-
-            e.printStackTrace();
-
-        } catch (IOException e) {
-
-            e.printStackTrace();
-        }
-        return new Gson().toJson(returnedUsers);
-    }
 
 }
