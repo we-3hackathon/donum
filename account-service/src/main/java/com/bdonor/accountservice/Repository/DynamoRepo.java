@@ -33,7 +33,7 @@ public class DynamoRepo {
 
         String[] LatLong = GoogleApiServiceHelper.convertToCoordinates(addressline,postcode);
 
-        if (LatLong[0].contains("Not Found") || LatLong[1].contains("Not Found")){return 2;}
+        if (LatLong[0].contains("Not Found") || LatLong[1].contains("Not Found")){ return 2; }
 
         APIKeyController._singleDynamoMapper.save(new User(bloodGroup, firstName, lastName, email, bCryptPasswordEncoder.encode(password), addressline, postcode, LatLong[0], LatLong[1]));
         return 0;
@@ -65,7 +65,7 @@ public class DynamoRepo {
 
         DynamoDBSaveExpression saveExpression = new DynamoDBSaveExpression();
         Map<String, ExpectedAttributeValue> expected = new HashMap<>();
-        expected.put("firstName", new ExpectedAttributeValue(new AttributeValue(user.getFirstName())).withComparisonOperator(ComparisonOperator.EQ));  // Checks against the given users ID
+        expected.put("email", new ExpectedAttributeValue(new AttributeValue(user.getEmail())).withComparisonOperator(ComparisonOperator.EQ));  // Checks against the given users ID
         saveExpression.setExpected(expected);
         return saveExpression;
     }
