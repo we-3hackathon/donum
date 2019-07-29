@@ -1,5 +1,6 @@
 package com.bdonor.accountservice.Controller;
 import static org.hamcrest.Matchers.containsString;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -28,49 +29,60 @@ public class AccountTest {
     }
 
     @Test
-    public void loadDynamoKeys() throws Exception {
+    public void loadDynamoKeys() throws Exception { // Passed
         this.mockMvc.perform(get("/api-key/load/dynamo-access")).andDo(print()).andExpect(status().isOk())
                 .andExpect(content().string(containsString("A")));
         this.mockMvc.perform(get("/api-key/load/dynamo-secret")).andDo(print()).andExpect(status().isOk())
                 .andExpect(content().string(containsString("a")));
-
+        this.mockMvc.perform(get("/api-key/status")).andDo(print()).andExpect(status().isOk())
+                .andExpect(content().string(containsString("a")));
     }
 
     @Test
     public void testRegisterUser() throws Exception {
-        this.mockMvc.perform(get("/create/O/Ammy/Williams/williams2@gmail.com/amy9!##'as/29Bamfordavenue/ha01na")).andDo(print()).andExpect(status().isOk())
-                .andExpect(content().string(containsString("User added")));
+        this.mockMvc.perform(get("/create/A-/Jack/Williams/williams2@gmail.com/jack1234/29Bamfordavenue/ha01na")).andDo(print()).andExpect(status().isOk())
+                .andExpect(content().string(containsString("User added to Database")));
     }
 
     @Test
     public void testUserCanLogin() throws Exception {
-        this.mockMvc.perform(get("/login/ammy/williams2@gmail.com/amy9!##'as")).andDo(print()).andExpect(status().isOk())
+        this.mockMvc.perform(get("/login/Jack/williams2@gmail.com/jack1234")).andDo(print()).andExpect(status().isOk())
                 .andExpect(content().string(containsString("Successful")));
+        this.mockMvc.perform(get("login/Jack/williams/jack1234")).andDo(print()).andExpect(status().isOk())
+                .andExpect(content().string(containsString("Login Failed")));;
     }
 
     @Test
     public void testRetrieveUsersInDB() throws Exception {
         this.mockMvc.perform(get("/get-all")).andDo(print()).andExpect(status().isOk())
-                .andExpect(content().string(containsString("firstname")));
+                .andExpect(content().string(containsString("id")));
     }
 
     @Test
     public void testDeleteUser() throws Exception {
-        this.mockMvc.perform(get("/delete/ammy/williams")).andDo(print()).andExpect(status().isOk())
+        this.mockMvc.perform(delete("/delete/Jack/williams2@gmail.com")).andDo(print()).andExpect(status().isOk())
                 .andExpect(content().string(containsString("Deleted")));
-        this.mockMvc.perform(get("/getUser/ammy/williams")).andDo(print()).andExpect(status().isOk())
-                .andExpect(content().string(containsString("not found")));
+        this.mockMvc.perform(delete("/delete/Jack/williams2@gmail")).andDo(print()).andExpect(status().isOk())
+                .andExpect(content().string(containsString("User not found")));
+    }
+
+    @Test
+    public void testUsersInRange() throws Exception {
+        this.mockMvc.perform(get("/usersInRange/-0.39426819999999996/51.5338877/1000")).andDo(print()).andExpect(status().isOk())
+                .andExpect(content().string(containsString("Sharjeel"))); // Users not being collected from APIKeyController._singleDynamoRepo.getAllUsers();
+    }
+
+    @Test
+    public void testGetSpecificUser() throws Exception {
+        this.mockMvc.perform(get("/getUser/Jack/williams2@gmail.com")).andDo(print()).andExpect(status().isOk())
+                .andExpect(content().string(containsString("Jack")));
+        this.mockMvc.perform(get("/getUser/Jack/williams2@gmail.com")).andDo(print()).andExpect(status().isOk())
+                .andExpect(content().string(containsString("User not found")));
     }
 
     @Test
     public void testUpdateUser() throws Exception {
         //
-    }
-
-    @Test
-    public void testGetSpecificUser() throws Exception {
-        this.mockMvc.perform(get("/getUser/ammy/williams")).andDo(print()).andExpect(status().isOk())
-                .andExpect(content().string(containsString("ammy")));
     }
 
 }

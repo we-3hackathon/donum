@@ -1,8 +1,10 @@
 package com.bdonor.accountservice.Controller;
 
+import com.amazonaws.services.dynamodbv2.xspec.S;
 import com.bdonor.accountservice.InternalService.UsersInRange;
 import com.bdonor.accountservice.Model.User;
 import com.google.gson.Gson;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,30 +38,41 @@ public class AccountController extends BaseController{
     }
 
     @GetMapping(value = "/getUser/{firstName}/{email}")
-    public ResponseEntity<User> getUserDetails(@PathVariable String firstName, @PathVariable String email) { // Working
+    public String getUserDetails(@PathVariable String firstName, @PathVariable String email) { // Working
         User user = APIKeyController._singleDynamoRepo.getSingleUser(firstName, email);
-        System.out.println(user.toString());
-        return new ResponseEntity<User>(user, HttpStatus.OK);
+        if(user != null){
+            return user.toString();
+        }
+        return "User not found";
     }
 
     @PutMapping(value = "/updateUser")
-    public void updateUserDetails(@RequestBody User user) { // Working -- Not sure how i will re-encrypt new users password
+    public void updateUserDetails(@RequestBody User user) {
         APIKeyController._singleDynamoRepo.updateUserDetails(user);
     }
 
     @DeleteMapping(value = "/delete/{firstName}/{email}")
-    public void deleteUserDetails(@PathVariable String firstName, @PathVariable String email) { // Working
+    public String deleteUserDetails(@PathVariable String firstName, @PathVariable String email) { // Working
         User user = new User();
         user.setFirstName(firstName);
         user.setEmail(email);
-        APIKeyController._singleDynamoRepo.deleteUserDetails(user);
-        System.out.println(user.toString() + " Deleted");
+        if(APIKeyController._singleDynamoRepo.getSingleUser(firstName, email) != null){
+            APIKeyController._singleDynamoRepo.deleteUserDetails(user);
+            return user.toString() + " Deleted";
+        }
+        return "User not found";
     }
 
     @GetMapping(value = "/login/{firstName}/{email}/{password}")
     public String Login(@PathVariable String firstName, @PathVariable String email, @PathVariable String password) { // Working
         if(APIKeyController._singleDynamoRepo.checkCredentials(firstName, email, password)){
-            return new Gson().toJson(APIKeyController._singleDynamoRepo.getSingleUser(firstName, email));
+            try {
+                JSONObject User = new JSONObject(new Gson().toJson(APIKeyController._singleDynamoRepo.getSingleUser(firstName, email)));
+                User.remove("password");
+                return new Gson().toJson(User);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         return "Login Failed";
     }

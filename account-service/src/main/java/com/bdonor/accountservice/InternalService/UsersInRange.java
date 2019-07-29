@@ -21,7 +21,7 @@ public class UsersInRange {
     public String getRadiusPostcodes(double longitude, double latitude, int radius){
 
         StringBuffer Postcodes = new StringBuffer();
-        List<User> allUsers = APIKeyController._singleDynamoRepo.getAllUsers();
+        List<User> allUsers = APIKeyController._singleDynamoRepo.getAllUsers(); // Test fails here
         ArrayList<User> returnedUsers = new ArrayList<>();
 
         try {
