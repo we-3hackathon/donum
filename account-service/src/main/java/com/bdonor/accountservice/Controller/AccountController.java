@@ -17,6 +17,7 @@ public class AccountController extends BaseController{
     private UsersInRange _usersInRange;
 
     @ResponseBody
+    @CrossOrigin(origins = "http://localhost:3000/")
     @GetMapping(value = "/create/{bloodGroup}/{firstName}/{lastName}/{email}/{password}/{addressline}/{postcode}") // Need to test once google-api-serivce is merged
     public String Register( @PathVariable String bloodGroup , @PathVariable  String firstName, @PathVariable  String lastName, @PathVariable  String email, @PathVariable  String password, @PathVariable  String addressline, @PathVariable  String postcode){
 
@@ -63,6 +64,7 @@ public class AccountController extends BaseController{
         return "User not found";
     }
 
+    @CrossOrigin(origins = "http://localhost:3000/")
     @GetMapping(value = "/login/{firstName}/{email}/{password}")
     public String Login(@PathVariable String firstName, @PathVariable String email, @PathVariable String password) { // Working
         if(APIKeyController._singleDynamoRepo.checkCredentials(firstName, email, password)){
