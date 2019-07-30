@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ public class AccountTest {
                 .andExpect(content().string(containsString("Controller")));
     }
 
-    @Test
+    @Before
     public void loadDynamoKeys() throws Exception { // Passed
         this.mockMvc.perform(get("/api-key/load/dynamo-access")).andDo(print()).andExpect(status().isOk())
                 .andExpect(content().string(containsString("A")));
@@ -40,16 +41,32 @@ public class AccountTest {
 
     @Test
     public void testRegisterUser() throws Exception {
-        this.mockMvc.perform(get("/create/A-/Jack/Williams/williams2@gmail.com/jack1234/29Bamfordavenue/ha01na")).andDo(print()).andExpect(status().isOk())
+        this.mockMvc.perform(get("/create/A-/Jack/Williams/newEmail/jack1234/29Bamfordavenue/ha01na")).andDo(print()).andExpect(status().isOk())
                 .andExpect(content().string(containsString("User added to Database")));
+    }
+
+    @Test
+    public void testRepeatedUserRegister() throws  Exception {
+        this.mockMvc.perform(get("/create/A-/Jack/Williams/williams2@gmail.com/jack1234/29Bamfordavenue/ha01na")).andDo(print()).andExpect(status().isOk())
+                .andExpect(content().string(containsString("Email in use. Try another email")));
+    }
+
+    @Test
+    public void testRegisterValidationRegister() throws Exception {
+        this.mockMvc.perform(get("/create/A-/Jack/Williams/williams2@gmail.com/jack1234/29Bamfordavenue/===---")).andDo(print()).andExpect(status().isOk())
+                .andExpect(content().string(containsString("Postcode not recognised")));
     }
 
     @Test
     public void testUserCanLogin() throws Exception {
         this.mockMvc.perform(get("/login/Jack/williams2@gmail.com/jack1234")).andDo(print()).andExpect(status().isOk())
-                .andExpect(content().string(containsString("Successful")));
-        this.mockMvc.perform(get("login/Jack/williams/jack1234")).andDo(print()).andExpect(status().isOk())
-                .andExpect(content().string(containsString("Login Failed")));;
+                .andExpect(content().string(containsString("Jack")));
+    }
+
+    @Test
+    public void testUserLoginFailed() throws Exception {
+        this.mockMvc.perform(get("/login/Jack/williamscxzcxzcs/jack1234")).andDo(print()).andExpect(status().isOk())
+                .andExpect(content().string(containsString("Login Failed")));
     }
 
     @Test
@@ -62,6 +79,10 @@ public class AccountTest {
     public void testDeleteUser() throws Exception {
         this.mockMvc.perform(delete("/delete/Jack/williams2@gmail.com")).andDo(print()).andExpect(status().isOk())
                 .andExpect(content().string(containsString("Deleted")));
+    }
+
+    @Test
+    public void testDeleteUserNotFound() throws Exception {
         this.mockMvc.perform(delete("/delete/Jack/williams2@gmail")).andDo(print()).andExpect(status().isOk())
                 .andExpect(content().string(containsString("User not found")));
     }
@@ -76,7 +97,7 @@ public class AccountTest {
     public void testGetSpecificUser() throws Exception {
         this.mockMvc.perform(get("/getUser/Jack/williams2@gmail.com")).andDo(print()).andExpect(status().isOk())
                 .andExpect(content().string(containsString("Jack")));
-        this.mockMvc.perform(get("/getUser/Jack/williams2@gmail.com")).andDo(print()).andExpect(status().isOk())
+        this.mockMvc.perform(get("/getUser/Jack/williams2@gmail")).andDo(print()).andExpect(status().isOk())
                 .andExpect(content().string(containsString("User not found")));
     }
 

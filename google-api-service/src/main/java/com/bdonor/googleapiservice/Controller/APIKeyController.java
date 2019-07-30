@@ -25,9 +25,6 @@ public class APIKeyController extends BaseController {
         return _keyContainer.loadGooglePlacesApiKey();
     }
 
-
-
-
     @Override
     public void loadController() {
         _controllerName = "APIKeyController";

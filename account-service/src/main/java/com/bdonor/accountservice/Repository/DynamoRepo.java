@@ -57,10 +57,6 @@ public class DynamoRepo {
         }
     }
 
-    public void deleteUserDetails(User user) {
-        APIKeyController._singleDynamoMapper.delete(user);
-    }
-
     public DynamoDBSaveExpression buildDynamoDBSaveExpression(User user) {
 
         DynamoDBSaveExpression saveExpression = new DynamoDBSaveExpression();
@@ -68,6 +64,10 @@ public class DynamoRepo {
         expected.put("email", new ExpectedAttributeValue(new AttributeValue(user.getEmail())).withComparisonOperator(ComparisonOperator.EQ));  // Checks against the given users ID
         saveExpression.setExpected(expected);
         return saveExpression;
+    }
+
+    public void deleteUserDetails(User user) {
+        APIKeyController._singleDynamoMapper.delete(user);
     }
 
     public boolean checkCredentials(String firstName, String email, String password){
