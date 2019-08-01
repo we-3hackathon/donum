@@ -1,4 +1,4 @@
-package com;
+package com.Entity;
 
 import java.util.HashMap;
 

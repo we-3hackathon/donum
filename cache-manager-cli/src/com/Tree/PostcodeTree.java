@@ -1,4 +1,6 @@
-package com;
+package com.Tree;
+
+import com.Entity.*;
 
 import java.util.HashMap;
 
@@ -11,7 +13,7 @@ public class PostcodeTree {
         root = new TopNode("UK");
     }
 
-    public HashMap<String,Node> getUsersFromPostcode(String postcode){
+    public HashMap<String, Node> getUsersFromPostcode(String postcode){
 
         String[] split = postcode.split(" ");
 
