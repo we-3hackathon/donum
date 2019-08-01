@@ -1,6 +1,6 @@
-package com;
+package com.Entity;
 
-public class UserNode extends Node{
+public class UserNode extends Node {
 
     private User userData;
 

@@ -1,4 +1,4 @@
-package com;
+package com.Entity;
 
 public class User {
 
