@@ -11,7 +11,9 @@ public class Benchmark {
     private ArrayList<String> filtered;
     private ArrayList<String> users;
     private PostcodeTree tree;
-
+    private ArrayList<Double> avgCaseThree;
+    private ArrayList<Double> avgCaseFour;
+    private int initial ;
 
     public Benchmark(){
         filtered = new ArrayList<>();
@@ -23,6 +25,9 @@ public class Benchmark {
         filtered.add("18 12");
         filtered.add("17 22");
         filtered.add("13 2");
+
+        avgCaseThree = new ArrayList<>();
+        avgCaseFour = new ArrayList<>();
     }
 
     public void useCase(int useCase){
@@ -36,7 +41,7 @@ public class Benchmark {
     }
 
     private void loadIntoBinaryMemory(){
-
+        initial = 0;
         tree = new PostcodeTree();
 
         User user = new User("abc","o+","LL4 8YY");
@@ -71,6 +76,7 @@ public class Benchmark {
     }
 
     private void loadIntoTemporaryMemory(){
+        initial = 0;
 
         users = new ArrayList<>();
 
@@ -81,7 +87,7 @@ public class Benchmark {
 
         int n = maximum - minimum + 1;
 
-        for(int a = 0; a<= 900000; a++) {
+        for(int a = 0; a<= 1000000; a++) {
 
             int l = rn.nextInt() % n;
             int randomNum =  minimum + l;
@@ -93,36 +99,64 @@ public class Benchmark {
 
     private void performBinarySearch(){
 
-        long startTime = System.nanoTime();
 
-        for(String postcode: filtered){
+        for(int i = 0; i<= 100; i++) {
+            long startTime = System.nanoTime();
 
-            if(tree.getUsersFromPostcode(postcode)!= null){
-                tree.getUsersFromPostcode(postcode);
+            for (String postcode : filtered) {
+
+                if (tree.getUsersFromPostcode(postcode) != null) {
+                    tree.getUsersFromPostcode(postcode);
+                }
             }
+
+            long endTime = System.nanoTime();
+            long totalTime = endTime - startTime;
+            double seconds = (double) totalTime / 1_000_000_000.0;
+            System.out.println("search in:" + seconds);
+            if (initial > 4) {
+                avgCaseThree.add(seconds);
+                calculateAverage(avgCaseThree);
+            }
+            initial++;
         }
 
-        long endTime   = System.nanoTime();
-        long totalTime = endTime - startTime;
-        double seconds = (double)totalTime/ 1_000_000_000.0;
-        System.out.println("search in:" + seconds);
     }
 
     private void performQuadraticSearch(){
 
-        long startTime = System.nanoTime();
+        for(int i = 0; i<= 100; i++) {
+            long startTime = System.nanoTime();
 
-        for(String user: users){
-            for(String postcode: filtered){
+            for (String user : users) {
+                for (String postcode : filtered) {
 
-                if(user.equals(postcode)){}
+                    if (user.equals(postcode)) {
+                    }
+                }
             }
+
+            long endTime = System.nanoTime();
+            long totalTime = endTime - startTime;
+            double seconds = (double) totalTime / 1_000_000_000.0;
+            System.out.println("search in:" + seconds);
+            if (initial > 4) {
+                avgCaseFour.add(seconds);
+                calculateAverage(avgCaseFour);
+            }
+            initial++;
+        }
+    }
+
+    private void calculateAverage(ArrayList<Double> values){
+
+        double sum = 0;
+
+        for(Double value: values){
+            sum += value;
         }
 
-        long endTime   = System.nanoTime();
-        long totalTime = endTime - startTime;
-        double seconds = (double)totalTime/ 1_000_000_000.0;
-        System.out.println("search in:" + seconds);
+        System.out.println("************Overall: " + sum / (values.size() + 1));
     }
 
     //test case: compare 900k rows with filtered postcodes
