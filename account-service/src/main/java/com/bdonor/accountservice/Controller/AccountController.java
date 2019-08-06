@@ -52,6 +52,22 @@ public class AccountController extends BaseController{
         APIKeyController._singleDynamoRepo.updateUserDetails(user);
     }
 
+    @GetMapping(value = "/updatePassword/{firstName}/{email}/{update}")
+    public String updateUserPassword(@PathVariable String firstName, @PathVariable String email, @PathVariable String update ){
+
+        String message = "";
+        switch(APIKeyController._singleDynamoRepo.updateUserDetail(firstName, email, 1, update)){
+            case 1:
+                message = "Password update: success";
+                break;
+            case -1:
+                message = "Failed to update";
+                break;
+        }
+
+        return message;
+    }
+
     @DeleteMapping(value = "/delete/{firstName}/{email}")
     public String deleteUserDetails(@PathVariable String firstName, @PathVariable String email) { // Working
         User user = new User();

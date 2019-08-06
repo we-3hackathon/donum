@@ -57,6 +57,30 @@ public class DynamoRepo {
         }
     }
 
+    public int updateUserDetail(String firstName, String email, int detail, String update){
+
+        User userInDB = APIKeyController._singleDynamoMapper.load(User.class, firstName, email);
+        User updateUser = APIKeyController._singleDynamoMapper.load(User.class, firstName, email);
+
+        switch(detail){
+            case 1:
+                updateUser.setPassword(bCryptPasswordEncoder.encode(update));
+                break;
+            case 2:
+                updateUser.setAddressline(update);
+                updateUser.setPostcode(update);
+                break;
+        }
+
+        try {
+            APIKeyController._singleDynamoMapper.save(updateUser, buildDynamoDBSaveExpression(userInDB));
+        } catch (ConditionalCheckFailedException exception) {
+            LOGGER.error("Unable to save - " + exception.getMessage());
+            return -1;
+        }
+        return 1;
+    }
+
     public DynamoDBSaveExpression buildDynamoDBSaveExpression(User user) {
 
         DynamoDBSaveExpression saveExpression = new DynamoDBSaveExpression();
