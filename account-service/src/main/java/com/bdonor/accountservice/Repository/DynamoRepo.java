@@ -33,7 +33,7 @@ public class DynamoRepo {
 
         String[] LatLong = GoogleApiServiceHelper.convertToCoordinates(addressline,postcode);
 
-        if (LatLong[0].contains("Not Found") || LatLong[1].contains("Not Found")){return 2;}
+        if (LatLong[0].contains("Not Found") || LatLong[1].contains("Not Found")){ return 2; }
 
         APIKeyController._singleDynamoMapper.save(new User(bloodGroup, firstName, lastName, email, bCryptPasswordEncoder.encode(password), addressline, postcode, LatLong[0], LatLong[1]));
         return 0;
@@ -57,17 +57,45 @@ public class DynamoRepo {
         }
     }
 
-    public void deleteUserDetails(User user) {
-        APIKeyController._singleDynamoMapper.delete(user);
+    public int updateUserDetail(String firstName, String email, int detail, String update){
+
+        User userInDB = APIKeyController._singleDynamoMapper.load(User.class, firstName, email);
+        User updateUser = APIKeyController._singleDynamoMapper.load(User.class, firstName, email);
+
+        switch(detail){
+            case 1:
+                updateUser.setPassword(bCryptPasswordEncoder.encode(update));
+                break;
+            case 2:
+                String[] addressPostcode = update.split("|");
+                updateUser.setAddressline(addressPostcode[0]);
+                updateUser.setPostcode(addressPostcode[1]);
+                break;
+            case 3:
+                updateUser.setEmail(update);
+                break;
+        }
+
+        try {
+            APIKeyController._singleDynamoMapper.save(updateUser, buildDynamoDBSaveExpression(userInDB));
+        } catch (ConditionalCheckFailedException exception) {
+            LOGGER.error("Unable to save - " + exception.getMessage());
+            return -1;
+        }
+        return 1;
     }
 
     public DynamoDBSaveExpression buildDynamoDBSaveExpression(User user) {
 
         DynamoDBSaveExpression saveExpression = new DynamoDBSaveExpression();
         Map<String, ExpectedAttributeValue> expected = new HashMap<>();
-        expected.put("firstName", new ExpectedAttributeValue(new AttributeValue(user.getFirstName())).withComparisonOperator(ComparisonOperator.EQ));  // Checks against the given users ID
+        expected.put("email", new ExpectedAttributeValue(new AttributeValue(user.getEmail())).withComparisonOperator(ComparisonOperator.EQ));  // Checks against the given users ID
         saveExpression.setExpected(expected);
         return saveExpression;
+    }
+
+    public void deleteUserDetails(User user) {
+        APIKeyController._singleDynamoMapper.delete(user);
     }
 
     public boolean checkCredentials(String firstName, String email, String password){
