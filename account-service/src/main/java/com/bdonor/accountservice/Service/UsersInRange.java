@@ -1,4 +1,4 @@
-package com.bdonor.accountservice.InternalService;
+package com.bdonor.accountservice.Service;
 import com.bdonor.accountservice.Controller.APIKeyController;
 import com.bdonor.accountservice.Model.User;
 import com.google.gson.Gson;

@@ -67,8 +67,12 @@ public class DynamoRepo {
                 updateUser.setPassword(bCryptPasswordEncoder.encode(update));
                 break;
             case 2:
-                updateUser.setAddressline(update);
-                updateUser.setPostcode(update);
+                String[] addressPostcode = update.split("|");
+                updateUser.setAddressline(addressPostcode[0]);
+                updateUser.setPostcode(addressPostcode[1]);
+                break;
+            case 3:
+                updateUser.setEmail(update);
                 break;
         }
 
