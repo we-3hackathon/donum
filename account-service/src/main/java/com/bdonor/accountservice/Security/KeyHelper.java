@@ -26,7 +26,7 @@ public class KeyHelper {
 
 
 
-           URL url = new URL("http://18.130.137.35:5333/get-key/google/geocoding"); // special permissions set
+           URL url = new URL("http://18.130.137.35:5333/get-key/" + path); // special permissions set
 
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
@@ -52,10 +52,10 @@ public class KeyHelper {
 
             switch (path){
                 case "dynamo/key":
-                    EnumAPIKey.DYNAMO_KEY.updateKeyWith("AKIA5WGTTYKE5JFKG4WZ");
+                    EnumAPIKey.DYNAMO_KEY.updateKeyWith(jsonData);
                     return EnumAPIKey.DYNAMO_KEY.toString();
                 case "dynamo/secret-key":
-                    EnumAPIKey.DYNAMO_SECRET_KEY.updateKeyWith("aSEM+qFC29OzxTbG8adJLHIozxB9+y+m6kzpjg5p");
+                    EnumAPIKey.DYNAMO_SECRET_KEY.updateKeyWith(jsonData);
                     return EnumAPIKey.DYNAMO_SECRET_KEY.toString();
             }
 
