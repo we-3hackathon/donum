@@ -43,7 +43,7 @@ public class GeocodingTest  {
     @Test
     public void testIncorrectCoordinates() throws Exception {
         this.mockMvc.perform(get("/geocoding/get-coordinates/1/2")).andDo(print()).andExpect(status().isOk())
-                .andExpect(content().string(containsString("Not Found")));
+                .andExpect(content().string(containsString("error_message")));
     }
 }
 

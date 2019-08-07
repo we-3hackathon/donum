@@ -15,7 +15,7 @@ public class AccountServiceHelper {
 
         try {
 
-            URL url = new URL("http://localhost:8000/account-service/getAll");
+            URL url = new URL("http://localhost:8000/account-service/get-all");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             //conn.setRequestProperty("Accept", "application/json");

@@ -26,21 +26,29 @@ public class APIKeyController extends BaseController {
 
     @GetMapping(value = "/load/dynamo-access")
     @ResponseBody
-    public String dynamoAccessKey(){
+    private String dynamoAccessKey(){
 
         return _keyContainer.loadDynamoAccessKey();
     }
 
     @GetMapping(value = "/load/dynamo-secret")
     @ResponseBody
-    public String dynamoSecretKey(){
+    private String dynamoSecretKey(){
 
         return _keyContainer.loadDynamoSecretKey();
+    }
+
+    @GetMapping(value = "/load/all")
+    @ResponseBody
+    private String loadAll(){
+
+        return _keyContainer.loadDynamoSecretKey() + " " + _keyContainer.loadDynamoAccessKey();
     }
 
     @GetMapping(value = "/status")
     @ResponseBody
     public String checkKeyStatus(){
+        loadAll();
 
         // new single instance created of DynamoDB
         _singleDynamoMapper = new DynamoDBConfig().mapper();
