@@ -1,8 +1,8 @@
 import React from "react";
-import Button from "react-bootstrap/Button";
 import axios from "axios";
 import Select from "react-select";
-import '../Components CSS/Auth/Register.css'
+import { Redirect } from "react-router-dom";
+import "../Components CSS/Auth/Register.css";
 
 const BloodGroups = [
   { vale: "AB+", label: "AB+" },
@@ -26,7 +26,8 @@ class Register extends React.Component {
       addressline: "",
       postcode: "",
       password: "",
-      confirmpassword: ""
+      confirmpassword: "",
+      registrationStatus: false
     };
   }
 
@@ -42,8 +43,10 @@ class Register extends React.Component {
       confirmpassword
     } = this.state;
 
+    if (this.state.registrationStatus) {
+      return <Redirect to="/login" />;
+    }
     return (
-	
       /*
 Author: Colorlib
 Author URL: https://colorlib.com
@@ -51,52 +54,120 @@ License: Creative Commons Attribution 3.0 Unported
 License URL: http://creativecommons.org/licenses/by/3.0/
 */
 
-	<div class="main-w3layouts wrapper">
-		<h1>SignUp</h1>
-		<div class="main-agileinfo">
-			<div class="agileits-top">
-				<form onSubmit={this.handleSubmit}>
-					<input class="text " type="text" name="firstname" placeholder="First Name"  value={firstname} onChange={this.handleChange} required=""/>
-					<input class="text email" type="email" name="email" placeholder="Email" value={email} onChange={this.handleChange} required=""/>
-					<input class="text email" type="text" name="addressline" placeholder="Address Line" value={addressline} onChange={this.handleChange} required=""/>
-					<input class="text email" type="text" name="postcode" placeholder="Postcode" value={postcode} onChange={this.handleChange} required=""/>
-					<input class="text email" type="text" name="surname" placeholder="Surname" value={surname} onChange={this.handleChange} required=""/>
+      <div class="main-w3layouts wrapper">
+        <h1>SignUp</h1>
+        <div class="main-agileinfo">
+          <div class="agileits-top">
+            <form onSubmit={this.handleSubmit}>
+              <input
+                class="text"
+                type="text"
+                name="firstname"
+                placeholder="First Name"
+                value={firstname}
+                onChange={this.handleChange}
+                required=""
+              />
+              <input
+                class="text email"
+                type="text"
+                name="surname"
+                placeholder="Surname"
+                value={surname}
+                onChange={this.handleChange}
+                required=""
+              />
+              <input
+                class="text email"
+                type="email"
+                name="email"
+                placeholder="Email"
+                value={email}
+                onChange={this.handleChange}
+                required=""
+              />
+              <input
+                class="text email"
+                type="text"
+                name="addressline"
+                placeholder="Address Line"
+                value={addressline}
+                onChange={this.handleChange}
+                required=""
+              />
+              <input
+                class="text email"
+                type="text"
+                name="postcode"
+                placeholder="Postcode"
+                value={postcode}
+                onChange={this.handleChange}
+                required=""
+              />
+              <input
+                class="text email"
+                type="text"
+                name="bloodgroup"
+                placeholder="Blood Group"
+                value={bloodgroup}
+                onChange={this.handleChange}
+                required=""
+              />
+              <input
+                class="text"
+                type="password"
+                name="password"
+                placeholder="Password"
+                value={password}
+                onChange={this.handleChange}
+                required=""
+              />
+              <input
+                class="text w3lpass"
+                type="password"
+                name="confirmpassword"
+                placeholder="Confirm Password"
+                value={confirmpassword}
+                onChange={this.handleChange}
+                required=""
+              />
+              <div class="wthree-text">
+                <label class="anim">
+                  <input type="checkbox" class="checkbox" required="" />
+                  <span>I Agree To The Terms & Conditions</span>
+                </label>
+                <div class="clear"> </div>
+              </div>
+              <input type="submit" value="SIGNUP" />
+            </form>
+            <p>
+              Don't have an Account? <a href="#"> Login Now!</a>
+            </p>
+          </div>
+        </div>
 
-					<input class="text email" type="text" name="bloodgroup" placeholder="Blood Group" value={bloodgroup} onChange={this.handleChange} required=""/>
+        <div class="colorlibcopy-agile">
+          <p>
+            © 2018 Colorlib Signup Form. All rights reserved | Design by{" "}
+            <a href="https://colorlib.com/" target="_blank">
+              Colorlib
+            </a>
+          </p>
+        </div>
 
-
-					<input class="text" type="password" name="password" placeholder="Password" value={password} onChange={this.handleChange} required=""/>
-					<input class="text w3lpass" type="password" name="confirmpassword" placeholder="Confirm Password" value={confirmpassword} onChange={this.handleChange} required=""/>
-					<div class="wthree-text">
-						<label class="anim">
-							<input type="checkbox" class="checkbox" required=""/>
-							<span>I Agree To The Terms & Conditions</span>
-						</label>
-						<div class="clear"> </div>
-					</div>
-					<input type="submit" value="SIGNUP"/>
-				</form>
-				<p>Don't have an Account? <a href="#"> Login Now!</a></p>
-			</div>
-		</div>
-		
-		<div class="colorlibcopy-agile">
-			<p>© 2018 Colorlib Signup Form. All rights reserved | Design by <a href="https://colorlib.com/" target="_blank">Colorlib</a></p>
-		</div>
-		
-		<ul class="colorlib-bubbles">
-			<li></li>
-			<li></li>
-			<li></li>
-			<li></li>
-			<li></li>
-			<li></li>
-			<li></li>
-			<li></li>
-			<li></li>
-			<li></li>
-		</ul>
-	</div>
+        <ul class="colorlib-bubbles">
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+        </ul>
+      </div>
     );
   }
 
@@ -112,23 +183,45 @@ License URL: http://creativecommons.org/licenses/by/3.0/
   };
 
   handleSubmit = event => {
-	event.preventDefault();
+    event.preventDefault();
     console.log("Submitting");
-	 axios
-      .get(
-		//incorrect way of doing, to be enhanced
-        "http://40.121.148.131:8020/create/" + this.state.bloodgroup + "/" + this.state.firstname + "/" + this.state.surname + "/" + this.state.email + "/" + this.state.password + "/" + this.state.addressline  + "/" + this.state.postcode 
-      )
-      .then(result => {
-        console.log(result.data);
-		if(result.data.includes("added")){
-			alert("Test: Success");
-		}else{
-			alert("Test: Fail");
-		}
-      });
-    alert(this.state.firstname);
-	console.log(this.state);
+    try {
+      this.state.addressline = this.state.addressline.replace(/\s/g, '');
+      this.state.postcode = this.state.postcode.replace(/\s/g, '');
+      axios
+        .get(
+          //incorrect way of doing, to be enhanced
+          "http://40.121.148.131:8020/create/" +
+            this.state.bloodgroup +
+            "/" +
+            this.state.firstname +
+            "/" +
+            this.state.surname +
+            "/" +
+            this.state.email +
+            "/" +
+            this.state.password +
+            "/" +
+            this.state.addressline +
+            "/" +
+            this.state.postcode
+        )
+        .then(result => {
+          console.log(result.data);
+          if (result.data.includes("added")) {
+            this.setState({
+              registrationStatus: true
+            });
+          } else if(result.data.includes("Email in use")){
+            alert("Email In Use");
+          }else {
+            alert("-------------")
+          }
+        });
+    } catch (e) {
+      console.log(e);
+    }
+    console.log(this.state);
   };
 }
 
