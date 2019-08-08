@@ -2,6 +2,7 @@ import React from "react";
 import Button from "react-bootstrap/Button";
 import axios from "axios";
 import Select from "react-select";
+import '../Components CSS/Auth/Register.css'
 
 const BloodGroups = [
   { vale: "AB+", label: "AB+" },
@@ -18,115 +19,85 @@ class Register extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      bloodGroup: "",
+      bloodgroup: "",
       firstname: "",
       surname: "",
       email: "",
-      addressLine: "",
+      addressline: "",
       postcode: "",
       password: "",
-      confirmPassword: ""
+      confirmpassword: ""
     };
   }
 
   render() {
     const {
-      bloodGroup,
+      bloodgroup,
       firstname,
       surname,
       email,
-      addressLine,
+      addressline,
       postcode,
       password,
-      confirmPassword
+      confirmpassword
     } = this.state;
 
     return (
-      <div className= "wrapper">
-        <div className="form-wrapper">
-          <h1> Register </h1>
-          <form onSubmit={this.handleSubmit}>
-            <label htmlFor="bloodGroup"> Blood Group
-            <Select name="bloodGroup" value={bloodGroup} onChange={this.handleSelectedChange} options={BloodGroups} />
-            </label>
-            <label htmlFor="firstname">Firstname</label>
-            <input
-              className="firstname"
-              name="firstname"
-              type="text"
-              placeholder="Enter firstname"
-              value={firstname}
-              onChange={this.handleChange}
-            />
-            <label htmlFor="surname">Surname</label>
-            <input
-              className="surname"
-              name="surname"
-              type="text"
-              placeholder="Enter Surname"
-              value={surname}
-              onChange={this.handleChange}
-            />
-            <label htmlFor="email">Email</label>
-            <input
-              className="email"
-              name="email"
-              type="text"
-              placeholder="Enter your email"
-              value={email}
-              onChange={this.handleChange}
-            />
-            <label htmlFor="addressLine">Address Line</label>
-            <input
-              className="addressLine"
-              name="addressLine"
-              type="text"
-              placeholder="Enter your address line here"
-              value={addressLine}
-              onChange={this.handleChange}
-            />
-            <label htmlFor="postcode">Postcode</label>
-            <input
-              classNmae="postcode"
-              name="postcde"
-              type="text"
-              placeholder="Enter your Postcode here"
-              value={postcode}
-              onChange={this.handleChange}
-            />
-            <label htmlFor="password">Password</label>
-            <input
-              className="password"
-              name="password"
-              type="text"
-              placeholder="Enter your password"
-              value={password}
-              onChange={this.handleChange}
-            />
-            <label htmlFor="confirmPassword">Confirm Password</label>
-            <input
-              className="confirmPassword"
-              name="confirmPassword"
-              type="text"
-              placeholder="Re-enter your password"
-              value={confirmPassword}
-              onChange={this.handleChange}
-            />
-            <button type="submit">Register</button>
-          </form>
-        </div>
-      </div>
-    );
-  }
+	
+      /*
+Author: Colorlib
+Author URL: https://colorlib.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+*/
 
-  componentDidMount() {
-    axios
-      .get(
-        "http://localhost:8020/create/${this.state.bloodGroup}/${this.state.firstname}/${this.state.surname}/${this.state.email}/${this.state.password}/${this.state.addressLine}/${this.state.postcode}"
-      )
-      .then(result => {
-        console.log(result);
-      });
+	<div class="main-w3layouts wrapper">
+		<h1>SignUp</h1>
+		<div class="main-agileinfo">
+			<div class="agileits-top">
+				<form onSubmit={this.handleSubmit}>
+					<input class="text " type="text" name="firstname" placeholder="First Name"  value={firstname} onChange={this.handleChange} required=""/>
+					<input class="text email" type="email" name="email" placeholder="Email" value={email} onChange={this.handleChange} required=""/>
+					<input class="text email" type="text" name="addressline" placeholder="Address Line" value={addressline} onChange={this.handleChange} required=""/>
+					<input class="text email" type="text" name="postcode" placeholder="Postcode" value={postcode} onChange={this.handleChange} required=""/>
+					<input class="text email" type="text" name="surname" placeholder="Surname" value={surname} onChange={this.handleChange} required=""/>
+
+					<input class="text email" type="text" name="bloodgroup" placeholder="Blood Group" value={bloodgroup} onChange={this.handleChange} required=""/>
+
+
+					<input class="text" type="password" name="password" placeholder="Password" value={password} onChange={this.handleChange} required=""/>
+					<input class="text w3lpass" type="password" name="confirmpassword" placeholder="Confirm Password" value={confirmpassword} onChange={this.handleChange} required=""/>
+					<div class="wthree-text">
+						<label class="anim">
+							<input type="checkbox" class="checkbox" required=""/>
+							<span>I Agree To The Terms & Conditions</span>
+						</label>
+						<div class="clear"> </div>
+					</div>
+					<input type="submit" value="SIGNUP"/>
+				</form>
+				<p>Don't have an Account? <a href="#"> Login Now!</a></p>
+			</div>
+		</div>
+		
+		<div class="colorlibcopy-agile">
+			<p>© 2018 Colorlib Signup Form. All rights reserved | Design by <a href="https://colorlib.com/" target="_blank">Colorlib</a></p>
+		</div>
+		
+		<ul class="colorlib-bubbles">
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+		</ul>
+	</div>
+    );
   }
 
   handleSelectedChange = bloodGroup => {
@@ -141,8 +112,23 @@ class Register extends React.Component {
   };
 
   handleSubmit = event => {
+	event.preventDefault();
     console.log("Submitting");
-    console.log(this.state);
+	 axios
+      .get(
+		//incorrect way of doing, to be enhanced
+        "http://40.121.148.131:8020/create/" + this.state.bloodgroup + "/" + this.state.firstname + "/" + this.state.surname + "/" + this.state.email + "/" + this.state.password + "/" + this.state.addressline  + "/" + this.state.postcode 
+      )
+      .then(result => {
+        console.log(result.data);
+		if(result.data.includes("added")){
+			alert("Test: Success");
+		}else{
+			alert("Test: Fail");
+		}
+      });
+    alert(this.state.firstname);
+	console.log(this.state);
   };
 }
 
