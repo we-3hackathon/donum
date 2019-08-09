@@ -5,6 +5,7 @@ import Dashboard from "../Dashboard/Dashboard";
 import "../Components CSS/Auth/css/main.css";
 import "../Components CSS/Auth/css/util.css";
 
+
 class Login extends React.Component {
   constructor(props) {
     super(props);
@@ -43,7 +44,7 @@ class Login extends React.Component {
                   value={firstname}
                   onChange={this.handleChange}
                 />
-                <span class="focus-input100" data-placeholder="&#xf207;"></span>
+                <span class="focus-input100" data-placeholder=""></span>
               </div>
 
               <div
@@ -58,7 +59,7 @@ class Login extends React.Component {
                   value={email}
                   onChange={this.handleChange}
                 />
-                <span class="focus-input100" data-placeholder="&#xf191;"></span>
+                <span class="focus-input100" data-placeholder=""></span>
               </div>
 
               <div
@@ -73,7 +74,7 @@ class Login extends React.Component {
                   value={password}
                   onChange={this.handleChange}
                 />
-                <span class="focus-input100" data-placeholder="&#xf191;"></span>
+                <span class="focus-input100" data-placeholder=""></span>
               </div>
 
               <div class="contact100-form-checkbox">

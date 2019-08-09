@@ -258,6 +258,7 @@ iframe {
   height: 45px;
   background: transparent;
   padding: 0 5px 0 38px;
+  border:none !important;
 }
 
 /*---------------------------------------------*/ 
