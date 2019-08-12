@@ -25,10 +25,14 @@ public class DynamoRepo {
 	private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
     public int createUser(String bloodGroup, String firstName, String lastName, String email, String password, String addressline, String postcode){
-        User checkEmail = APIKeyController._singleDynamoMapper.load(User.class, firstName, email);
-        if (checkEmail != null) {
-            System.out.println("User " + checkEmail.toString() + "Already exists!");
-            return 1;
+        
+//        User checkEmail = APIKeyController._singleDynamoMapper.load(User.class, firstName, email); // Firstname and email have to be the same to enter the if which was wrong
+
+        for(User usersInDatabase: getAllUsers()){ // Temporary slow fix
+            if(usersInDatabase.getEmail().equals(email)){
+                System.out.println("User " + usersInDatabase.toString() + "Already exists!");
+                return 1;
+            }
         }
 
         String[] LatLong = GoogleApiServiceHelper.convertToCoordinates(addressline,postcode);
