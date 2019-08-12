@@ -42,6 +42,12 @@ public class AccountTest {
 //    }
 //
 //    @Test
+//    public void testRegisterUser() throws Exception {
+//        this.mockMvc.perform(get("/create/A-/Man/Williams/test@gmail.com/jack1234/29Bamfordavenue/ha01na")).andDo(print()).andExpect(status().isOk())
+//                .andExpect(content().string(containsString("User added to Database")));
+//    }
+//
+//    @Test
 //    public void testRepeatedUserRegister() throws  Exception {
 //        this.mockMvc.perform(get("/create/A-/Jack/Williams/williams2@gmail.com/jack1234/29Bamfordavenue/ha01na")).andDo(print()).andExpect(status().isOk())
 //                .andExpect(content().string(containsString("Email in use. Try another email")));
