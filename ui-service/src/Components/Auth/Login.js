@@ -80,7 +80,7 @@ class Login extends React.Component {
                   value={password}
                   onChange={this.handleChange}
                 />
-				
+
                 <span  data-placeholder=""></span>
               </div>
 
@@ -121,12 +121,12 @@ class Login extends React.Component {
   handleSubmit = event => {
     event.preventDefault();
 
-	if(!(this.state.firstname === "") && !(this.state.email=== "") && !(this.state.password === "")){ 
+	if(!(this.state.firstname === "") && !(this.state.email=== "") && !(this.state.password === "")){
 
 	axios
       .get(
         //incorrect way of doing, to be enhanced
-        "http://40.121.148.131:8020/login/" +
+        "http://40.121.148.131:8000/account-service//" +
           this.state.firstname +
           "/" +
           this.state.email +
@@ -144,12 +144,12 @@ class Login extends React.Component {
             AUTH_ERROR : "Login failed"
           });
         }
-      });	
+      });
   }else{
 	  this.setState({
 		  AUTH_ERROR : "Don't try it"
 		});
-  }  
+  }
 }
 }
 
