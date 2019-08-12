@@ -13,24 +13,30 @@ class Login extends React.Component {
       firstname: "",
       email: "",
       password: "",
-      loggedIn: false
+	  AUTH_ERROR: "",
+	  AUTH_STATUS: false
     };
   }
 
   render() {
-    const { firstname, email, password } = this.state;
-    if (this.state.loggedIn) {
+    const { firstname, email, password, AUTH_ERROR } = this.state;
+    if (this.state.AUTH_STATUS) {
       return <Redirect to="/dashboard" />;
     }
     return (
+
       <div class="limiter">
+	  		<div class="topnav" id="myTopnav">
+				<a href="#" >Donum</a>
+			</div>
+
         <div class="container-login100">
           <div class="wrap-login100">
             <form
               class="login100-form validate-form"
               onSubmit={this.handleSubmit}
             >
-              <span class="login100-form-title p-b-34 p-t-27">Log in</span>
+
 
               <div
                 class="wrap-input100 validate-input"
@@ -74,9 +80,11 @@ class Login extends React.Component {
                   value={password}
                   onChange={this.handleChange}
                 />
-                <span class="focus-input100" data-placeholder=""></span>
+				
+                <span  data-placeholder=""></span>
               </div>
 
+				<p class="error_message">{AUTH_ERROR}</p>
               <div class="contact100-form-checkbox">
                 <input
                   class="input-checkbox100"
@@ -94,12 +102,11 @@ class Login extends React.Component {
                   Login
                 </button>
               </div>
-              <div class="text-center p-t-90">
-                <a class="txt1" href="#">
-                  Forgot Password?
-                </a>
-              </div>
             </form>
+			<br></br>
+            <p class="sign-up">
+              Don't have an Account? <a href="/register"> <b>Donum up!</b></a>
+            </p>
           </div>
         </div>
       </div>
@@ -114,7 +121,9 @@ class Login extends React.Component {
   handleSubmit = event => {
     event.preventDefault();
 
-    axios
+	if(!(this.state.firstname === "") && !(this.state.email=== "") && !(this.state.password === "")){ 
+
+	axios
       .get(
         //incorrect way of doing, to be enhanced
         "http://40.121.148.131:8020/login/" +
@@ -128,13 +137,20 @@ class Login extends React.Component {
         console.log(result.data);
         if (result.data == "Login Successful") {
           this.setState({
-            loggedIn: true
+            AUTH_STATUS: true
           });
         } else {
-          alert("Test: Fail");
+		  this.setState({
+            AUTH_ERROR : "Login failed"
+          });
         }
-      });
-  };
+      });	
+  }else{
+	  this.setState({
+		  AUTH_ERROR : "Don't try it"
+		});
+  }  
+}
 }
 
 export default Login;

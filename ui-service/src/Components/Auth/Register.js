@@ -27,7 +27,8 @@ class Register extends React.Component {
       postcode: "",
       password: "",
       confirmpassword: "",
-      registrationStatus: false
+      registrationStatus: false,
+	  error_message: ""
     };
   }
 
@@ -40,7 +41,8 @@ class Register extends React.Component {
       addressline,
       postcode,
       password,
-      confirmpassword
+      confirmpassword,
+	  error_message
     } = this.state;
 
     if (this.state.registrationStatus) {
@@ -55,9 +57,10 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 */
 
       <div class="main-w3layouts wrapper">
-        <h1>SignUp</h1>
         <div class="main-agileinfo">
           <div class="agileits-top">
+		  	<p class="">{error_message}</p>
+			<br></br>
             <form onSubmit={this.handleSubmit}>
               <input
                 class="text"
@@ -66,7 +69,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 placeholder="First Name"
                 value={firstname}
                 onChange={this.handleChange}
-                required=""
+                required
               />
               <input
                 class="text email"
@@ -75,7 +78,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 placeholder="Surname"
                 value={surname}
                 onChange={this.handleChange}
-                required=""
+                required
               />
               <input
                 class="text email"
@@ -84,7 +87,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 placeholder="Email"
                 value={email}
                 onChange={this.handleChange}
-                required=""
+                required
               />
               <input
                 class="text email"
@@ -93,7 +96,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 placeholder="Address Line"
                 value={addressline}
                 onChange={this.handleChange}
-                required=""
+                required
               />
               <input
                 class="text email"
@@ -102,8 +105,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 placeholder="Postcode"
                 value={postcode}
                 onChange={this.handleChange}
-                required=""
+                required
               />
+			  
               <input
                 class="text email"
                 type="text"
@@ -111,7 +115,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 placeholder="Blood Group"
                 value={bloodgroup}
                 onChange={this.handleChange}
-                required=""
+                required
               />
               <input
                 class="text"
@@ -120,7 +124,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 placeholder="Password"
                 value={password}
                 onChange={this.handleChange}
-                required=""
+                required
               />
               <input
                 class="text w3lpass"
@@ -129,7 +133,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 placeholder="Confirm Password"
                 value={confirmpassword}
                 onChange={this.handleChange}
-                required=""
+                required
               />
               <div class="wthree-text">
                 <label class="anim">
@@ -141,8 +145,10 @@ License URL: http://creativecommons.org/licenses/by/3.0/
               <input type="submit" value="SIGNUP" />
             </form>
             <p>
-              Don't have an Account? <a href="#"> Login Now!</a>
+              Already have an Account? <a href="/login"> Login Now!</a>
             </p>
+			<br></br>
+
           </div>
         </div>
 
@@ -168,6 +174,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
           <li></li>
         </ul>
       </div>
+
     );
   }
 
@@ -185,9 +192,11 @@ License URL: http://creativecommons.org/licenses/by/3.0/
   handleSubmit = event => {
     event.preventDefault();
     console.log("Submitting");
-    try {
+	try{
       this.state.addressline = this.state.addressline.replace(/\s/g, '');
       this.state.postcode = this.state.postcode.replace(/\s/g, '');
+	  
+	  
       axios
         .get(
           //incorrect way of doing, to be enhanced
@@ -213,14 +222,19 @@ License URL: http://creativecommons.org/licenses/by/3.0/
               registrationStatus: true
             });
           } else if(result.data.includes("Email in use")){
-            alert("Email In Use");
+			this.setState({
+               error_message: "Email already registered with us"
+            });
           }else {
-            alert("-------------")
+            this.setState({
+               error_message: "Don't try it"
+            });
           }
         });
-    } catch (e) {
-      console.log(e);
-    }
+	}catch(err){
+		console.log(err);
+	}
+
     console.log(this.state);
   };
 }

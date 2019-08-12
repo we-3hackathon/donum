@@ -11,8 +11,9 @@ function App() {
     <div className="Wrapper">
     <Router>
       <Route path ="/dashboard" component={Dashboard} />
-      <Route exact path="/" component={Register} />
+      <Route exact path="/" component={Login} />
       <Route path="/login" component={Login} />
+	  <Route path="/register" component={Register} />
       <Route path="/map" component={GoogleMaps} />
     </Router>
     </div>
