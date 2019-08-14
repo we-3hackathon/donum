@@ -25,6 +25,14 @@ public class APIKeyController extends BaseController {
         return _keyContainer.loadGooglePlacesApiKey();
     }
 
+    @GetMapping(value = "/load/status")
+    @ResponseBody
+    public String getKeysStatus(){
+
+        return "Key1:" + _keyContainer.loadGoogleMapApiKey() +"Key2:"+_keyContainer.loadGooglePlacesApiKey();
+    }
+
+
     @Override
     public void loadController() {
         _controllerName = "APIKeyController";
