@@ -5,7 +5,6 @@ import Dashboard from "../Dashboard/Dashboard";
 import "../Components CSS/Auth/css/main.css";
 import "../Components CSS/Auth/css/util.css";
 
-
 class Login extends React.Component {
   constructor(props) {
     super(props);
@@ -13,8 +12,8 @@ class Login extends React.Component {
       firstname: "",
       email: "",
       password: "",
-	  AUTH_ERROR: "",
-	  AUTH_STATUS: false
+      AUTH_ERROR: "",
+      AUTH_STATUS: false
     };
   }
 
@@ -24,11 +23,10 @@ class Login extends React.Component {
       return <Redirect to="/dashboard" />;
     }
     return (
-
       <div class="limiter">
-	  		<div class="topnav" id="myTopnav">
-				<a href="#" >Donum</a>
-			</div>
+        <div class="topnav" id="myTopnav">
+          <a href="#">Donum</a>
+        </div>
 
         <div class="container-login100">
           <div class="wrap-login100">
@@ -36,8 +34,6 @@ class Login extends React.Component {
               class="login100-form validate-form"
               onSubmit={this.handleSubmit}
             >
-
-
               <div
                 class="wrap-input100 validate-input"
                 data-validate="Enter username"
@@ -81,10 +77,10 @@ class Login extends React.Component {
                   onChange={this.handleChange}
                 />
 
-                <span  data-placeholder=""></span>
+                <span data-placeholder=""></span>
               </div>
 
-				<p class="error_message">{AUTH_ERROR}</p>
+              <p class="error_message">{AUTH_ERROR}</p>
               <div class="contact100-form-checkbox">
                 <input
                   class="input-checkbox100"
@@ -103,9 +99,13 @@ class Login extends React.Component {
                 </button>
               </div>
             </form>
-			<br></br>
+            <br></br>
             <p class="sign-up">
-              Don't have an Account? <a href="/register"> <b>Donum up!</b></a>
+              Don't have an Account?{" "}
+              <a href="/register">
+                {" "}
+                <b>Donum up!</b>
+              </a>
             </p>
           </div>
         </div>
@@ -121,36 +121,44 @@ class Login extends React.Component {
   handleSubmit = event => {
     event.preventDefault();
 
-	if(!(this.state.firstname === "") && !(this.state.email=== "") && !(this.state.password === "")){
-
-	axios
-      .get(
-        //incorrect way of doing, to be enhanced
-        "http://40.121.148.131:8000/account-service/login/" +
-          this.state.firstname +
-          "/" +
-          this.state.email +
-          "/" +
-          this.state.password
-      )
-      .then(result => {
-        console.log(result.data);
-        if (result.data == "Login Successful") {
-          this.setState({
-            AUTH_STATUS: true
-          });
-        } else {
-		  this.setState({
-            AUTH_ERROR : "Login failed"
-          });
-        }
+    if (
+      !(this.state.firstname === "") &&
+      !(this.state.email === "") &&
+      !(this.state.password === "")
+    ) {
+      axios
+        .get(
+          //incorrect way of doing, to be enhanced
+          "http://40.121.148.131:8000/account-service/login/" +
+            this.state.firstname +
+            "/" +
+            this.state.email +
+            "/" +
+            this.state.password
+        )
+        .then(result => {
+          try {
+            if (
+              result.data.nameValuePairs.firstName === this.state.firstname &&
+              result.data.nameValuePairs.email === this.state.email
+            ) {
+              this.setState({
+                AUTH_STATUS: true
+              });
+            }
+          } catch (e) {
+            console.log(e);
+            this.setState({
+              AUTH_ERROR: "Login failed"
+            });
+          }
+        });
+    } else {
+      this.setState({
+        AUTH_ERROR: "Don't try it"
       });
-  }else{
-	  this.setState({
-		  AUTH_ERROR : "Don't try it"
-		});
-  }
-}
+    }
+  };
 }
 
 export default Login;
