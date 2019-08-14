@@ -28,8 +28,12 @@ class Register extends React.Component {
       password: "",
       confirmpassword: "",
       registrationStatus: false,
-	  error_message: ""
+      error_message: ""
     };
+  }
+
+  componentDidMount() {
+    document.title = 'Donum | Register'
   }
 
   render() {
@@ -42,7 +46,7 @@ class Register extends React.Component {
       postcode,
       password,
       confirmpassword,
-	  error_message
+      error_message
     } = this.state;
 
     if (this.state.registrationStatus) {
@@ -59,8 +63,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
       <div class="main-w3layouts wrapper">
         <div class="main-agileinfo">
           <div class="agileits-top">
-		  	<p class="">{error_message}</p>
-			<br></br>
+            <p class="">{error_message}</p>
+            <br></br>
             <form onSubmit={this.handleSubmit}>
               <input
                 class="text"
@@ -136,10 +140,6 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 required
               />
               <div class="wthree-text">
-                <label class="anim">
-                  <input type="checkbox" class="checkbox" required="" />
-                  <span>I Agree To The Terms & Conditions</span>
-                </label>
                 <div class="clear"> </div>
               </div>
               <input type="submit" value="SIGNUP" />
@@ -147,8 +147,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             <p>
               Already have an Account? <a href="/login"> Login Now!</a>
             </p>
-			<br></br>
-
+            <br></br>
           </div>
         </div>
 
@@ -174,7 +173,6 @@ License URL: http://creativecommons.org/licenses/by/3.0/
           <li></li>
         </ul>
       </div>
-
     );
   }
 
@@ -192,48 +190,53 @@ License URL: http://creativecommons.org/licenses/by/3.0/
   handleSubmit = event => {
     event.preventDefault();
     console.log("Submitting");
-	try{
-      this.state.addressline = this.state.addressline.replace(/\s/g, '');
-      this.state.postcode = this.state.postcode.replace(/\s/g, '');
+    try {
+      this.state.addressline = this.state.addressline.replace(/\s/g, "");
+      this.state.postcode = this.state.postcode.replace(/\s/g, "");
 
-
-      axios
-        .get(
-          //incorrect way of doing, to be enhanced
-          "http://40.121.148.131:8000/account-service/create/" +
-            this.state.bloodgroup +
-            "/" +
-            this.state.firstname +
-            "/" +
-            this.state.surname +
-            "/" +
-            this.state.email +
-            "/" +
-            this.state.password +
-            "/" +
-            this.state.addressline +
-            "/" +
-            this.state.postcode
-        )
-        .then(result => {
-          console.log(result.data);
-          if (result.data.includes("added")) {
-            this.setState({
-              registrationStatus: true
-            });
-          } else if(result.data.includes("Email in use")){
-			this.setState({
-               error_message: "Email already registered with us"
-            });
-          }else {
-            this.setState({
-               error_message: "Don't try it"
-            });
-          }
+      if (this.state.password === this.state.confirmpassword) {
+        axios
+          .get(
+            //incorrect way of doing, to be enhanced
+            "http://40.121.148.131:8000/account-service/create/" +
+              this.state.bloodgroup +
+              "/" +
+              this.state.firstname +
+              "/" +
+              this.state.surname +
+              "/" +
+              this.state.email +
+              "/" +
+              this.state.password +
+              "/" +
+              this.state.addressline +
+              "/" +
+              this.state.postcode
+          )
+          .then(result => {
+            console.log(result.data);
+            if (result.data.includes("added")) {
+              this.setState({
+                registrationStatus: true
+              });
+            } else if (result.data.includes("Email in use")) {
+              this.setState({
+                error_message: "Email already registered with us"
+              });
+            } else {
+              this.setState({
+                error_message: "Don't try it"
+              });
+            }
+          });
+      } else {
+        this.setState({
+          error_message: "Password and confirm password do not match"
         });
-	}catch(err){
-		console.log(err);
-	}
+      }
+    } catch (err) {
+      console.log(err);
+    }
 
     console.log(this.state);
   };

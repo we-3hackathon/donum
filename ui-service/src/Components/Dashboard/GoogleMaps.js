@@ -8,6 +8,7 @@ export class GoogleMaps extends Component {
   };
 
   componentDidMount() {
+    document.title = 'Donum | Users'
     var self = this;
     axios
       .get(`http://40.121.148.131:8000/account-service/get-all`)
@@ -27,7 +28,7 @@ export class GoogleMaps extends Component {
       return <div>Loading Map...</div>;
     }
     return (
-      <Map google={this.props.google} zoom={5}>
+      <Map google={this.props.google} zoom={5}  defaultCenter={{ lat: 51.5074, lng: 0.1277 }}>
         {this.state.UserInfo.map(User => (
           <Marker
             key={User.id}

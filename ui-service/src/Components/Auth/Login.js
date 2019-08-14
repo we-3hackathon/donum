@@ -17,10 +17,14 @@ class Login extends React.Component {
     };
   }
 
+  componentDidMount() {
+    document.title = 'Donum | Login'
+  }
+
   render() {
     const { firstname, email, password, AUTH_ERROR } = this.state;
     if (this.state.AUTH_STATUS) {
-      return <Redirect to="/dashboard" />;
+      return <Redirect to="/map" />;
     }
     return (
       <div class="limiter">
