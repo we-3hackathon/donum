@@ -126,7 +126,7 @@ class Login extends React.Component {
 	axios
       .get(
         //incorrect way of doing, to be enhanced
-        "http://40.121.148.131:8000/account-service/login" +
+        "http://40.121.148.131:8000/account-service/login/" +
           this.state.firstname +
           "/" +
           this.state.email +
