@@ -56,7 +56,7 @@ public class UsersInRange {
 
                 for(User Users: allUsers) {
                     for(int j = 0; j < Results.length(); j++ ){
-                        if(Users.getPostcode().equals(Results.getJSONObject(j).getString("postcode").toLowerCase().replaceAll(" ", ""))){
+                        if(Users.getPostcode().toLowerCase().equals(Results.getJSONObject(j).getString("postcode").toLowerCase().replaceAll(" ", ""))){
                             returnedUsers.add(Users);
                         }
                     }
