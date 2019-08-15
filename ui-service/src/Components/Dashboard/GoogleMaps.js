@@ -28,7 +28,7 @@ export class GoogleMaps extends Component {
       return <div>Loading Map...</div>;
     }
     return (
-      <Map google={this.props.google} zoom={5}  defaultCenter={{ lat: 51.5074, lng: 0.1277 }}>
+      <Map google={this.props.google} zoom={5}  initalCenter={{ lat: 51.5074, lng: 0.1277 }}>
         {this.state.UserInfo.map(User => (
           <Marker
             key={User.id}
