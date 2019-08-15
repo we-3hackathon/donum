@@ -91,7 +91,7 @@ public class AccountTest {
 
     @Test
     public void testUsersInRange() throws Exception {
-        this.mockMvc.perform(get("/usersinrange/-0.39426819999999996/51.5338877/1000")).andDo(print()).andExpect(status().isOk())
+        this.mockMvc.perform(get("/usersinrange/-0.3942948/51.5339486/1000")).andDo(print()).andExpect(status().isOk())
                 .andExpect(content().string(containsString("Sharjeel"))); // Users not being collected from APIKeyController._singleDynamoRepo.getAllUsers();
     }
 
