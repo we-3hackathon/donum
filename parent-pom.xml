@@ -12,7 +12,6 @@
   <modules>
     <module>account-service</module>
     <module>google-api-service</module>
-    <module>ui-service</module>
   </modules>
   
   <build> 
