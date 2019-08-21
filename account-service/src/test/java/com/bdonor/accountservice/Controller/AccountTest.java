@@ -91,15 +91,15 @@ public class AccountTest {
 
     @Test
     public void testUsersInRange() throws Exception {
-        this.mockMvc.perform(get("/usersInRange/-0.39426819999999996/51.5338877/1000")).andDo(print()).andExpect(status().isOk())
+        this.mockMvc.perform(get("/usersinrange/-0.3942948/51.5339486/1000")).andDo(print()).andExpect(status().isOk())
                 .andExpect(content().string(containsString("Sharjeel"))); // Users not being collected from APIKeyController._singleDynamoRepo.getAllUsers();
     }
 
     @Test
     public void testGetSpecificUser() throws Exception {
-        this.mockMvc.perform(get("/getUser/Jack/williams2@gmail.com")).andDo(print()).andExpect(status().isOk())
+        this.mockMvc.perform(get("/getuser/Jack/williams2@gmail.com")).andDo(print()).andExpect(status().isOk())
                 .andExpect(content().string(containsString("Jack")));
-        this.mockMvc.perform(get("/getUser/Jack/williams2@gmail")).andDo(print()).andExpect(status().isOk())
+        this.mockMvc.perform(get("/getuser/Jack/williams2@gmail")).andDo(print()).andExpect(status().isOk())
                 .andExpect(content().string(containsString("User not found")));
     }
 
