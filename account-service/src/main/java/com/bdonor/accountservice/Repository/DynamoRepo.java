@@ -10,7 +10,6 @@ import com.bdonor.accountservice.InternalService.GoogleApiServiceHelper;
 import com.bdonor.accountservice.Model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBSaveExpression;
@@ -25,10 +24,8 @@ public class DynamoRepo {
 	private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
     public int createUser(String bloodGroup, String firstName, String lastName, String email, String password, String addressline, String postcode){
-        
-//        User checkEmail = APIKeyController._singleDynamoMapper.load(User.class, firstName, email); // Firstname and email have to be the same to enter the if which was wrong
 
-        for(User usersInDatabase: getAllUsers()){ // Temporary slow fix
+        for(User usersInDatabase: getAllUsers()){
             if(usersInDatabase.getEmail().equals(email)){
                 System.out.println("User " + usersInDatabase.toString() + "Already exists!");
                 return 1;

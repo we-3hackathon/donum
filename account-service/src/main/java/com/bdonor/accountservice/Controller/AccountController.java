@@ -2,14 +2,13 @@
 package com.bdonor.accountservice.Controller;
 
 import com.bdonor.accountservice.Service.UsersInRange;
-import com.amazonaws.services.dynamodbv2.xspec.S;
 import com.google.gson.Gson;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import com.bdonor.accountservice.Model.User;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 public class AccountController extends BaseController{
@@ -19,7 +18,7 @@ public class AccountController extends BaseController{
 
     @ResponseBody
     @CrossOrigin()
-    @GetMapping(value = "/create/{bloodGroup}/{firstName}/{lastName}/{email}/{password}/{addressline}/{postcode}") // Need to test once google-api-serivce is merged
+    @GetMapping(value = "/create/{bloodGroup}/{firstName}/{lastName}/{email}/{password}/{addressline}/{postcode}")
     public String Register( @PathVariable String bloodGroup , @PathVariable  String firstName, @PathVariable  String lastName, @PathVariable  String email, @PathVariable  String password, @PathVariable  String addressline, @PathVariable  String postcode){
 
         switch (APIKeyController._singleDynamoRepo.createUser(bloodGroup, firstName, lastName, email, password, addressline, postcode)){
@@ -32,10 +31,10 @@ public class AccountController extends BaseController{
     }
 
     @CrossOrigin()
-    @GetMapping(value = "/get-all") // Working
+    @GetMapping(value = "/get-all")
     public String getUsers() {
-        String Users = new Gson().toJson(APIKeyController._singleDynamoRepo.getAllUsers());
-        return Users;
+        List<User> Users = APIKeyController._singleDynamoRepo.getAllUsers();
+        return Users.isEmpty() ? "No users in database" : new Gson().toJson(Users) ;
     }
 
     @CrossOrigin()
@@ -105,11 +104,10 @@ public class AccountController extends BaseController{
     }
 
     @CrossOrigin()
-
     @DeleteMapping(value = "/delete/{firstName}/{email}")
     public String deleteUserDetails(@PathVariable String firstName, @PathVariable String email) { // Working
         User user = new User();
-        user.setFirstName(firstName);
+        user.setFirstname(firstName);
         user.setEmail(email);
         if(APIKeyController._singleDynamoRepo.getSingleUser(firstName, email) != null){
             APIKeyController._singleDynamoRepo.deleteUserDetails(user);
@@ -120,7 +118,7 @@ public class AccountController extends BaseController{
 
     @CrossOrigin()
     @GetMapping(value = "/login/{firstName}/{email}/{password}")
-    public String Login(@PathVariable String firstName, @PathVariable String email, @PathVariable String password) { // Working
+    public String Login(@PathVariable String firstName, @PathVariable String email, @PathVariable String password) {
         if(APIKeyController._singleDynamoRepo.checkCredentials(firstName, email, password)){
             try {
                 JSONObject User = new JSONObject(new Gson().toJson(APIKeyController._singleDynamoRepo.getSingleUser(firstName, email)));

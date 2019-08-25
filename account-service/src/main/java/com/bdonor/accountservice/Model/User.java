@@ -9,9 +9,9 @@ public class User implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private String id;
-    private String bloodGroup;
-    private String firstName;
-    private String lastName;
+    private String bloodgroup;
+    private String firstname;
+    private String lastname;
     private String email;
     private String password;
     private String addressline;
@@ -21,10 +21,10 @@ public class User implements Serializable {
 
     public User() {}
 
-    public User(String bloodGroup, String firstName, String lastName, String email, String password, String addressline, String postcode, String latitude, String longitude) { // Proper Constructor
-        this.bloodGroup = bloodGroup;
-        this.firstName = firstName;
-        this.lastName = lastName;
+    public User(String bloodgroup, String firstname, String lastname, String email, String password, String addressline, String postcode, String latitude, String longitude) { // Proper Constructor
+        this.bloodgroup = bloodgroup;
+        this.firstname = firstname;
+        this.lastname = lastname;
         this.email = email;
         this.password = password;
         this.addressline = addressline;
@@ -33,10 +33,10 @@ public class User implements Serializable {
         this.longitude = longitude;
     }
 
-    public User(String bloodGroup, String firstName, String lastName, String email, String password, String addressline, String postcode) { // Test Constructor
-        this.bloodGroup = bloodGroup;
-        this.firstName = firstName;
-        this.lastName = lastName;
+    public User(String bloodgroup, String firstname, String lastname, String email, String password, String addressline, String postcode) { // Test Constructor
+        this.bloodgroup = bloodgroup;
+        this.firstname = firstname;
+        this.lastname = lastname;
         this.email = email;
         this.password = password;
         this.addressline = addressline;
@@ -55,30 +55,30 @@ public class User implements Serializable {
     }
 
     @DynamoDBAttribute
-    public String getBloodGroup() {
-        return bloodGroup;
+    public String getBloodgroup() {
+        return bloodgroup;
     }
 
-    public void setBloodGroup(String bloodGroup) {
-        this.bloodGroup = bloodGroup;
+    public void setBloodgroup(String bloodgroup) {
+        this.bloodgroup = bloodgroup;
     }
 
-    @DynamoDBHashKey(attributeName = "firstName")
-    public String getFirstName() {
-        return firstName;
+    @DynamoDBHashKey(attributeName = "firstname")
+    public String getFirstname() {
+        return firstname;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
     }
 
     @DynamoDBAttribute
-    public String getLastName() {
-        return lastName;
+    public String getLastname() {
+        return lastname;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
     }
 
     @DynamoDBRangeKey
@@ -139,9 +139,9 @@ public class User implements Serializable {
     public String toString() {
         return "User{" +
                 "id='" + id + '\'' +
-                ", bloodGroup='" + bloodGroup + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
+                ", bloodgroup='" + bloodgroup + '\'' +
+                ", firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", addressline='" + addressline + '\'' +
