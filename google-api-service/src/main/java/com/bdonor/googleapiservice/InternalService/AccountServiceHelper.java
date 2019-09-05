@@ -1,5 +1,7 @@
 package com.bdonor.googleapiservice.InternalService;
 
+import com.bdonor.googleapiservice.Strings.ConnectionStrings;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -15,7 +17,7 @@ public class AccountServiceHelper {
 
         try {
 
-            URL url = new URL("http://localhost:8000/account-service/get-all");
+            URL url = new URL(ConnectionStrings.ACCOUNT_SERVICE + "/get-all");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             //conn.setRequestProperty("Accept", "application/json");

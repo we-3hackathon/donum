@@ -1,7 +1,6 @@
 package com.bdonor.googleapiservice.Model.Map;
 
-import com.bdonor.googleapiservice.Model.Map.IMap;
-import com.bdonor.googleapiservice.Model.Variable.EnumGoogleMap;
+import com.bdonor.googleapiservice.Strings.EnumGoogleMap;
 
 public class StaticMap implements IMap {
 
