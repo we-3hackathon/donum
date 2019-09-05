@@ -1,4 +1,4 @@
-package com.bdonor.googleapiservice.Model.Variable;
+package com.bdonor.googleapiservice.Strings;
 
 public enum EnumURL {
 

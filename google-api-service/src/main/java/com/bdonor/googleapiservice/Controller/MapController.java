@@ -1,19 +1,12 @@
 package com.bdonor.googleapiservice.Controller;
 
 import com.bdonor.googleapiservice.InternalService.AccountServiceHelper;
-import com.bdonor.googleapiservice.Model.Variable.EnumGoogleMap;
+import com.bdonor.googleapiservice.Strings.EnumGoogleMap;
 import com.bdonor.googleapiservice.Service.GoogleMap.Map;
 import com.bdonor.googleapiservice.Service.GoogleMap.SingletonPlot;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 @RestController
 @RequestMapping("/map")

@@ -1,8 +1,7 @@
 package com.bdonor.googleapiservice.Service.Geocoding;
 
-import com.bdonor.googleapiservice.Model.Variable.EnumAPIKey;
-import com.bdonor.googleapiservice.Model.Variable.EnumURL;
-import com.bdonor.googleapiservice.Model.Variable.EnumGoogleMap;
+import com.bdonor.googleapiservice.Strings.EnumAPIKey;
+import com.bdonor.googleapiservice.Strings.EnumURL;
 import com.bdonor.googleapiservice.Service.Json.Process;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;

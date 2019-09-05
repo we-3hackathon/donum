@@ -1,8 +1,8 @@
 package com.bdonor.googleapiservice.Service.GoogleMap;
 
 import com.bdonor.googleapiservice.Model.Map.StaticMap;
-import com.bdonor.googleapiservice.Model.Variable.EnumAPIKey;
-import com.bdonor.googleapiservice.Model.Variable.EnumGoogleMap;
+import com.bdonor.googleapiservice.Strings.EnumAPIKey;
+import com.bdonor.googleapiservice.Strings.EnumGoogleMap;
 
 public class Map {
 

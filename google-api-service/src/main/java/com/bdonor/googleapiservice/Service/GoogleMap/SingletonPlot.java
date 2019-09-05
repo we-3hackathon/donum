@@ -1,6 +1,6 @@
 package com.bdonor.googleapiservice.Service.GoogleMap;
 
-import com.bdonor.googleapiservice.Model.Variable.EnumGoogleMap;
+import com.bdonor.googleapiservice.Strings.EnumGoogleMap;
 import com.bdonor.googleapiservice.Service.Json.Process;
 
 public class SingletonPlot {

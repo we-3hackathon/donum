@@ -1,6 +1,7 @@
 package com.bdonor.googleapiservice.Security;
 
-import com.bdonor.googleapiservice.Model.Variable.EnumAPIKey;
+import com.bdonor.googleapiservice.Strings.ConnectionStrings;
+import com.bdonor.googleapiservice.Strings.EnumAPIKey;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -24,7 +25,7 @@ public class KeyHelper {
 
         try {
 
-            URL url = new URL("http://18.130.137.35:5333/get-key/"+ path); // special permissions set
+            URL url = new URL(ConnectionStrings.APIKEY_SERVER + path); // special permissions set
 
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
