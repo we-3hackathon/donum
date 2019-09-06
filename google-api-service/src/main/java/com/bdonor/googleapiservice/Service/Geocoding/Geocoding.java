@@ -37,14 +37,12 @@ public class Geocoding extends Thread{
                     + EnumURL.ADDRESS.toString() + _address + "," + _postcode
                     + EnumURL.KEY.toString() + EnumAPIKey.PLACES_KEY.toString();
 
-            System.out.println(_URL);
             HttpPost post = new HttpPost(_URL);
 
             HttpResponse response = client.execute(post);
             HttpEntity entity = response.getEntity();
             inputStream = entity.getContent();
         } catch(Exception e) {
-            System.out.println("1");
             System.out.println(e.getMessage());
         }
 
@@ -56,7 +54,6 @@ public class Geocoding extends Thread{
                 sbuild.append(line);
             }
             inputStream.close();
-            System.out.println(sbuild.toString());
             _JSON = sbuild.toString();
         } catch(Exception e) {
             System.out.println("2");

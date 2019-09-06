@@ -75,7 +75,7 @@ public class Process extends Thread{
 
     /**
      * Process the JSON received from account-service
-     * and build the URL using GoogleMap.SingletonPlot service
+     * and build the URL using GoogleMap.SingletonPlot
      */
     private String processAllUsersJSON() {
 
