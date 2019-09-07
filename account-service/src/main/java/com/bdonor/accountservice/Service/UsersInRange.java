@@ -1,5 +1,6 @@
 package com.bdonor.accountservice.Service;
 import com.bdonor.accountservice.Controller.APIKeyController;
+import com.bdonor.accountservice.Links.EnumAPI_Links;
 import com.bdonor.accountservice.Model.User;
 import com.google.gson.Gson;
 import org.json.JSONArray;
@@ -21,12 +22,12 @@ public class UsersInRange {
     public String getRadiusPostcodes(double longitude, double latitude, int radius){
 
         StringBuffer Postcodes = new StringBuffer();
-        List<User> allUsers = APIKeyController._singleDynamoRepo.getAllUsers(); // Test fails here
+        List<User> allUsers = APIKeyController._singleDynamoRepo.getAllUsers();
         ArrayList<User> returnedUsers = new ArrayList<>();
 
         try {
 
-            URL url = new URL(String.format("https://api.postcodes.io/postcodes?lon=%s?&lat=%s?&radius=%s",longitude,latitude,radius)); // Get Long and Lat
+            URL url = new URL(String.format(EnumAPI_Links.POSTCODE_API + "postcodes?lon=%s?&lat=%s?&radius=%s" ,longitude,latitude,radius)); // Get Long and Lat
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Accept", "application/String");

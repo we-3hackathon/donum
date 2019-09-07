@@ -1,5 +1,7 @@
 package com.bdonor.accountservice.InternalService;
 
+import com.bdonor.accountservice.Links.EnumAPI_Links;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -16,8 +18,7 @@ public class GoogleApiServiceHelper {
 
         try {
 
-            URL url = new URL(String.format("http://localhost:8000/google-api-service/geocoding/get-coordinates/%s/%s", address, postcode)); // Had to do this stuff here as i was "duplicate id" error in DynamoRepo
-            //System.out.println(url.toString());
+            URL url = new URL(String.format(EnumAPI_Links.GOOGLE_API + "geocoding/get-coordinates/%s/%s", address, postcode));
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Accept", "application/String");

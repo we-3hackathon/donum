@@ -63,8 +63,7 @@ public class KeyHelper {
 
             e.printStackTrace();
 
-        } catch (
-                IOException e) {
+        } catch (IOException e) {
 
             e.printStackTrace();
 
