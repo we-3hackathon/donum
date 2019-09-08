@@ -1,4 +1,4 @@
-package com.bdonor.zuulserver;
+package com.donum.zuulserver;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

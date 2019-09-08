@@ -1,4 +1,4 @@
-package com.bdonor.zuulserver;
+package com.donum.zuulserver;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
