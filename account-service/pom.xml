@@ -3,12 +3,12 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.bdonor.account-service</groupId>
+	<groupId>com.donum.account-service</groupId>
 	<artifactId>account-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>account-service</name>
 	<packaging>jar</packaging>
-	<description>Demo project for Spring Boot</description>
+	<description>CRUD service for user accounts</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>

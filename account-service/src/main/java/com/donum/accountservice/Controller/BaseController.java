@@ -1,4 +1,4 @@
-package com.bdonor.accountservice.Controller;
+package com.donum.accountservice.Controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 

@@ -1,4 +1,4 @@
-package com.bdonor.accountservice.InternalService;
+package com.donum.accountservice.InternalService;
 
 import java.io.BufferedReader;
 import java.io.IOException;

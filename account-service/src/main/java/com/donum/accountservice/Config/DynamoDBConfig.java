@@ -1,10 +1,8 @@
-package com.bdonor.accountservice.Config;
+package com.donum.accountservice.Config;
 
-import com.bdonor.accountservice.Model.Variable.EnumAPIKey;
+import com.donum.accountservice.Model.Variable.EnumAPIKey;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
@@ -32,14 +30,6 @@ public class DynamoDBConfig {
     }
 
     public AmazonDynamoDB amazonDynamoDBConfig() {
-        System.out.println("**********************************************i am running*********************************************");
-        System.out.println("**********************************************i am running*********************************************");
-
-        System.out.println("**********************************************i am running*********************************************");
-
-        System.out.println("**********************************************i am running*********************************************");
-
-        System.out.println("**********************************************i am running*********************************************");
 
         awsAccessKey = EnumAPIKey.DYNAMO_KEY.toString();
         awsSecretKey = EnumAPIKey.DYNAMO_SECRET_KEY.toString();

@@ -1,4 +1,4 @@
-package com.bdonor.accountservice;
+package com.donum.accountservice;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

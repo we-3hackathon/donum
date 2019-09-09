@@ -1,4 +1,4 @@
-package com.bdonor.accountservice.Model;
+package com.donum.accountservice.Model;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.*;
 import java.io.Serializable;

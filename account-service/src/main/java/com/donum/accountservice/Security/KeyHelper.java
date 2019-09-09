@@ -1,6 +1,6 @@
-package com.bdonor.accountservice.Security;
+package com.donum.accountservice.Security;
 
-import com.bdonor.accountservice.Model.Variable.EnumAPIKey;
+import com.donum.accountservice.Model.Variable.EnumAPIKey;
 
 import java.io.BufferedReader;
 import java.io.IOException;

@@ -1,13 +1,13 @@
-package com.bdonor.accountservice.Repository;
+package com.donum.accountservice.Repository;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
-import com.bdonor.accountservice.Controller.APIKeyController;
-import com.bdonor.accountservice.InternalService.GoogleApiServiceHelper;
-import com.bdonor.accountservice.Model.User;
+import com.donum.accountservice.Controller.APIKeyController;
+import com.donum.accountservice.InternalService.GoogleApiServiceHelper;
+import com.donum.accountservice.Model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

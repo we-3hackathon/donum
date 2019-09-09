@@ -1,6 +1,6 @@
-package com.bdonor.accountservice.Service;
-import com.bdonor.accountservice.Controller.APIKeyController;
-import com.bdonor.accountservice.Model.User;
+package com.donum.accountservice.Service;
+import com.donum.accountservice.Controller.APIKeyController;
+import com.donum.accountservice.Model.User;
 import com.google.gson.Gson;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -21,7 +21,7 @@ public class UsersInRange {
     public String getRadiusPostcodes(double longitude, double latitude, int radius){
 
         StringBuffer Postcodes = new StringBuffer();
-        List<User> allUsers = APIKeyController._singleDynamoRepo.getAllUsers(); // Test fails here
+        List<User> allUsers = APIKeyController._singleDynamoRepo.getAllUsers();
         ArrayList<User> returnedUsers = new ArrayList<>();
 
         try {

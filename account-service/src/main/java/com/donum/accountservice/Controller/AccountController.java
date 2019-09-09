@@ -1,11 +1,11 @@
 
-package com.bdonor.accountservice.Controller;
+package com.donum.accountservice.Controller;
 
-import com.bdonor.accountservice.Service.UsersInRange;
+import com.donum.accountservice.Service.UsersInRange;
 import com.google.gson.Gson;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import com.bdonor.accountservice.Model.User;
+import com.donum.accountservice.Model.User;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
