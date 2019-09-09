@@ -1,6 +1,7 @@
 package com.donum.accountservice.Service;
 import com.donum.accountservice.Controller.APIKeyController;
 import com.donum.accountservice.Model.User;
+import com.donum.accountservice.Links.EnumAPI_Links;
 import com.google.gson.Gson;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -26,7 +27,7 @@ public class UsersInRange {
 
         try {
 
-            URL url = new URL(String.format("https://api.postcodes.io/postcodes?lon=%s?&lat=%s?&radius=%s",longitude,latitude,radius)); // Get Long and Lat
+            URL url = new URL(String.format(EnumAPI_Links.POSTCODE_API + "postcodes?lon=%s?&lat=%s?&radius=%s" ,longitude,latitude,radius)); // Get Long and Lat
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Accept", "application/String");
