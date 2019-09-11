@@ -6,6 +6,8 @@ import com.google.gson.Gson;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.donum.accountservice.Model.User;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,32 +21,35 @@ public class AccountController extends BaseController{
     @ResponseBody
     @CrossOrigin()
     @GetMapping(value = "/create/{bloodGroup}/{firstName}/{lastName}/{email}/{password}/{addressline}/{postcode}")
-    public String Register( @PathVariable String bloodGroup , @PathVariable  String firstName, @PathVariable  String lastName, @PathVariable  String email, @PathVariable  String password, @PathVariable  String addressline, @PathVariable  String postcode){
+    public ResponseEntity<String> Register(@PathVariable String bloodGroup , @PathVariable  String firstName, @PathVariable  String lastName, @PathVariable  String email, @PathVariable  String password, @PathVariable  String addressline, @PathVariable  String postcode){
 
         switch (APIKeyController._singleDynamoRepo.createUser(bloodGroup, firstName, lastName, email, password, addressline, postcode)){
 
             case 1:
-                return "Email in use. Try another email";
+                return new ResponseEntity<>("Email in use. Try another email.", HttpStatus.CONFLICT);
             default:
-                return "User added to Database";
+                return new ResponseEntity<>("User added to Database", HttpStatus.CREATED);
         }
     }
 
     @CrossOrigin()
     @GetMapping(value = "/get-all")
-    public String getUsers() {
+    public ResponseEntity<String> getUsers() {
         List<User> Users = APIKeyController._singleDynamoRepo.getAllUsers();
-        return Users.isEmpty() ? "No users in database" : new Gson().toJson(Users) ;
+        if(Users.isEmpty()){
+            return new ResponseEntity<>("No users in database.", HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(new Gson().toJson(Users), HttpStatus.OK);
     }
 
     @CrossOrigin()
     @GetMapping(value = "/getuser/{firstName}/{email}")
-    public String getUserDetails(@PathVariable String firstName, @PathVariable String email) { // Working
+    public ResponseEntity<String> getUserDetails(@PathVariable String firstName, @PathVariable String email) { // Working
         User user = APIKeyController._singleDynamoRepo.getSingleUser(firstName, email);
         if(user != null){
-            return user.toString();
+            return new ResponseEntity<>(user.toString(), HttpStatus.OK);
         }
-        return "User not found";
+        return new ResponseEntity<>("User not found.", HttpStatus.NOT_FOUND);
     }
 
     @PutMapping(value = "/updateuser")
@@ -88,56 +93,55 @@ public class AccountController extends BaseController{
 
     @CrossOrigin()
     @GetMapping(value = "/updateemail/{firstName}/{email}/{update}")
-    public String updateUserEmail(@PathVariable String firstName, @PathVariable String email, @PathVariable String update ){
+    public ResponseEntity<String> updateUserEmail(@PathVariable String firstName, @PathVariable String email, @PathVariable String update ){
 
-        String message = "";
+        ResponseEntity message = null;
         switch(APIKeyController._singleDynamoRepo.updateUserDetail(firstName, email, 3, update)){
             case 1:
-                message = "Email update: success";
+                message = new ResponseEntity<>("Email update: success", HttpStatus.OK);
                 break;
             case -1:
-                message = "Failed to update";
+                message = new ResponseEntity<>("Failed to update.", HttpStatus.NOT_FOUND);
                 break;
         }
-
         return message;
     }
 
     @CrossOrigin()
     @DeleteMapping(value = "/delete/{firstName}/{email}")
-    public String deleteUserDetails(@PathVariable String firstName, @PathVariable String email) { // Working
+    public ResponseEntity<String> deleteUserDetails(@PathVariable String firstName, @PathVariable String email) { // Working
         User user = new User();
         user.setFirstname(firstName);
         user.setEmail(email);
         if(APIKeyController._singleDynamoRepo.getSingleUser(firstName, email) != null){
             APIKeyController._singleDynamoRepo.deleteUserDetails(user);
-            return user.toString() + " Deleted";
+            return new ResponseEntity<>(user.toString() + " Deleted", HttpStatus.OK);
         }
-        return "User not found";
+        return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
     }
 
     @CrossOrigin()
     @GetMapping(value = "/login/{firstName}/{email}/{password}")
-    public String Login(@PathVariable String firstName, @PathVariable String email, @PathVariable String password) {
+    public ResponseEntity<String> Login(@PathVariable String firstName, @PathVariable String email, @PathVariable String password) {
         if(APIKeyController._singleDynamoRepo.checkCredentials(firstName, email, password)){
             try {
                 JSONObject User = new JSONObject(new Gson().toJson(APIKeyController._singleDynamoRepo.getSingleUser(firstName, email)));
                 User.remove("password");
-                return new Gson().toJson(User);
+                return new ResponseEntity<>(new Gson().toJson(User), HttpStatus.OK);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        return "Login Failed";
+        return new ResponseEntity<>("Login Failed.", HttpStatus.UNAUTHORIZED);
     }
 
     @CrossOrigin()
     @GetMapping(value = "/usersinrange/{longitude}/{latitude}/{radius}")
-    public String UsersInRangeOfRadius(@PathVariable double longitude, @PathVariable double latitude, @PathVariable int radius){
+    public ResponseEntity<String> UsersInRangeOfRadius(@PathVariable double longitude, @PathVariable double latitude, @PathVariable int radius){
         if(_usersInRange.getRadiusPostcodes(longitude, latitude, radius) != ""){
-            return _usersInRange.getRadiusPostcodes(longitude, latitude, radius);
+            return new ResponseEntity<>(_usersInRange.getRadiusPostcodes(longitude, latitude, radius), HttpStatus.OK);
         }
-        return "No users in given radius";
+        return new ResponseEntity<>("No users in given radius", HttpStatus.NOT_FOUND);
     }
 
     @Override
