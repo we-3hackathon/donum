@@ -114,7 +114,7 @@ public class AccountController extends BaseController{
     @DeleteMapping(value = "/delete/{firstName}/{email}")
     public ResponseEntity<String> deleteUserDetails(@PathVariable String firstName, @PathVariable String email) { // Working
         User user = new User();
-        user.setFirstname(firstName);
+        user.setFirstName(firstName);
         user.setEmail(email);
         if(APIKeyController._singleDynamoRepo.getSingleUser(firstName, email) != null){
             APIKeyController._singleDynamoRepo.deleteUserDetails(user);
