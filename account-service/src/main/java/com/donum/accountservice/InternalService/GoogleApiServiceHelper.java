@@ -1,6 +1,7 @@
 package com.donum.accountservice.InternalService;
 
 import com.donum.accountservice.Enum.EnumAPI_Links;
+import org.apache.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,6 +11,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 public class GoogleApiServiceHelper {
+
+    final static Logger logger = Logger.getLogger(GoogleApiServiceHelper.class);
 
     public static String[] convertToCoordinates(String address, String postcode){
 
@@ -45,6 +48,7 @@ public class GoogleApiServiceHelper {
             conn.disconnect();
 
         } catch (MalformedURLException e) {
+
 
             e.printStackTrace();
 

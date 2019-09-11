@@ -1,8 +1,10 @@
 
 package com.donum.accountservice.Controller;
 
+
 import com.donum.accountservice.Service.UsersInRange;
 import com.google.gson.Gson;
+import org.apache.log4j.Logger;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.donum.accountservice.Model.User;
@@ -17,6 +19,8 @@ public class AccountController extends BaseController{
 
     @Autowired
     private UsersInRange _usersInRange;
+    final static Logger logger = Logger.getLogger(AccountController.class);
+
 
     @ResponseBody
     @CrossOrigin()
@@ -24,7 +28,6 @@ public class AccountController extends BaseController{
     public ResponseEntity<String> Register(@PathVariable String bloodGroup , @PathVariable  String firstName, @PathVariable  String lastName, @PathVariable  String email, @PathVariable  String password, @PathVariable  String addressline, @PathVariable  String postcode){
 
         switch (APIKeyController._singleDynamoRepo.createUser(bloodGroup, firstName, lastName, email, password, addressline, postcode)){
-
             case 1:
                 return new ResponseEntity<>("Email in use. Try another email.", HttpStatus.CONFLICT);
             default:
@@ -129,6 +132,7 @@ public class AccountController extends BaseController{
                 User.remove("password");
                 return new ResponseEntity<>(new Gson().toJson(User), HttpStatus.OK);
             } catch (Exception e) {
+                logger.error(e.getMessage());
                 e.printStackTrace();
             }
         }

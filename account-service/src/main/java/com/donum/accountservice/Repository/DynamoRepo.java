@@ -8,8 +8,7 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 import com.donum.accountservice.Controller.APIKeyController;
 import com.donum.accountservice.InternalService.GoogleApiServiceHelper;
 import com.donum.accountservice.Model.User;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBSaveExpression;
@@ -20,7 +19,7 @@ import com.amazonaws.services.dynamodbv2.model.ExpectedAttributeValue;
 
 public class DynamoRepo {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(DynamoRepo.class);
+    final static Logger logger = Logger.getLogger(DynamoRepo.class);
 	private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
     public int createUser(String bloodGroup, String firstName, String lastName, String email, String password, String addressline, String postcode){
@@ -55,7 +54,8 @@ public class DynamoRepo {
         try {
             APIKeyController._singleDynamoMapper.save(user, buildDynamoDBSaveExpression(user));
         } catch (ConditionalCheckFailedException exception) {
-            LOGGER.error("invalid data - " + exception.getMessage());
+            logger.error(exception.getMessage());
+            exception.printStackTrace();
         }
     }
 
@@ -77,11 +77,11 @@ public class DynamoRepo {
                 updateUser.setEmail(update);
                 break;
         }
-
         try {
             APIKeyController._singleDynamoMapper.save(updateUser, buildDynamoDBSaveExpression(userInDB));
         } catch (ConditionalCheckFailedException exception) {
-            LOGGER.error("Unable to save - " + exception.getMessage());
+            logger.error(exception.getMessage());
+            exception.printStackTrace();
             return -1;
         }
         return 1;
@@ -109,6 +109,7 @@ public class DynamoRepo {
                 }
             }
         }catch (Exception e){
+            logger.error(e.getMessage());
             e.printStackTrace();
         }
         return false;
