@@ -1,6 +1,6 @@
 package com.donum.accountservice.Config;
 
-import com.donum.accountservice.Model.Variable.EnumAPIKey;
+import com.donum.accountservice.Enum.EnumAPIKey;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 

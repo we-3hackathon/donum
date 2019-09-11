@@ -1,4 +1,4 @@
-package com.donum.accountservice.Model.Variable;
+package com.donum.accountservice.Enum;
 
 public enum EnumAPIKey {
 

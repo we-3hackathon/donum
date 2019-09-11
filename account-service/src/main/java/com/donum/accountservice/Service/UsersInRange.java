@@ -1,7 +1,7 @@
 package com.donum.accountservice.Service;
 import com.donum.accountservice.Controller.APIKeyController;
 import com.donum.accountservice.Model.User;
-import com.donum.accountservice.Links.EnumAPI_Links;
+import com.donum.accountservice.Enum.EnumAPI_Links;
 import com.google.gson.Gson;
 import org.json.JSONArray;
 import org.json.JSONObject;

@@ -1,6 +1,6 @@
 package com.donum.accountservice.InternalService;
 
-import com.bdonor.accountservice.Links.EnumAPI_Links;
+import com.donum.accountservice.Enum.EnumAPI_Links;
 
 import java.io.BufferedReader;
 import java.io.IOException;

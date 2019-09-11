@@ -1,4 +1,4 @@
-package com.bdonor.accountservice.Links;
+package com.donum.accountservice.Enum;
 
 public enum EnumAPI_Links {
 

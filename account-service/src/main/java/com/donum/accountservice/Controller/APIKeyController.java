@@ -2,7 +2,7 @@ package com.donum.accountservice.Controller;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.donum.accountservice.Config.DynamoDBConfig;
-import com.donum.accountservice.Model.Variable.EnumAPIKey;
+import com.donum.accountservice.Enum.EnumAPIKey;
 import com.donum.accountservice.Repository.DynamoRepo;
 import com.donum.accountservice.Security.KeyHelper;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
