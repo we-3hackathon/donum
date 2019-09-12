@@ -1,13 +1,15 @@
 package com.donum.googleapiservice.Service.Geocoding;
 
-import com.donum.googleapiservice.Strings.EnumAPIKey;
-import com.donum.googleapiservice.Strings.EnumURL;
+import com.donum.googleapiservice.Controller.GeoController;
+import com.donum.googleapiservice.Enum.EnumAPIKey;
+import com.donum.googleapiservice.Enum.EnumURL;
 import com.donum.googleapiservice.Service.Json.Process;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -19,6 +21,7 @@ public class Geocoding extends Thread{
     String _address = "E";
     String _postcode = "E";
     String coordinates = "E";
+    final static Logger logger = Logger.getLogger(Geocoding.class);
 
 
      public Geocoding(String address, String postcode){
@@ -43,7 +46,7 @@ public class Geocoding extends Thread{
             HttpEntity entity = response.getEntity();
             inputStream = entity.getContent();
         } catch(Exception e) {
-            System.out.println(e.getMessage());
+            logger.error(e.getMessage());
         }
 
         try {
@@ -56,9 +59,7 @@ public class Geocoding extends Thread{
             inputStream.close();
             _JSON = sbuild.toString();
         } catch(Exception e) {
-            System.out.println("2");
-            System.out.println(e.getMessage());
-
+            logger.error(e.getMessage());
         }
 
         Process ProcessThread = new Process(_JSON);

@@ -1,4 +1,4 @@
-package com.donum.googleapiservice.Strings;
+package com.donum.googleapiservice.Enum;
 
 public enum EnumURL {
 

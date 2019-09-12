@@ -1,6 +1,8 @@
 package com.donum.googleapiservice.InternalService;
 
-import com.donum.googleapiservice.Strings.ConnectionStrings;
+import com.donum.googleapiservice.Controller.GeoController;
+import com.donum.googleapiservice.Enum.ConnectionStrings;
+import org.apache.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,6 +13,9 @@ import java.net.URL;
 
 public class AccountServiceHelper {
 
+    final static Logger logger = Logger.getLogger(AccountServiceHelper.class);
+
+
     public static String requestAllUsers(){
 
         String jsonData = "error";
@@ -20,7 +25,6 @@ public class AccountServiceHelper {
             URL url = new URL(ConnectionStrings.ACCOUNT_SERVICE + "/get-all");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
-            //conn.setRequestProperty("Accept", "application/json");
 
             if (conn.getResponseCode() != 200) {
                 throw new RuntimeException("Failed : HTTP error code : "
@@ -30,9 +34,7 @@ public class AccountServiceHelper {
             BufferedReader br = new BufferedReader(new InputStreamReader(
                     (conn.getInputStream())));
 
-            System.out.println("Output from Server .... \n");
             while ((output = br.readLine()) != null) {
-                System.out.println(output);
                 jsonData = output;
             }
 
@@ -40,15 +42,14 @@ public class AccountServiceHelper {
             return jsonData;
 
         } catch (MalformedURLException e) {
-
+            logger.error(e.getMessage());
             e.printStackTrace();
-
+            jsonData = e.getMessage();
         } catch (IOException e) {
-
+            logger.error(e.getMessage());
             e.printStackTrace();
-
+            jsonData = e.getMessage();
         }
         return jsonData;
-
     }
 }

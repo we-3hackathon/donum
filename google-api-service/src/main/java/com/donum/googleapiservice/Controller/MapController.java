@@ -1,9 +1,10 @@
 package com.donum.googleapiservice.Controller;
 
 import com.donum.googleapiservice.InternalService.AccountServiceHelper;
-import com.donum.googleapiservice.Strings.EnumGoogleMap;
+import com.donum.googleapiservice.Enum.EnumGoogleMap;
 import com.donum.googleapiservice.Service.GoogleMap.Map;
 import com.donum.googleapiservice.Service.GoogleMap.SingletonPlot;
+import org.apache.log4j.Logger;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -14,6 +15,9 @@ public class MapController extends BaseController{
 
     private Map googleMap ;
     private SingletonPlot mapPlot = SingletonPlot.getInstance();
+
+    final static Logger logger = Logger.getLogger(MapController.class);
+
 
     @GetMapping(value = "/editmap/zoom/{zoom}")
     public void changeMapZoom(@PathVariable String zoom){
@@ -52,6 +56,7 @@ public class MapController extends BaseController{
 
             return googleMap.getURL();
         }catch (Exception e){
+            logger.error(e.getMessage());
             e.getMessage();
         }
             return "Issue with generateAllMarkerURL()";
