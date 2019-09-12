@@ -1,7 +1,7 @@
 package com.donum.googleapiservice.Security;
 
-import com.donum.googleapiservice.Strings.ConnectionStrings;
-import com.donum.googleapiservice.Strings.EnumAPIKey;
+import com.donum.googleapiservice.Enum.ConnectionStrings;
+import com.donum.googleapiservice.Enum.EnumAPIKey;
 
 import java.io.BufferedReader;
 import java.io.IOException;

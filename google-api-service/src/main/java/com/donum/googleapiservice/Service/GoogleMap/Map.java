@@ -1,8 +1,8 @@
 package com.donum.googleapiservice.Service.GoogleMap;
 
 import com.donum.googleapiservice.Model.Map.StaticMap;
-import com.donum.googleapiservice.Strings.EnumAPIKey;
-import com.donum.googleapiservice.Strings.EnumGoogleMap;
+import com.donum.googleapiservice.Enum.EnumAPIKey;
+import com.donum.googleapiservice.Enum.EnumGoogleMap;
 
 public class Map {
 

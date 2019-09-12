@@ -1,6 +1,7 @@
 package com.donum.googleapiservice.Controller;
 
 import com.donum.googleapiservice.Service.Geocoding.Geocoding;
+import org.apache.log4j.Logger;
 import org.springframework.web.bind.annotation.*;
 
 @RestController()
@@ -10,13 +11,10 @@ public class GeoController extends BaseController{
 
     boolean inProgress;
     int progress = 0;
+
     /**
-     *
-     *
      * @param address - first line of address
      * @param postcode
-     *
-     *
      * return @param latitude and longitude
      */
     @GetMapping(value = "get-coordinates/{address}/{postcode}")

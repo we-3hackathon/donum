@@ -1,17 +1,16 @@
-package com.donum.googleapiservice.Strings;
+package com.donum.googleapiservice.Enum;
 
-public enum ConnectionStrings {
+public enum EnumAPIKey {
 
-    APIKEY_SERVER("http://18.130.137.35:5333/get-key/"),
-    ACCOUNT_SERVICE("http://40.121.148.131:8000/account-service/");
-
+    MAP_KEY(""),
+    PLACES_KEY("");
 
     private String text;
 
     /**
      * @param text
      */
-    ConnectionStrings(String text) {
+    EnumAPIKey(String text) {
         this.text = text;
     }
 
@@ -23,4 +22,7 @@ public enum ConnectionStrings {
         return text;
     }
 
+    public void updateKeyWith(String text) {
+        this.text = text;
+    }
 }
