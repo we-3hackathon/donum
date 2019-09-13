@@ -2,6 +2,8 @@ package com.donum.googleapiservice.Controller;
 
 import com.donum.googleapiservice.Service.Geocoding.Geocoding;
 import org.apache.log4j.Logger;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController()
@@ -19,7 +21,7 @@ public class GeoController extends BaseController{
      */
     @GetMapping(value = "get-coordinates/{address}/{postcode}")
     @ResponseBody
-    public String convertToGeo(@PathVariable String address, @PathVariable String postcode){
+    public ResponseEntity<String> convertToGeo(@PathVariable String address, @PathVariable String postcode){
 
         Geocoding convertAddress = new Geocoding(address,postcode);
 
@@ -29,7 +31,11 @@ public class GeoController extends BaseController{
             inProgress = true;
         }
 
-        return  convertAddress.getCoordinates();
+        if(convertAddress.getCoordinates() == "E") {
+            return new ResponseEntity<>("Connection failed" + _controllerName, HttpStatus.BAD_REQUEST);
+
+        }
+        return new ResponseEntity<>(convertAddress.getCoordinates() + _controllerName, HttpStatus.OK);
     }
 
     @Override
