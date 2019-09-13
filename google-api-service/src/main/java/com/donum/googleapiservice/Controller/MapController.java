@@ -39,7 +39,6 @@ public class MapController extends BaseController{
             // REST API to account-service GET @all-users
             String allUsers = getAllUsers();
 
-
             // for each in @all-users, addMarker
             mapPlot.processPlot(allUsers);
 
@@ -48,8 +47,6 @@ public class MapController extends BaseController{
 
             // plots URL
             googleMap.buildMapPlotURL(mapPlot.getPlotURL());
-
-            System.out.println(googleMap.getURL());
 
             // redirect to map
             //http.sendRedirect(googleMap.get_URL());
