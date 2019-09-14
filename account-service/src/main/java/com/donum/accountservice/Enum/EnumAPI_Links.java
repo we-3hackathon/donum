@@ -2,7 +2,7 @@ package com.donum.accountservice.Enum;
 
 public enum EnumAPI_Links {
 
-    GOOGLE_API("http://localhost:8000/google-api-service/"),
+    GOOGLE_API("http://localhost:8110/"),
     POSTCODE_API("https://api.postcodes.io/");
 
     private String txt;

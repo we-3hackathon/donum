@@ -6,9 +6,13 @@ import java.util.Map;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 import com.donum.accountservice.Controller.APIKeyController;
+import com.donum.accountservice.Enum.Template_Paths;
 import com.donum.accountservice.InternalService.GoogleApiServiceHelper;
+import com.donum.accountservice.Model.MailRequest;
 import com.donum.accountservice.Model.User;
+import com.donum.accountservice.Service.EmailService;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBSaveExpression;
@@ -18,6 +22,9 @@ import com.amazonaws.services.dynamodbv2.model.ConditionalCheckFailedException;
 import com.amazonaws.services.dynamodbv2.model.ExpectedAttributeValue;
 
 public class DynamoRepo {
+
+    @Autowired
+    private EmailService emailService;
 
     final static Logger logger = Logger.getLogger(DynamoRepo.class);
 	private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
@@ -36,14 +43,21 @@ public class DynamoRepo {
 
         if (LatLong[0].contains("Not Found") || LatLong[1].contains("Not Found")){ return 2; }
 
-        APIKeyController._singleDynamoMapper.save(new User(bloodGroup, firstName, lastName, email, bCryptPasswordEncoder.encode(password), addressline, postcode, LatLong[0], LatLong[1]));
+        APIKeyController._singleDynamoMapper.save(new User(bloodGroup, firstName, lastName, email, bCryptPasswordEncoder.encode(password),
+                addressline, postcode, LatLong[0], LatLong[1]));
+
+        Map<String, Object> emailData = new HashMap<>();
+        emailData.put("Name", firstName + " " + lastName);
+
+        emailService.sendEmail(new MailRequest(firstName + lastName, email, "CTRL Z", "Email Confirmation"),
+                emailData, Template_Paths.EMAIL_CONFIRMATION.toString());
+
         return 0;
     }
 
     public List<User> getAllUsers(){
         DynamoDBScanExpression scanExpression = new DynamoDBScanExpression();
-        List<User> scanResult = APIKeyController._singleDynamoMapper.scan(User.class, scanExpression);
-        return scanResult;
+        return APIKeyController._singleDynamoMapper.scan(User.class, scanExpression);
     }
 
     public User getSingleUser(String firstName, String email) {
