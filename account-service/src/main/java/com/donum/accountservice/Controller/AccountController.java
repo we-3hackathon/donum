@@ -36,19 +36,21 @@ public class AccountController extends BaseController{
         }
     }
 
-
     @GetMapping("/verify-account/{accesscode}/{firstname}/{email}")
     public ResponseEntity<String> Verify(@PathVariable String accesscode, @PathVariable String firstname, @PathVariable String email){
 
-        User user = APIKeyController._singleDynamoRepo.getSingleUser(firstname, email);
-
-        if(user.isVerified()) {
-            return new ResponseEntity<>("Already Verified", HttpStatus.CONFLICT);
-        }
-
-        if(user.getAccesscode().equals(accesscode)){
-            APIKeyController._singleDynamoRepo.updateUserDetail(firstname, email, 4, "");
-            return new ResponseEntity<>(accesscode, HttpStatus.OK);
+        try {
+            User user = APIKeyController._singleDynamoRepo.getSingleUser(firstname, email);
+            if(user.isVerified()) {
+                return new ResponseEntity<>("Already Verified", HttpStatus.CONFLICT);
+            }
+            if(user.getAccesscode().equals(accesscode)){
+                APIKeyController._singleDynamoRepo.updateUserDetail(firstname, email, 4, "");
+                return new ResponseEntity<>(accesscode, HttpStatus.OK);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>("User does not exist!", HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>("Invalid!", HttpStatus.UNAUTHORIZED);
     }
