@@ -53,8 +53,8 @@ public class EmailService {
 
             sender.setHost("smtp.gmail.com");
             sender.setPort(587);
-            sender.setUsername("Aroundhackathon@gmail.com");
-            sender.setPassword("hackathon111");
+            sender.setUsername("");
+            sender.setPassword("");
 
             Properties props = sender.getJavaMailProperties();
             props.put("mail.transport.protocol", "smtp");
