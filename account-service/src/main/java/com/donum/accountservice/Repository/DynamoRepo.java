@@ -30,13 +30,20 @@ public class DynamoRepo {
 
     public int createUser(String bloodGroup, String firstName, String lastName, String email, String password, String addressline, String postcode){
 
+        User userExists = APIKeyController._singleDynamoMapper.load(User.class, firstName, email);
+
+        if(userExists != null){
+            System.out.println("User " + userExists.toString() + "Already exists!");
+            return 1;
+        }
+        /*
         // TODO: Use of APIKeyController._singleDynamoMapper.load()
         for(User usersInDatabase: getAllUsers()){
             if(usersInDatabase.getEmail().equals(email)){
                 System.out.println("User " + usersInDatabase.toString() + "Already exists!");
                 return 1;
             }
-        }
+        }*/
 
         String[] LatLong = GoogleApiServiceHelper.convertToCoordinates(addressline,postcode);
 
