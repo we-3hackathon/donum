@@ -36,14 +36,6 @@ public class DynamoRepo {
             System.out.println("User " + userExists.toString() + "Already exists!");
             return 1;
         }
-        /*
-        // TODO: Use of APIKeyController._singleDynamoMapper.load()
-        for(User usersInDatabase: getAllUsers()){
-            if(usersInDatabase.getEmail().equals(email)){
-                System.out.println("User " + usersInDatabase.toString() + "Already exists!");
-                return 1;
-            }
-        }*/
 
         String[] LatLong = GoogleApiServiceHelper.convertToCoordinates(addressline,postcode);
 

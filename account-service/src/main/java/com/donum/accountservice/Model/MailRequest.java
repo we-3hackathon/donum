@@ -3,7 +3,7 @@ package com.donum.accountservice.Model;
 
 public class MailRequest {
 
-    private String URL = "http://localhost:8020/verify-account/";
+    private String URL = "http://40.121.148.131:8020/verify-account/";
     private String accesscode;
     private String firstname;
     private String to;
