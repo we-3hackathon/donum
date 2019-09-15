@@ -2,53 +2,80 @@ package com.donum.accountservice.Service;
 
 import com.donum.accountservice.Model.MailRequest;
 import com.donum.accountservice.Model.MailResponse;
+import freemarker.cache.FileTemplateLoader;
+import freemarker.cache.TemplateLoader;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.stereotype.Service;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import freemarker.template.Configuration;
+
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
+import java.util.Properties;
 
+@Service
 public class EmailService {
 
-    @Autowired
-    private JavaMailSender javaMailSender;
+    private JavaMailSenderImpl sender  = new JavaMailSenderImpl();
 
-    @Autowired
-    private Configuration configuration;
+    private Configuration config = new Configuration();
 
-    public MailResponse sendEmail(MailRequest request, Map<String, Object> model, String template) {
+    public MailResponse sendEmail(MailRequest request, Map<String, Object> model) {
 
         MailResponse response = new MailResponse();
-        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+
+        MimeMessage message = sender.createMimeMessage();
+
+        model.put("URL", request.getURL() + "/" + request.getFirstname() + "/" + request.getTo());
 
         try {
             // set mediaType
-            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
+            MimeMessageHelper helper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
                     StandardCharsets.UTF_8.name());
 
-            Template t = configuration.getTemplate(template);
+            config.setDirectoryForTemplateLoading(new File("src/main/resources/templates/"));
+
+            Template t = config.getTemplate("Confirmation_Email_Template.ftl");
             String html = FreeMarkerTemplateUtils.processTemplateIntoString(t, model);
+
+            sender.setHost("smtp.gmail.com");
+            sender.setPort(587);
+            sender.setUsername("Aroundhackathon@gmail.com");
+            sender.setPassword("hackathon111");
+
+            Properties props = sender.getJavaMailProperties();
+            props.put("mail.transport.protocol", "smtp");
+            props.put("mail.smtp.auth", "true");
+            props.put("mail.smtp.starttls.enable", "true");
+            props.put("mail.debug", "true");
 
             helper.setTo(request.getTo());
             helper.setText(html, true);
             helper.setSubject(request.getSubject());
             helper.setFrom(request.getFrom());
-            javaMailSender.send(mimeMessage);
+            sender.send(message);
 
             response.setMessage("mail send to : " + request.getTo());
             response.setStatus(Boolean.TRUE);
 
         } catch (MessagingException | IOException | TemplateException e) {
-            response.setMessage("Mail Sending failure : " + e.getMessage());
+            response.setMessage("Mail Sending failure : "+e.getMessage());
             response.setStatus(Boolean.FALSE);
+        } catch (Exception e){
+            e.printStackTrace();
         }
         return response;
     }

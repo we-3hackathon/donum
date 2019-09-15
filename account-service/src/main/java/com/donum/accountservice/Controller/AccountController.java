@@ -2,6 +2,7 @@
 package com.donum.accountservice.Controller;
 
 
+
 import com.donum.accountservice.Service.UsersInRange;
 import com.google.gson.Gson;
 import org.apache.log4j.Logger;
@@ -19,8 +20,8 @@ public class AccountController extends BaseController{
 
     @Autowired
     private UsersInRange _usersInRange;
-    final static Logger logger = Logger.getLogger(AccountController.class);
 
+    final static Logger logger = Logger.getLogger(AccountController.class);
 
     @ResponseBody
     @CrossOrigin()
@@ -33,6 +34,23 @@ public class AccountController extends BaseController{
             default:
                 return new ResponseEntity<>("User added to Database", HttpStatus.CREATED);
         }
+    }
+
+
+    @GetMapping("/verify-account/{accesscode}/{firstname}/{email}")
+    public ResponseEntity<String> Verify(@PathVariable String accesscode, @PathVariable String firstname, @PathVariable String email){
+
+        User user = APIKeyController._singleDynamoRepo.getSingleUser(firstname, email);
+
+        if(user.isVerified()) {
+            return new ResponseEntity<>("Already Verified", HttpStatus.CONFLICT);
+        }
+
+        if(user.getAccesscode().equals(accesscode)){
+            APIKeyController._singleDynamoRepo.updateUserDetail(firstname, email, 4, "");
+            return new ResponseEntity<>(accesscode, HttpStatus.OK);
+        }
+        return new ResponseEntity<>("Invalid!", HttpStatus.UNAUTHORIZED);
     }
 
     @CrossOrigin()

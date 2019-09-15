@@ -3,7 +3,9 @@ package com.donum.accountservice.Model;
 
 public class MailRequest {
 
-    private String name;
+    private String URL = "http://localhost:8020/verify-account/";
+    private String accesscode;
+    private String firstname;
     private String to;
     private String from;
     private String subject;
@@ -11,19 +13,36 @@ public class MailRequest {
     public MailRequest() {
     }
 
-    public MailRequest(String name, String to, String from, String subject) {
-        this.name = name;
+    public MailRequest(String accesscode, String firstname, String to, String from, String subject) {
+        this.accesscode = accesscode;
+        this.firstname = firstname;
         this.to = to;
         this.from = from;
         this.subject = subject;
     }
 
-    public String getName() {
-        return name;
+    public String getURL() {
+        return URL + accesscode;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setURL(String URL) {
+        this.URL = URL;
+    }
+
+    public String getAccesscode() {
+        return accesscode;
+    }
+
+    public void setAccesscode(String accesscode) {
+        this.accesscode = accesscode;
+    }
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
     }
 
     public String getTo() {
