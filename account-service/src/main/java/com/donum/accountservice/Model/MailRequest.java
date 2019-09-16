@@ -21,6 +21,13 @@ public class MailRequest {
         this.subject = subject;
     }
 
+    public MailRequest(String firstname, String to, String from, String subject) {
+        this.firstname = firstname;
+        this.to = to;
+        this.from = from;
+        this.subject = subject;
+    }
+
     public String getURL() {
         return URL + accesscode;
     }

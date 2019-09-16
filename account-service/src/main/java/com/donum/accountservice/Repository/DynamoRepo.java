@@ -7,10 +7,12 @@ import java.util.UUID;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 import com.donum.accountservice.Controller.APIKeyController;
+import com.donum.accountservice.Enum.Template_Paths;
 import com.donum.accountservice.InternalService.GoogleApiServiceHelper;
 import com.donum.accountservice.Model.MailRequest;
 import com.donum.accountservice.Model.User;
 import com.donum.accountservice.Service.EmailService;
+import freemarker.template.Template;
 import org.apache.log4j.Logger;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -50,8 +52,8 @@ public class DynamoRepo {
             Map<String, Object> emailData = new HashMap<>();
             emailData.put("Name", firstName + " " + lastName);
 
-            emailService.sendEmail(new MailRequest(randID,firstName, email, "Aroundhackathon@gmail.com",
-                            "Email Confirmation"), emailData);
+            emailService.sendEmail(new MailRequest(randID, firstName, email, "Aroundhackathon@gmail.com",
+                            "Email Confirmation"), emailData, Template_Paths.EMAIL_CONFIRMATION.toString());
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -73,6 +75,20 @@ public class DynamoRepo {
         } catch (ConditionalCheckFailedException exception) {
             logger.error(exception.getMessage());
             exception.printStackTrace();
+        }
+    }
+
+    public int passwordResetEmail(String firstname, String email) {
+        try {
+            Map<String, Object> emailData = new HashMap<>();
+            emailData.put("ResetURL", "" ); // Need to update, change to react rest-password page
+
+            emailService.sendEmail(new MailRequest(firstname, email, "Aroundhackathon@gmail.com",
+                    "Reset Password"), emailData, Template_Paths.RESET_PASSWORD.toString());
+            return 1;
+        }catch (Exception e){
+            e.printStackTrace();
+            return -1;
         }
     }
 

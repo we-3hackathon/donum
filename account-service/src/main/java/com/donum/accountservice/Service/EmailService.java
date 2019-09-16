@@ -1,5 +1,6 @@
 package com.donum.accountservice.Service;
 
+import com.donum.accountservice.Enum.Enum_Login_Credentials;
 import com.donum.accountservice.Model.MailRequest;
 import com.donum.accountservice.Model.MailResponse;
 import freemarker.cache.FileTemplateLoader;
@@ -33,7 +34,7 @@ public class EmailService {
 
     private Configuration config = new Configuration();
 
-    public MailResponse sendEmail(MailRequest request, Map<String, Object> model) {
+    public MailResponse sendEmail(MailRequest request, Map<String, Object> model, String template) {
 
         MailResponse response = new MailResponse();
 
@@ -48,13 +49,13 @@ public class EmailService {
 
             config.setDirectoryForTemplateLoading(new File("src/main/resources/templates/"));
 
-            Template t = config.getTemplate("Confirmation_Email_Template.ftl");
+            Template t = config.getTemplate(template);
             String html = FreeMarkerTemplateUtils.processTemplateIntoString(t, model);
 
             sender.setHost("smtp.gmail.com");
             sender.setPort(587);
-            sender.setUsername("");
-            sender.setPassword("");
+            sender.setUsername("Aroundhackathon@gmail.com");
+            sender.setPassword(Enum_Login_Credentials.GMAIL_PASSWORD.toString());
 
             Properties props = sender.getJavaMailProperties();
             props.put("mail.transport.protocol", "smtp");

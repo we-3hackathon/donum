@@ -1,8 +1,6 @@
 
 package com.donum.accountservice.Controller;
 
-
-
 import com.donum.accountservice.Service.UsersInRange;
 import com.google.gson.Gson;
 import org.apache.log4j.Logger;
@@ -80,38 +78,59 @@ public class AccountController extends BaseController{
         APIKeyController._singleDynamoRepo.updateUserDetails(user);
     }
 
+    @GetMapping(value = "/reset-password-email/{firstname}/{email}")
+    public ResponseEntity<String> resetPasswordEmail(@PathVariable String firstname, @PathVariable String email){
+
+        HttpStatus httpStatus = HttpStatus.OK;
+        String message = "";
+
+        switch (APIKeyController._singleDynamoRepo.passwordResetEmail(firstname, email)){
+            case 1:
+                message = "Email Sent.";
+                break;
+            case -1:
+                httpStatus = HttpStatus.BAD_REQUEST;
+                message = "Error Encountered, Email Not Sent!";
+        }
+        return new ResponseEntity<>(message, httpStatus);
+    }
+
     @CrossOrigin()
     @GetMapping(value = "/updatepassword/{firstName}/{email}/{update}")
-    public String updateUserPassword(@PathVariable String firstName, @PathVariable String email, @PathVariable String update ){
+    public ResponseEntity<String> updateUserPassword(@PathVariable String firstName, @PathVariable String email, @PathVariable String update ){
 
+        HttpStatus httpStatus = HttpStatus.OK;
         String message = "";
+
         switch(APIKeyController._singleDynamoRepo.updateUserDetail(firstName, email, 1, update)){
             case 1:
                 message = "Password update: success";
                 break;
             case -1:
+                httpStatus = HttpStatus.BAD_REQUEST;
                 message = "Failed to update";
                 break;
         }
-
-        return message;
+        return new ResponseEntity<>(message, httpStatus);
     }
 
     @CrossOrigin()
     @GetMapping(value = "/updateaddress/{firstName}/{email}/{update}")
-    public String updateUserAddress(@PathVariable String firstName, @PathVariable String email, @PathVariable String update ){
+    public ResponseEntity<String> updateUserAddress(@PathVariable String firstName, @PathVariable String email, @PathVariable String update ){
 
+        HttpStatus httpStatus = HttpStatus.OK;
         String message = "";
+
         switch(APIKeyController._singleDynamoRepo.updateUserDetail(firstName, email, 2, update)){
             case 1:
                 message = "Address update: success";
                 break;
             case -1:
+                httpStatus = HttpStatus.BAD_REQUEST;
                 message = "Failed to update";
                 break;
         }
-
-        return message;
+        return new ResponseEntity<>(message, httpStatus);
     }
 
     @CrossOrigin()
