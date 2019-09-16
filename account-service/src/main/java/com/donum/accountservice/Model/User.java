@@ -13,7 +13,7 @@ public class User implements Serializable {
     private String bloodGroup;
     private String firstName;
     private String lastName;
-    private String email;
+    private String Email;
     private String password;
     private String addressline;
     private String postcode;
@@ -23,11 +23,11 @@ public class User implements Serializable {
 
     public User() {}
 
-    public User(String bloodGroup, String firstName, String lastName, String email, String password, String addressline, String postcode, String latitude, String longitude) { // Proper Constructor
+    public User(String bloodGroup, String firstname, String lastName, String email, String password, String addressline, String postcode, String latitude, String longitude) { // Proper Constructor
         this.bloodGroup = bloodGroup;
-        this.firstName = firstName;
+        this.firstName = firstname;
         this.lastName = lastName;
-        this.email = email;
+        this.Email = email;
         this.password = password;
         this.addressline = addressline;
         this.postcode = postcode;
@@ -35,12 +35,12 @@ public class User implements Serializable {
         this.longitude = longitude;
     }
 
-    public User(String accesscode, String bloodGroup, String firstName, String lastName, String email, String password, String addressline, String postcode, String latitude, String longitude, boolean isVerified) {
+    public User(String accesscode, String bloodGroup, String firstName, String lastname, String email, String password, String addressline, String postcode, String latitude, String longitude, boolean isVerified) {
         this.accesscode = accesscode;
         this.bloodGroup = bloodGroup;
         this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
+        this.lastName = lastname;
+        this.Email = email;
         this.password = password;
         this.addressline = addressline;
         this.postcode = postcode;
@@ -75,7 +75,7 @@ public class User implements Serializable {
         this.bloodGroup = bloodGroup;
     }
 
-    @DynamoDBHashKey(attributeName = "firstName")
+    @DynamoDBAttribute
     public String getFirstName() {
         return firstName;
     }
@@ -93,13 +93,13 @@ public class User implements Serializable {
         this.lastName = lastName;
     }
 
-    @DynamoDBRangeKey
+    @DynamoDBHashKey(attributeName = "Email")
     public String getEmail() {
-        return email;
+        return Email;
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.Email = email;
     }
 
     @DynamoDBAttribute
@@ -162,7 +162,7 @@ public class User implements Serializable {
                 ", bloodGroup='" + bloodGroup + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
+                ", Email='" + Email + '\'' +
                 ", password='" + password + '\'' +
                 ", addressline='" + addressline + '\'' +
                 ", postcode='" + postcode + '\'' +

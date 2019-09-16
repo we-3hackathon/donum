@@ -1,4 +1,3 @@
-
 package com.donum.accountservice.Controller;
 
 import com.donum.accountservice.Service.UsersInRange;
@@ -38,12 +37,12 @@ public class AccountController extends BaseController{
     public ResponseEntity<String> Verify(@PathVariable String accesscode, @PathVariable String firstname, @PathVariable String email){
 
         try {
-            User user = APIKeyController._singleDynamoRepo.getSingleUser(firstname, email);
+            User user = APIKeyController._singleDynamoRepo.getSingleUser(email);
             if(user.isVerified()) {
                 return new ResponseEntity<>("Already Verified", HttpStatus.CONFLICT);
             }
             if(user.getAccesscode().equals(accesscode)){
-                APIKeyController._singleDynamoRepo.updateUserDetail(firstname, email, 4, "");
+                APIKeyController._singleDynamoRepo.updateUserDetail(email, 4, "");
                 return new ResponseEntity<>(accesscode, HttpStatus.OK);
             }
         }catch (Exception e){
@@ -64,9 +63,9 @@ public class AccountController extends BaseController{
     }
 
     @CrossOrigin()
-    @GetMapping(value = "/getuser/{firstName}/{email}")
-    public ResponseEntity<String> getUserDetails(@PathVariable String firstName, @PathVariable String email) { // Working
-        User user = APIKeyController._singleDynamoRepo.getSingleUser(firstName, email);
+    @GetMapping(value = "/getuser/{email}")
+    public ResponseEntity<String> getUserDetails(@PathVariable String email) { // Working
+        User user = APIKeyController._singleDynamoRepo.getSingleUser(email);
         if(user != null){
             return new ResponseEntity<>(user.toString(), HttpStatus.OK);
         }
@@ -96,13 +95,13 @@ public class AccountController extends BaseController{
     }
 
     @CrossOrigin()
-    @GetMapping(value = "/updatepassword/{firstName}/{email}/{update}")
-    public ResponseEntity<String> updateUserPassword(@PathVariable String firstName, @PathVariable String email, @PathVariable String update ){
+    @GetMapping(value = "/updatepassword/{email}/{update}")
+    public ResponseEntity<String> updateUserPassword(@PathVariable String email, @PathVariable String update ){
 
         HttpStatus httpStatus = HttpStatus.OK;
         String message = "";
 
-        switch(APIKeyController._singleDynamoRepo.updateUserDetail(firstName, email, 1, update)){
+        switch(APIKeyController._singleDynamoRepo.updateUserDetail(email, 1, update)){
             case 1:
                 message = "Password update: success";
                 break;
@@ -115,13 +114,13 @@ public class AccountController extends BaseController{
     }
 
     @CrossOrigin()
-    @GetMapping(value = "/updateaddress/{firstName}/{email}/{update}")
-    public ResponseEntity<String> updateUserAddress(@PathVariable String firstName, @PathVariable String email, @PathVariable String update ){
+    @GetMapping(value = "/updateaddress/{email}/{update}")
+    public ResponseEntity<String> updateUserAddress(@PathVariable String email, @PathVariable String update ){
 
         HttpStatus httpStatus = HttpStatus.OK;
         String message = "";
 
-        switch(APIKeyController._singleDynamoRepo.updateUserDetail(firstName, email, 2, update)){
+        switch(APIKeyController._singleDynamoRepo.updateUserDetail(email, 2, update)){
             case 1:
                 message = "Address update: success";
                 break;
@@ -134,11 +133,11 @@ public class AccountController extends BaseController{
     }
 
     @CrossOrigin()
-    @GetMapping(value = "/updateemail/{firstName}/{email}/{update}")
+    @GetMapping(value = "/updateemail/{email}/{update}")
     public ResponseEntity<String> updateUserEmail(@PathVariable String firstName, @PathVariable String email, @PathVariable String update ){
 
         ResponseEntity message = null;
-        switch(APIKeyController._singleDynamoRepo.updateUserDetail(firstName, email, 3, update)){
+        switch(APIKeyController._singleDynamoRepo.updateUserDetail(email, 3, update)){
             case 1:
                 message = new ResponseEntity<>("Email update: success", HttpStatus.OK);
                 break;
@@ -150,12 +149,11 @@ public class AccountController extends BaseController{
     }
 
     @CrossOrigin()
-    @DeleteMapping(value = "/delete/{firstName}/{email}")
-    public ResponseEntity<String> deleteUserDetails(@PathVariable String firstName, @PathVariable String email) { // Working
+    @DeleteMapping(value = "/delete/{email}")
+    public ResponseEntity<String> deleteUserDetails(@PathVariable String email) { // Working
         User user = new User();
-        user.setFirstName(firstName);
         user.setEmail(email);
-        if(APIKeyController._singleDynamoRepo.getSingleUser(firstName, email) != null){
+        if(APIKeyController._singleDynamoRepo.getSingleUser(email) != null){
             APIKeyController._singleDynamoRepo.deleteUserDetails(user);
             return new ResponseEntity<>(user.toString() + " Deleted", HttpStatus.OK);
         }
@@ -163,11 +161,11 @@ public class AccountController extends BaseController{
     }
 
     @CrossOrigin()
-    @GetMapping(value = "/login/{firstName}/{email}/{password}")
-    public ResponseEntity<String> Login(@PathVariable String firstName, @PathVariable String email, @PathVariable String password) {
-        if(APIKeyController._singleDynamoRepo.checkCredentials(firstName, email, password)){
+    @GetMapping(value = "/login/{email}/{password}")
+    public ResponseEntity<String> Login(@PathVariable String email, @PathVariable String password) {
+        if(APIKeyController._singleDynamoRepo.checkCredentials(email, password)){
             try {
-                JSONObject User = new JSONObject(new Gson().toJson(APIKeyController._singleDynamoRepo.getSingleUser(firstName, email)));
+                JSONObject User = new JSONObject(new Gson().toJson(APIKeyController._singleDynamoRepo.getSingleUser(email)));
                 User.remove("password");
                 return new ResponseEntity<>(new Gson().toJson(User), HttpStatus.OK);
             } catch (Exception e) {

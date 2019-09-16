@@ -21,8 +21,7 @@ public class MailRequest {
         this.subject = subject;
     }
 
-    public MailRequest(String firstname, String to, String from, String subject) {
-        this.firstname = firstname;
+    public MailRequest(String to, String from, String subject) {
         this.to = to;
         this.from = from;
         this.subject = subject;

@@ -32,7 +32,7 @@ public class DynamoRepo {
 
     public int createUser(String bloodGroup, String firstName, String lastName, String email, String password, String addressline, String postcode){
 
-        User userExists = APIKeyController._singleDynamoMapper.load(User.class, firstName, email);
+        User userExists = APIKeyController._singleDynamoMapper.load(User.class, email);
 
         if(userExists != null){
             System.out.println("User " + userExists.toString() + "Already exists!");
@@ -65,8 +65,8 @@ public class DynamoRepo {
         return APIKeyController._singleDynamoMapper.scan(User.class, scanExpression);
     }
 
-    public User getSingleUser(String firstName, String email) {
-        return APIKeyController._singleDynamoMapper.load(User.class, firstName, email);
+    public User getSingleUser(String email) {
+        return APIKeyController._singleDynamoMapper.load(User.class, email);
     }
 
     public void updateUserDetails(User user) {
@@ -78,12 +78,12 @@ public class DynamoRepo {
         }
     }
 
-    public int passwordResetEmail(String firstname, String email) {
+    public int passwordResetEmail(String email) {
         try {
             Map<String, Object> emailData = new HashMap<>();
             emailData.put("ResetURL", "" ); // Need to update, change to react rest-password page
 
-            emailService.sendEmail(new MailRequest(firstname, email, "Aroundhackathon@gmail.com",
+            emailService.sendEmail(new MailRequest(email, "Aroundhackathon@gmail.com",
                     "Reset Password"), emailData, Template_Paths.RESET_PASSWORD.toString());
             return 1;
         }catch (Exception e){
@@ -92,10 +92,10 @@ public class DynamoRepo {
         }
     }
 
-    public int updateUserDetail(String firstName, String email, int detail, String update){
+    public int updateUserDetail(String email, int detail, String update){
 
-        User userInDB = APIKeyController._singleDynamoMapper.load(User.class, firstName, email);
-        User updateUser = APIKeyController._singleDynamoMapper.load(User.class, firstName, email);
+        User userInDB = APIKeyController._singleDynamoMapper.load(User.class, email);
+        User updateUser = APIKeyController._singleDynamoMapper.load(User.class, email);
 
         switch(detail){
             case 1:
@@ -135,9 +135,9 @@ public class DynamoRepo {
         APIKeyController._singleDynamoMapper.delete(user);
     }
 
-    public boolean checkCredentials(String firstName, String email, String password){
+    public boolean checkCredentials(String email, String password){
         try{
-            User user = APIKeyController._singleDynamoMapper.load(User.class, firstName, email);
+            User user = APIKeyController._singleDynamoMapper.load(User.class, email);
             if(user != null && user.isVerified()){
                 if(bCryptPasswordEncoder.matches(password, user.getPassword())){
                     return true;
