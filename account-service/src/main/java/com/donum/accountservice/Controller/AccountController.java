@@ -83,7 +83,7 @@ public class AccountController extends BaseController{
         HttpStatus httpStatus = HttpStatus.OK;
         String message = "";
 
-        switch (APIKeyController._singleDynamoRepo.passwordResetEmail(firstname, email)){
+        switch (APIKeyController._singleDynamoRepo.passwordResetEmail(email)){
             case 1:
                 message = "Email Sent.";
                 break;

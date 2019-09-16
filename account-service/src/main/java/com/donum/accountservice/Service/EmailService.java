@@ -33,10 +33,9 @@ public class EmailService {
 
         MimeMessage message = sender.createMimeMessage();
 
-        model.put("URL", request.getURL() + "/" + request.getFirstname() + "/" + request.getTo());
+        model.put("URL", request.getURL() + "/" + request.getTo());
 
         try {
-            // set mediaType
             MimeMessageHelper helper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
                     StandardCharsets.UTF_8.name());
 
