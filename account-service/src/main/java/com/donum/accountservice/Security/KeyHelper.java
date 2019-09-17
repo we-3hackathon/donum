@@ -1,6 +1,7 @@
 package com.donum.accountservice.Security;
 
 import com.donum.accountservice.Enum.EnumAPIKey;
+import com.donum.accountservice.Enum.Enum_Login_Credentials;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -19,6 +20,11 @@ public class KeyHelper {
         return openConnectionToServer("dynamo/secret-key");
     }
 
+    public String loadEmailPassword() {
+
+        return openConnectionToServer("gmail/password");
+    }
+	
     private String openConnectionToServer(String path){
         String jsonData = "error";
 
@@ -55,6 +61,9 @@ public class KeyHelper {
                 case "dynamo/secret-key":
                     EnumAPIKey.DYNAMO_SECRET_KEY.updateKeyWith(jsonData);
                     return EnumAPIKey.DYNAMO_SECRET_KEY.toString();
+				case "gmail/password":
+					Enum_Login_Credentials.GMAIL_PASSWORD.updateKeyWith(jsonData);
+					return Enum_Login_Credentials.GMAIL_PASSWORD.toString();
             }
 
         } catch (MalformedURLException e) {

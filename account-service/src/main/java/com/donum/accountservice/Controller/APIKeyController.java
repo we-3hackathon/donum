@@ -32,11 +32,16 @@ public class APIKeyController extends BaseController {
         return _keyContainer.loadDynamoSecretKey();
     }
 
+    private String gmailDefaultPassword(){
+
+        return _keyContainer.loadEmailPassword();
+    }
+	
     @GetMapping(value = "/load/all")
     @ResponseBody
     private String loadAll(){
 
-        return _keyContainer.loadDynamoSecretKey() + " " + _keyContainer.loadDynamoAccessKey();
+        return _keyContainer.loadDynamoSecretKey() + " " + _keyContainer.loadDynamoAccessKey() + " " + gmailDefaultPassword() ;
     }
 
     @GetMapping(value = "/status")
