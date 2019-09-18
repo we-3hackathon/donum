@@ -1,8 +1,7 @@
 import React from "react";
 import axios from "axios";
-import Select from "react-select";
 import { Redirect } from "react-router-dom";
-import "../Components CSS/Auth/Register.css";
+import "../CSS/Auth/Register/Register.css";
 
 const BloodGroups = [
   { vale: "AB+", label: "AB+" },
@@ -191,9 +190,12 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     event.preventDefault();
     console.log("Submitting");
     try {
-      this.state.addressline = this.state.addressline.replace(/\s/g, "");
-      this.state.postcode = this.state.postcode.replace(/\s/g, "");
-
+	this.setState({
+		addressline: this.state.addressline.replace(/\s/g, ""),
+		postcode: this.state.postcode.replace(/\s/g, "")
+	})
+	  
+	  
       if (this.state.password === this.state.confirmpassword) {
         axios
           .get(
