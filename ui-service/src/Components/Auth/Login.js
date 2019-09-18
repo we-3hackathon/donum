@@ -1,9 +1,8 @@
 import React from "react";
 import axios from "axios";
 import { Redirect } from "react-router-dom";
-import Dashboard from "../Dashboard/Dashboard";
-import "../Components CSS/Auth/css/main.css";
-import "../Components CSS/Auth/css/util.css";
+import "../CSS/Auth/Login/main.css";
+import "../CSS/Auth/Login/util.css";
 
 class Login extends React.Component {
   constructor(props) {

@@ -8,11 +8,11 @@
 		<version>2.1.3.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.bdonor</groupId>
+	<groupId>com.donum</groupId>
 	<artifactId>google-api-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>google-api-service</name>
-	<description>Demo project for Spring Boot</description>
+	<description>Google service for geocoding and static maps</description>
 
 	<properties>
 		<java.version>1.8</java.version>
@@ -31,7 +31,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.17</version>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
