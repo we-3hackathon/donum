@@ -1,31 +1,32 @@
 package co.uk.fluunt.donum.cachemanager.Controller;
 
 
+import co.uk.fluunt.donum.cachemanager.Entity.Node;
+import co.uk.fluunt.donum.cachemanager.Entity.User;
+import co.uk.fluunt.donum.cachemanager.Entity.UserNode;
 import co.uk.fluunt.donum.cachemanager.InternalService.AccountServiceHelper;
 import co.uk.fluunt.donum.cachemanager.Tree.PostcodeTree;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/cache")
 public class CacheController extends BaseController{
 
+    static PostcodeTree tree;
     @Override
     public void loadController() {
             _controllerName = "CacheController";
     }
 	
 	@CrossOrigin()
-    @GetMapping(value = "/load") // Working
+    @GetMapping(value = "/load")
     public ResponseEntity<String> loadAllToMemory() {
 
 		String allUsers = AccountServiceHelper.requestAllUsers();
 		
-		PostcodeTree tree = new PostcodeTree(allUsers);
+		 tree = new PostcodeTree(allUsers);
 		
 		tree.processJsonData();
 		
@@ -33,6 +34,19 @@ public class CacheController extends BaseController{
 		
     }
 
+    @CrossOrigin()
+    @GetMapping(value = "/search/{postcode}")
+    public ResponseEntity<String> searchForUsers(@PathVariable String postcode) {
+
+        StringBuilder sb = new StringBuilder();
+
+        for(Node user: tree.getUsersFromPostcode(postcode).values()){
+            sb.append(user.getUserData().getName() + " " + user.getUserData().getBlood());
+        }
+
+        return new ResponseEntity<>(sb.toString(),HttpStatus.OK);
+
+    }
 	
 	
 }
