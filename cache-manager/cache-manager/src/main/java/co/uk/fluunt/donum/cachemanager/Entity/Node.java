@@ -6,7 +6,7 @@ public class Node {
 
     private HashMap<String,Node> _children;
     private String _data;
-
+    protected User userData;
 
     public Node(String data){
         _data = data;
@@ -35,5 +35,9 @@ public class Node {
 
     public String getData(){
         return _data;
+    }
+
+    public User getUserData() {
+        return userData;
     }
 }
