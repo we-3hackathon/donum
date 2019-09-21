@@ -3,7 +3,6 @@ package com.donum.accountservice.Controller;
 import com.donum.accountservice.Service.UsersInRange;
 import com.google.gson.Gson;
 import org.apache.log4j.Logger;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.donum.accountservice.Model.User;
 import org.springframework.http.HttpStatus;
@@ -163,11 +162,10 @@ public class AccountController extends BaseController{
     @CrossOrigin()
     @GetMapping(value = "/login/{email}/{password}")
     public ResponseEntity<String> Login(@PathVariable String email, @PathVariable String password) {
-        if(APIKeyController._singleDynamoRepo.checkCredentials(email, password)){
+        String token = APIKeyController._singleDynamoRepo.checkCredentials(email, password);
+        if(!token.equals("Request Failed")){
             try {
-                JSONObject User = new JSONObject(new Gson().toJson(APIKeyController._singleDynamoRepo.getSingleUser(email)));
-                User.remove("password");
-                return new ResponseEntity<>(new Gson().toJson(User), HttpStatus.OK);
+                return new ResponseEntity<>(token, HttpStatus.OK);
             } catch (Exception e) {
                 logger.error(e.getMessage());
                 e.printStackTrace();

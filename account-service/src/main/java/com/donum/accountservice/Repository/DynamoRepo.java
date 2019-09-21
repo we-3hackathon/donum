@@ -8,12 +8,13 @@ import java.util.UUID;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 import com.donum.accountservice.Controller.APIKeyController;
 import com.donum.accountservice.Enum.Template_Paths;
+import com.donum.accountservice.InternalService.JWTService;
 import com.donum.accountservice.InternalService.GoogleApiServiceHelper;
 import com.donum.accountservice.Model.MailRequest;
 import com.donum.accountservice.Model.User;
 import com.donum.accountservice.Service.EmailService;
-import freemarker.template.Template;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBSaveExpression;
@@ -25,6 +26,9 @@ import com.amazonaws.services.dynamodbv2.model.ExpectedAttributeValue;
 public class DynamoRepo {
 
     private EmailService emailService = new EmailService();
+
+    @Autowired
+    private JWTService jwt;
 
     private final static Logger logger = Logger.getLogger(DynamoRepo.class);
 
@@ -135,19 +139,18 @@ public class DynamoRepo {
         APIKeyController._singleDynamoMapper.delete(user);
     }
 
-    public boolean checkCredentials(String email, String password){
+    public String checkCredentials(String email, String password){
         try{
             User user = APIKeyController._singleDynamoMapper.load(User.class, email);
             if(user != null && user.isVerified()){
                 if(bCryptPasswordEncoder.matches(password, user.getPassword())){
-                    return true;
+                    return jwt.getJWT(email, bCryptPasswordEncoder.encode(password));
                 }
             }
         }catch (Exception e){
             logger.error(e.getMessage());
             e.printStackTrace();
         }
-        return false;
+        return "Request Failed";
     }
-
 }

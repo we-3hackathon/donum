@@ -170,6 +170,4 @@ public class User implements Serializable {
                 ", longitude='" + longitude + '\'' +
                 '}';
     }
-
-
 }
