@@ -27,8 +27,7 @@ def token_required(f):
 def create_JWT():
     try:
         user = request.json
-        token = jwt.encode({'email': user["user"], 'password': user["password"],'exp': datetime.datetime.utcnow()
-                               + datetime.timedelta(minutes=120)}, app.config["SECRET_KEY"])
+        token = jwt.encode({'user': user["email"], 'password': user["password"]}, app.config["SECRET_KEY"])
         token = jsonify({'token': token.decode('UTF-8')})
         return token, 201
     except Exception as e:
