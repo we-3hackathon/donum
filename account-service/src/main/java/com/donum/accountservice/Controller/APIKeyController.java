@@ -32,7 +32,9 @@ public class APIKeyController extends BaseController {
         return _keyContainer.loadDynamoSecretKey();
     }
 
-    private String gmailDefaultPassword(){
+    @GetMapping(value = "/load/gmail/password")
+    @ResponseBody
+    public String gmailDefaultPassword(){
 
         return _keyContainer.loadEmailPassword();
     }
