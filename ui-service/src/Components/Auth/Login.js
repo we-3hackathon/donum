@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+import { useCookies } from 'react-cookie';
 import { Redirect } from "react-router-dom";
 import "../CSS/Auth/Login/main.css";
 import "../CSS/Auth/Login/util.css";
@@ -8,7 +9,6 @@ class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      firstname: "",
       email: "",
       password: "",
       AUTH_ERROR: "",
@@ -37,21 +37,6 @@ class Login extends React.Component {
               class="login100-form validate-form"
               onSubmit={this.handleSubmit}
             >
-              <div
-                class="wrap-input100 validate-input"
-                data-validate="Enter username"
-              >
-                <input
-                  class="input100"
-                  type="text"
-                  name="firstname"
-                  placeholder="Username"
-                  value={firstname}
-                  onChange={this.handleChange}
-                />
-                <span class="focus-input100" data-placeholder=""></span>
-              </div>
-
               <div
                 class="wrap-input100 validate-input"
                 data-validate="Enter email"
@@ -115,7 +100,6 @@ class Login extends React.Component {
       </div>
     );
   }
-
   handleChange = event => {
     this.setState({
       [event.target.name]: event.target.value
@@ -123,28 +107,27 @@ class Login extends React.Component {
   };
   handleSubmit = event => {
     event.preventDefault();
-
     if (
-      !(this.state.firstname === "") &&
       !(this.state.email === "") &&
       !(this.state.password === "")
     ) {
       axios
-        .get(
-          //incorrect way of doing, to be enhanced
-          "http://40.121.148.131:8000/account-service/login/" +
-            this.state.firstname +
-            "/" +
-            this.state.email +
-            "/" +
-            this.state.password
-        )
+      .get(
+        //incorrect way of doing, to be enhanced
+        "http://40.121.148.131:8020/login/" +
+          this.state.email +
+          "/" +
+          this.state.password
+      )
         .then(result => {
           try {
             if (
-              result.data.nameValuePairs.firstName === this.state.firstname &&
-              result.data.nameValuePairs.email === this.state.email
+              result.data.nameValuePairs != "Login Failed"
             ) {
+              const [cookies, setCookie] = useCookies(['token']);
+              let experationDate = new Date();
+              experationDate.setTime(experationDate.getTime() + (120*60*1000));
+              setCookie('token', result.data.nameValuePairs.firstName, { path: '/',  expires: experationDate});
               this.setState({
                 AUTH_STATUS: true
               });
