@@ -2,6 +2,7 @@ package com.donum.accountservice.Security;
 
 import com.donum.accountservice.Enum.EnumAPIKey;
 import com.donum.accountservice.Enum.Enum_Login_Credentials;
+import org.apache.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,6 +10,8 @@ import java.io.InputStreamReader;
 import java.net.*;
 
 public class KeyHelper {
+
+    final static Logger logger = Logger.getLogger(KeyHelper.class);
 
     public String loadDynamoAccessKey() {
 
@@ -68,10 +71,12 @@ public class KeyHelper {
 
         } catch (MalformedURLException e) {
 
+            logger.error(e.getMessage());
             e.printStackTrace();
 
         } catch (IOException e) {
 
+            logger.error(e.getMessage());
             e.printStackTrace();
 
         }

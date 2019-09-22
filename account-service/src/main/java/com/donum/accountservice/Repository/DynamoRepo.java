@@ -129,7 +129,7 @@ public class DynamoRepo {
 
         DynamoDBSaveExpression saveExpression = new DynamoDBSaveExpression();
         Map<String, ExpectedAttributeValue> expected = new HashMap<>();
-        expected.put("email", new ExpectedAttributeValue(new AttributeValue(user.getEmail())).withComparisonOperator(ComparisonOperator.EQ));  // Checks against the given users ID
+        expected.put("Email", new ExpectedAttributeValue(new AttributeValue(user.getEmail())).withComparisonOperator(ComparisonOperator.EQ));  // Checks against the given users ID
         saveExpression.setExpected(expected);
         return saveExpression;
     }

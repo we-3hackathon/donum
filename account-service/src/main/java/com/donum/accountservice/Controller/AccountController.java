@@ -1,5 +1,6 @@
 package com.donum.accountservice.Controller;
 
+import com.donum.accountservice.Enum.EnumAPI_Links;
 import com.donum.accountservice.Service.UsersInRange;
 import com.google.gson.Gson;
 import org.apache.log4j.Logger;
@@ -9,6 +10,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.List;
 
 @RestController
@@ -32,8 +38,8 @@ public class AccountController extends BaseController{
         }
     }
 
-    @GetMapping("/verify-account/{accesscode}/{firstname}/{email}")
-    public ResponseEntity<String> Verify(@PathVariable String accesscode, @PathVariable String firstname, @PathVariable String email){
+    @GetMapping("/verify-account/{accesscode}/{email}")
+    public ResponseEntity<String> Verify(@PathVariable String accesscode, @PathVariable String email){
 
         try {
             User user = APIKeyController._singleDynamoRepo.getSingleUser(email);
@@ -54,6 +60,7 @@ public class AccountController extends BaseController{
     @CrossOrigin()
     @GetMapping(value = "/get-all")
     public ResponseEntity<String> getUsers() {
+
         List<User> Users = APIKeyController._singleDynamoRepo.getAllUsers();
         if(Users.isEmpty()){
             return new ResponseEntity<>("No users in database.", HttpStatus.NOT_FOUND);
@@ -187,4 +194,5 @@ public class AccountController extends BaseController{
     public void loadController() {
         _controllerName = "AccountController ";
     }
+
 }
