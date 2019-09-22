@@ -11,8 +11,11 @@ import java.net.URL;
 public class JWTService {
 
     public String getJWT(String email, String password){
+
         String token = "";
+
         try {
+
             URL url = new URL ("http://127.0.0.1:5000/token-creation/user");
 
             HttpURLConnection con = (HttpURLConnection)url.openConnection();
@@ -22,6 +25,8 @@ public class JWTService {
 
             String jsonString = new JSONObject()
                     .put("email", email).put("password", password).toString();
+
+            System.out.println(jsonString);
 
             try(OutputStream os = con.getOutputStream()) {
                 byte[] input =  jsonString.getBytes("utf-8");

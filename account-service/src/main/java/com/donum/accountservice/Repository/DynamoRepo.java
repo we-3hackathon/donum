@@ -27,8 +27,7 @@ public class DynamoRepo {
 
     private EmailService emailService = new EmailService();
 
-    @Autowired
-    private JWTService jwt;
+    private JWTService jwt = new JWTService();
 
     private final static Logger logger = Logger.getLogger(DynamoRepo.class);
 

@@ -17,6 +17,7 @@ export class GoogleMaps extends Component {
     document.title = 'Donum | Users'
     var self = this;
     if(cookies.get("token")){
+      console.log(cookies.get("token"));
       axios
         .get(`http://40.121.148.131:8020/get-all`)
         .then(response => {
@@ -27,15 +28,16 @@ export class GoogleMaps extends Component {
         .catch(function(error) {
           console.log(error);
         });
+    } else {
+      this.props.history.push("/login")
     }
-    this.history.props.push("/login")
   }
 
   render() {
     const cookies = new Cookies();
     const { UserInfo } = this.state;
     if(!cookies.get("token")){
-      this.history.props.push("/login")
+      this.props.history.push("/login")
     }
     if (!UserInfo) {
       return <div>Loading Map...</div>;
@@ -54,5 +56,5 @@ export class GoogleMaps extends Component {
 }
 
 export default GoogleApiWrapper({
-  apiKey: "key"
+  apiKey: ""
 })(GoogleMaps);

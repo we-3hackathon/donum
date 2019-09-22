@@ -9,7 +9,6 @@ class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      firstname: "",
       email: "",
       password: "",
       AUTH_ERROR: "",
@@ -38,21 +37,6 @@ class Login extends React.Component {
               class="login100-form validate-form"
               onSubmit={this.handleSubmit}
             >
-              <div
-                class="wrap-input100 validate-input"
-                data-validate="Enter firstname"
-              >
-                <input
-                  class="input100"
-                  type="text"
-                  name="firstname"
-                  placeholder="Firstname"
-                  value={firstname}
-                  onChange={this.handleChange}
-                />
-                <span class="focus-input100" data-placeholder=""></span>
-              </div>
-
               <div
                 class="wrap-input100 validate-input"
                 data-validate="Enter email"
@@ -125,7 +109,6 @@ class Login extends React.Component {
     const { cookies } = this.props;
     event.preventDefault();
     if (
-      !(this.state.firstname == "") &&
       !(this.state.email === "") &&
       !(this.state.password === "")
     ) {
@@ -133,8 +116,6 @@ class Login extends React.Component {
         .get(
           //incorrect way of doing, to be enhanced
           "http://localhost:8020/login/" +
-            this.state.firstname +
-            "/" +
             this.state.email +
             "/" +
             this.state.password
@@ -144,8 +125,8 @@ class Login extends React.Component {
           if (result.data != "Login Failed") {
             const cookies = new Cookies();
             let experationDate = new Date();
-            experationDate.setTime(experationDate.getTime() + 120 * 60 * 1000);
-            cookies.set("token", result.data.nameValuePairs.firstName, {
+            experationDate.setTime(experationDate.getTime() + 1 * 60 * 1000);
+            cookies.set("token", result.data.token, {
               path: "/",
               expires: experationDate
             });
