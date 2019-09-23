@@ -83,8 +83,8 @@ public class AccountController extends BaseController{
         APIKeyController._singleDynamoRepo.updateUserDetails(user);
     }
 
-    @GetMapping(value = "/reset-password-email/{firstname}/{email}")
-    public ResponseEntity<String> resetPasswordEmail(@PathVariable String firstname, @PathVariable String email){
+    @GetMapping(value = "/reset-password-email/{email}")
+    public ResponseEntity<String> resetPasswordEmail(@PathVariable String email){
 
         HttpStatus httpStatus = HttpStatus.OK;
         String message = "";
