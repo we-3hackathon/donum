@@ -88,10 +88,10 @@ public class DynamoRepo {
 
             String ResetToken = UUID.randomUUID().toString();
 
-            updateUserDetail(email, 5, ResetToken);
-
-            emailData.put("ResetURL", "http://localhost:3000/" + ResetToken + "/" + email); // Need to update, change to react rest-password page
-
+            if(getSingleUser(email) != null) {
+                updateUserDetail(email, 5, ResetToken);
+            }
+            emailData.put("ResetURL", "http://localhost:3000/resetpassword" + ResetToken + "/" + email);
             emailService.sendEmail(new MailRequest(email, "Aroundhackathon@gmail.com",
                     "Reset Password"), emailData, Template_Paths.RESET_PASSWORD.toString());
             return 1;

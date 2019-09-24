@@ -98,19 +98,23 @@ public class AccountController extends BaseController{
 
         HttpStatus httpStatus = HttpStatus.OK;
         String message = "";
-        User user = APIKeyController._singleDynamoRepo.getSingleUser(email);
-
-        if(!user.getResetPasswordToken().equals("")) {
-            switch (APIKeyController._singleDynamoRepo.updateUserDetail(email, 1, update)) {
-                case 1:
-                    APIKeyController._singleDynamoRepo.updateUserDetail(email, 5 , ""); // Reset Token to empty str once password is reset.
-                    message = "Password Reset";
-                case -1:
-                    httpStatus = HttpStatus.BAD_REQUEST;
-                    message = "Reset Failed";
-                    break;
+        try {
+            User user = APIKeyController._singleDynamoRepo.getSingleUser(email);
+            if (!user.getResetPasswordToken().equals("")) {
+                switch (APIKeyController._singleDynamoRepo.updateUserDetail(email, 1, update)) {
+                    case 1:
+                        APIKeyController._singleDynamoRepo.updateUserDetail(email, 5, "");
+                        message = "Password Reset";
+                    case -1:
+                        httpStatus = HttpStatus.BAD_REQUEST;
+                        message = "Reset Failed";
+                        break;
                 }
             }
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>("User does not exist", HttpStatus.NOT_FOUND);
+        }
         return new ResponseEntity<>(message, httpStatus);
     }
 
