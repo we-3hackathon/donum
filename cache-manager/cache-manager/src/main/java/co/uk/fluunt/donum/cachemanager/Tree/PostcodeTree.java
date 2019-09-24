@@ -67,15 +67,6 @@ public class PostcodeTree {
 
         incodeNode.addChild(new UserNode(user));
 
-        /**
-        System.out.println(root.getData());
-        System.out.println(root.getCollection());
-        System.out.println(outcodeNode.getData());
-        System.out.println(outcodeNode.getCollection());
-        System.out.println(incodeNode.getData());
-        System.out.println(incodeNode.getCollection());
-         **/
-
         return 1;
     }
 	
@@ -84,6 +75,8 @@ public class PostcodeTree {
         String name;
         String postcode;
         String bloodGroup;
+        String latitude;
+        String longitude;
 
 		try {
             JSONArray allUsers = new JSONArray(_jsonData);
@@ -92,7 +85,10 @@ public class PostcodeTree {
                 name = allUsers.getJSONObject(i).getString("firstName");
                 postcode = allUsers.getJSONObject(i).getString("postcode");
                 bloodGroup = allUsers.getJSONObject(i).getString("bloodGroup");
-				addNode(new User(name, bloodGroup, postcode));
+                latitude = allUsers.getJSONObject(i).getString("latitude");
+                longitude = allUsers.getJSONObject(i).getString("longitude");
+
+                addNode(new User(name, bloodGroup, postcode, latitude, longitude));
             }
 
         }catch (Exception ex){
@@ -104,16 +100,7 @@ public class PostcodeTree {
     public void drawTree(){
 
         for(Node outcode : root.getCollection().values()){
-            System.out.println();
-            System.out.println();
-            System.out.print("Outcode:" + outcode.getData());
-            System.out.println();
-
             for(Node incode: outcode.getCollection().values()){
-                System.out.println();
-                System.out.print("incode:"+incode.getData());
-                System.out.println();
-
                 for(Node user: incode.getCollection().values()){
                     System.out.print("*user:" + user.getData());
                 }
