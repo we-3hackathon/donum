@@ -5,11 +5,15 @@ public class User {
     private String _name;
     private String _blood;
     private String _postcode;
+    private String _latitude;
+    private String _longitude;
 
-    public User(String name, String blood, String postcode){
+    public User(String name, String blood, String postcode, String lat, String lon){
         _name = name;
         _blood = blood;
         _postcode = postcode;
+        _latitude = lat;
+        _longitude = lon;
     }
 
     public String getName() {
