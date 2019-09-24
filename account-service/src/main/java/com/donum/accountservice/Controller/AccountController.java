@@ -32,8 +32,8 @@ public class AccountController extends BaseController{
         }
     }
 
-    @GetMapping("/verify-account/{accesscode}/{firstname}/{email}")
-    public ResponseEntity<String> Verify(@PathVariable String accesscode, @PathVariable String firstname, @PathVariable String email){
+    @GetMapping("/verify-account/{accesscode}/{email}")
+    public ResponseEntity<String> Verify(@PathVariable String accesscode, @PathVariable String email){
 
         try {
             User user = APIKeyController._singleDynamoRepo.getSingleUser(email);
@@ -76,8 +76,8 @@ public class AccountController extends BaseController{
         APIKeyController._singleDynamoRepo.updateUserDetails(user);
     }
 
-    @GetMapping(value = "/reset-password-email/{firstname}/{email}")
-    public ResponseEntity<String> resetPasswordEmail(@PathVariable String firstname, @PathVariable String email){
+    @GetMapping(value = "/reset-password-email/{email}")
+    public ResponseEntity<String> resetPasswordEmail(@PathVariable String email){
 
         HttpStatus httpStatus = HttpStatus.OK;
         String message = "";
@@ -90,6 +90,27 @@ public class AccountController extends BaseController{
                 httpStatus = HttpStatus.BAD_REQUEST;
                 message = "Error Encountered, Email Not Sent!";
         }
+        return new ResponseEntity<>(message, httpStatus);
+    }
+
+    @GetMapping(value = "/resetpassword/{passwordResetToken}/{update}/{email}")
+    public ResponseEntity<String> resetPassword(@PathVariable String passwordResetToken, @PathVariable String update, @PathVariable String email){
+
+        HttpStatus httpStatus = HttpStatus.OK;
+        String message = "";
+        User user = APIKeyController._singleDynamoRepo.getSingleUser(email);
+
+        if(!user.getResetPasswordToken().equals("")) {
+            switch (APIKeyController._singleDynamoRepo.updateUserDetail(email, 1, update)) {
+                case 1:
+                    APIKeyController._singleDynamoRepo.updateUserDetail(email, 5 , ""); // Reset Token to empty str once password is reset.
+                    message = "Password Reset";
+                case -1:
+                    httpStatus = HttpStatus.BAD_REQUEST;
+                    message = "Reset Failed";
+                    break;
+                }
+            }
         return new ResponseEntity<>(message, httpStatus);
     }
 
@@ -133,7 +154,7 @@ public class AccountController extends BaseController{
 
     @CrossOrigin()
     @GetMapping(value = "/updateemail/{email}/{update}")
-    public ResponseEntity<String> updateUserEmail(@PathVariable String firstName, @PathVariable String email, @PathVariable String update ){
+    public ResponseEntity<String> updateUserEmail(@PathVariable String email, @PathVariable String update ){
 
         ResponseEntity message = null;
         switch(APIKeyController._singleDynamoRepo.updateUserDetail(email, 3, update)){

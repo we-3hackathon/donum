@@ -50,7 +50,7 @@ public class DynamoRepo {
         String randID = UUID.randomUUID().toString();
 
         APIKeyController._singleDynamoMapper.save(new User(randID, bloodGroup, firstName, lastName, email, bCryptPasswordEncoder.encode(password),
-                addressline, postcode, LatLong[0], LatLong[1], false));
+                addressline, postcode, LatLong[0], LatLong[1], false, ""));
 
         try {
             Map<String, Object> emailData = new HashMap<>();
@@ -85,7 +85,12 @@ public class DynamoRepo {
     public int passwordResetEmail(String email) {
         try {
             Map<String, Object> emailData = new HashMap<>();
-            emailData.put("ResetURL", "" ); // Need to update, change to react rest-password page
+
+            String ResetToken = UUID.randomUUID().toString();
+
+            updateUserDetail(email, 5, ResetToken);
+
+            emailData.put("ResetURL", "http://localhost:3000/" + ResetToken + "/" + email); // Need to update, change to react rest-password page
 
             emailService.sendEmail(new MailRequest(email, "Aroundhackathon@gmail.com",
                     "Reset Password"), emailData, Template_Paths.RESET_PASSWORD.toString());
@@ -114,6 +119,8 @@ public class DynamoRepo {
                 updateUser.setEmail(update);
             case 4:
                 updateUser.setVerified(true);
+            case 5:
+                updateUser.setResetPasswordToken(update);
                 break;
         }
         try {
@@ -130,7 +137,7 @@ public class DynamoRepo {
 
         DynamoDBSaveExpression saveExpression = new DynamoDBSaveExpression();
         Map<String, ExpectedAttributeValue> expected = new HashMap<>();
-        expected.put("email", new ExpectedAttributeValue(new AttributeValue(user.getEmail())).withComparisonOperator(ComparisonOperator.EQ));  // Checks against the given users ID
+        expected.put("Email", new ExpectedAttributeValue(new AttributeValue(user.getEmail())).withComparisonOperator(ComparisonOperator.EQ));  // Checks against the given users ID
         saveExpression.setExpected(expected);
         return saveExpression;
     }
