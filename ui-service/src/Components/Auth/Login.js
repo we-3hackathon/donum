@@ -13,7 +13,7 @@ class Login extends React.Component {
       password: "",
       AUTH_ERROR: "",
       AUTH_STATUS: false
-    };
+    }; 
   }
 
   componentDidMount() {
@@ -21,7 +21,7 @@ class Login extends React.Component {
   }
 
   render() {
-    const { firstname, email, password, AUTH_ERROR } = this.state;
+    const { email, password, AUTH_ERROR } = this.state;
     if (this.state.AUTH_STATUS) {
       return <Redirect to="/map" />;
     }
@@ -95,16 +95,25 @@ class Login extends React.Component {
                 <b>Donum up!</b>
               </a>
             </p>
+            <p class="sign-up">
+              <a href="/resetemail">
+                {" "}
+                <b>Forgot your password?</b>
+              </a>
+            </p>
+
           </div>
         </div>
       </div>
     );
   }
+
   handleChange = event => {
     this.setState({
       [event.target.name]: event.target.value
     });
   };
+
   handleSubmit = event => {
     const { cookies } = this.props;
     event.preventDefault();
