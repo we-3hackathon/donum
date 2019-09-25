@@ -7,22 +7,6 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'YourContribution'
 
 
-def token_required(f):
-    @wraps(f)
-    def decorated(*args, **kwargs):
-        token = "need to do"
-
-        if not token:
-            return "whatever"
-        try:
-            data = jwt.decode(token, app.config['SECRET_KEY'])
-        except:
-            return "need to do returns"
-
-        return f(*args, **kwargs)
-    
-    return decorated
-
 @app.route('/token-creation/user', methods=['GET', 'POST'])
 def create_JWT():
     try:
