@@ -1,2 +1,22 @@
 2019-09-22 16:21:27 ERROR DynamoRepo:151 - 
 2019-09-22 16:23:55 ERROR DynamoRepo:151 - 
+2019-10-20 14:54:22 DEBUG cache:44 - Couldn't find template in cache for "error.ftl"("en_GB", UTF-8, parsed); will try to load it.
+2019-10-20 14:54:22 DEBUG cache:44 - TemplateLoader.findTemplateSource("error_en_GB.ftl"): Not found
+2019-10-20 14:54:22 DEBUG cache:44 - TemplateLoader.findTemplateSource("error_en.ftl"): Not found
+2019-10-20 14:54:22 DEBUG cache:44 - TemplateLoader.findTemplateSource("error.ftl"): Not found
+2019-10-20 14:54:29 DEBUG cache:44 - TemplateLoader.findTemplateSource("error_en_GB.ftl"): Not found
+2019-10-20 14:54:29 DEBUG cache:44 - TemplateLoader.findTemplateSource("error_en.ftl"): Not found
+2019-10-20 14:54:29 DEBUG cache:44 - TemplateLoader.findTemplateSource("error.ftl"): Not found
+2019-10-20 14:54:29 DEBUG cache:44 - "error.ftl"("en_GB", UTF-8, parsed) no source found.
+2019-10-20 15:03:30 DEBUG cache:44 - Couldn't find template in cache for "error.ftl"("en_GB", UTF-8, parsed); will try to load it.
+2019-10-20 15:03:30 DEBUG cache:44 - TemplateLoader.findTemplateSource("error_en_GB.ftl"): Not found
+2019-10-20 15:03:30 DEBUG cache:44 - TemplateLoader.findTemplateSource("error_en.ftl"): Not found
+2019-10-20 15:03:30 DEBUG cache:44 - TemplateLoader.findTemplateSource("error.ftl"): Not found
+2019-10-20 15:04:48 DEBUG cache:44 - Couldn't find template in cache for "error.ftl"("en_GB", UTF-8, parsed); will try to load it.
+2019-10-20 15:04:48 DEBUG cache:44 - TemplateLoader.findTemplateSource("error_en_GB.ftl"): Not found
+2019-10-20 15:04:48 DEBUG cache:44 - TemplateLoader.findTemplateSource("error_en.ftl"): Not found
+2019-10-20 15:04:48 DEBUG cache:44 - TemplateLoader.findTemplateSource("error.ftl"): Not found
+2019-10-20 15:08:17 DEBUG cache:44 - Couldn't find template in cache for "error.ftl"("en_GB", UTF-8, parsed); will try to load it.
+2019-10-20 15:08:17 DEBUG cache:44 - TemplateLoader.findTemplateSource("error_en_GB.ftl"): Not found
+2019-10-20 15:08:17 DEBUG cache:44 - TemplateLoader.findTemplateSource("error_en.ftl"): Not found
+2019-10-20 15:08:17 DEBUG cache:44 - TemplateLoader.findTemplateSource("error.ftl"): Not found

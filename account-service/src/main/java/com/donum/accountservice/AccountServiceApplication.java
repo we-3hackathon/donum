@@ -8,6 +8,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -25,12 +27,20 @@ public class AccountServiceApplication {
 	}
 
 	private static boolean checkKeysAreLoaded(){
+
 		if(APIKeyController._singleDynamoRepo == null){
 			try {
 				URL url = new URL("http://localhost:8020/api-key/status");
 				HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 				conn.setRequestMethod("GET");
-				conn.setRequestProperty("Accept", "application/String");
+
+				if (conn.getResponseCode() != 200) {
+					throw new RuntimeException("Failed : HTTP error code : "
+							+ conn.getResponseCode());
+				}
+
+				conn.disconnect();
+
 			} catch (Exception e) {
 				logger.error(e.getMessage());
 				e.printStackTrace();

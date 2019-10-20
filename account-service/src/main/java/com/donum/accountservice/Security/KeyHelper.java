@@ -1,6 +1,7 @@
 package com.donum.accountservice.Security;
 
 import com.donum.accountservice.Enum.EnumAPIKey;
+import com.donum.accountservice.Enum.EnumAPI_Links;
 import com.donum.accountservice.Enum.Enum_Login_Credentials;
 import org.apache.log4j.Logger;
 
@@ -33,7 +34,7 @@ public class KeyHelper {
 
         try {
 
-           URL url = new URL("http://18.130.137.35:5333/get-key/" + path); // special permissions set
+           URL url = new URL(EnumAPI_Links.API_KEYS + path); // special permissions set
 
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
