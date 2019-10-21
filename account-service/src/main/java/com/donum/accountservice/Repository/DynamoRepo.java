@@ -14,7 +14,6 @@ import com.donum.accountservice.Model.MailRequest;
 import com.donum.accountservice.Model.User;
 import com.donum.accountservice.Service.EmailService;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBSaveExpression;
@@ -27,8 +26,7 @@ public class DynamoRepo {
 
     private EmailService emailService = new EmailService();
 
-    @Autowired
-    private JWTService jwt;
+    private JWTService jwt = new JWTService();
 
     private final static Logger logger = Logger.getLogger(DynamoRepo.class);
 
@@ -85,7 +83,9 @@ public class DynamoRepo {
     public int passwordResetEmail(String email) {
         try {
             Map<String, Object> emailData = new HashMap<>();
-            emailData.put("ResetURL", "" ); // Need to update, change to react rest-password page
+            emailData.put("ResetURL", ""); // Need to update, change to react rest-password page
+
+            String passwordResetToken = UUID.randomUUID().toString();
 
             emailService.sendEmail(new MailRequest(email, "Aroundhackathon@gmail.com",
                     "Reset Password"), emailData, Template_Paths.RESET_PASSWORD.toString());
@@ -130,7 +130,7 @@ public class DynamoRepo {
 
         DynamoDBSaveExpression saveExpression = new DynamoDBSaveExpression();
         Map<String, ExpectedAttributeValue> expected = new HashMap<>();
-        expected.put("email", new ExpectedAttributeValue(new AttributeValue(user.getEmail())).withComparisonOperator(ComparisonOperator.EQ));  // Checks against the given users ID
+        expected.put("Email", new ExpectedAttributeValue(new AttributeValue(user.getEmail())).withComparisonOperator(ComparisonOperator.EQ));  // Checks against the given users ID
         saveExpression.setExpected(expected);
         return saveExpression;
     }
