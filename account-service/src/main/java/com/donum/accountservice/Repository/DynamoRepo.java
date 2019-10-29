@@ -14,7 +14,6 @@ import com.donum.accountservice.Model.MailRequest;
 import com.donum.accountservice.Model.User;
 import com.donum.accountservice.Service.EmailService;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBSaveExpression;
@@ -27,8 +26,7 @@ public class DynamoRepo {
 
     private EmailService emailService = new EmailService();
 
-    @Autowired
-    private JWTService jwt;
+    private JWTService jwt = new JWTService();
 
     private final static Logger logger = Logger.getLogger(DynamoRepo.class);
 
@@ -85,7 +83,7 @@ public class DynamoRepo {
     public int passwordResetEmail(String email) {
         try {
             Map<String, Object> emailData = new HashMap<>();
-
+          
             String ResetToken = UUID.randomUUID().toString();
 
             if(getSingleUser(email) != null) {
