@@ -25,9 +25,14 @@ public class AccountController extends BaseController{
 
     final static Logger logger = Logger.getLogger(AccountController.class);
 
+
+    /***
+     *
+     * TODO: Needs to be a POST with model binding
+     */
     @ResponseBody
     @CrossOrigin()
-    @GetMapping(value = "/create/{bloodGroup}/{firstName}/{lastName}/{email}/{password}/{addressline}/{postcode}")
+    @GetMapping(value = "/accounts/{bloodGroup}/{firstName}/{lastName}/{email}/{password}/{addressline}/{postcode}")
     public ResponseEntity<String> Register(@PathVariable String bloodGroup , @PathVariable  String firstName, @PathVariable  String lastName, @PathVariable  String email, @PathVariable  String password, @PathVariable  String addressline, @PathVariable  String postcode){
 
         switch (APIKeyController._singleDynamoRepo.createUser(bloodGroup, firstName, lastName, email, password, addressline, postcode)){
@@ -38,7 +43,11 @@ public class AccountController extends BaseController{
         }
     }
 
-    @GetMapping("/verify-account/{accesscode}/{email}")
+    /***
+     *
+     * TODO: Needs to be a POST with model binding -> security
+     */
+    @GetMapping("/verify/{accesscode}/{email}")
     public ResponseEntity<String> Verify(@PathVariable String accesscode, @PathVariable String email){
 
         try {
@@ -58,7 +67,7 @@ public class AccountController extends BaseController{
     }
 
     @CrossOrigin()
-    @GetMapping(value = "/get-all")
+    @GetMapping(value = "/accounts")
     public ResponseEntity<String> getUsers() {
 
         List<User> Users = APIKeyController._singleDynamoRepo.getAllUsers();
@@ -68,8 +77,12 @@ public class AccountController extends BaseController{
         return new ResponseEntity<>(new Gson().toJson(Users), HttpStatus.OK);
     }
 
+    /***
+     *
+     * TODO: Needs to be a POST with model binding -> security
+     */
     @CrossOrigin()
-    @GetMapping(value = "/getuser/{email}")
+    @GetMapping(value = "/accounts/{email}")
     public ResponseEntity<String> getUserDetails(@PathVariable String email) { // Working
         User user = APIKeyController._singleDynamoRepo.getSingleUser(email);
         if(user != null){
@@ -78,12 +91,12 @@ public class AccountController extends BaseController{
         return new ResponseEntity<>("User not found.", HttpStatus.NOT_FOUND);
     }
 
-    @PutMapping(value = "/updateuser")
+    @PutMapping(value = "/accounts")
     public void updateUserDetails(@RequestBody User user) {
         APIKeyController._singleDynamoRepo.updateUserDetails(user);
     }
 
-    @GetMapping(value = "/reset-password-email/{email}")
+    @GetMapping(value = "accounts/reset/{email}")
     public ResponseEntity<String> resetPasswordEmail(@PathVariable String email){
 
         HttpStatus httpStatus = HttpStatus.OK;
@@ -100,7 +113,11 @@ public class AccountController extends BaseController{
         return new ResponseEntity<>(message, httpStatus);
     }
 
-    @GetMapping(value = "/resetpassword/{passwordResetToken}/{update}/{email}")
+    /***
+     *
+     * TODO: Needs to be a PATCH with model binding -> security
+     */
+    @GetMapping(value = "accounts/reset/{passwordResetToken}/{update}/{email}")
     public ResponseEntity<String> resetPassword(@PathVariable String passwordResetToken, @PathVariable String update, @PathVariable String email){
 
         HttpStatus httpStatus = HttpStatus.OK;
@@ -125,8 +142,12 @@ public class AccountController extends BaseController{
         return new ResponseEntity<>(message, httpStatus);
     }
 
+    /***
+     *
+     * TODO: Needs to be a PATCH with model binding -> security
+     */
     @CrossOrigin()
-    @GetMapping(value = "/updatepassword/{email}/{update}")
+    @GetMapping(value = "accounts/reset/password/{email}/{update}")
     public ResponseEntity<String> updateUserPassword(@PathVariable String email, @PathVariable String update ){
 
         HttpStatus httpStatus = HttpStatus.OK;
@@ -144,8 +165,12 @@ public class AccountController extends BaseController{
         return new ResponseEntity<>(message, httpStatus);
     }
 
+    /***
+     *
+     * TODO: Needs to be a PATCH with model binding
+     */
     @CrossOrigin()
-    @GetMapping(value = "/updateaddress/{email}/{update}")
+    @GetMapping(value = "accounts/reset/address/{email}/{update}")
     public ResponseEntity<String> updateUserAddress(@PathVariable String email, @PathVariable String update ){
 
         HttpStatus httpStatus = HttpStatus.OK;
@@ -163,8 +188,13 @@ public class AccountController extends BaseController{
         return new ResponseEntity<>(message, httpStatus);
     }
 
+
+    /***
+     *
+     * TODO: Needs to be a PATCH with model binding
+     */
     @CrossOrigin()
-    @GetMapping(value = "/updateemail/{email}/{update}")
+    @GetMapping(value = "accounts/reset/{email}/{update}")
     public ResponseEntity<String> updateUserEmail(@PathVariable String email, @PathVariable String update ){
 
         ResponseEntity message = null;
@@ -180,7 +210,7 @@ public class AccountController extends BaseController{
     }
 
     @CrossOrigin()
-    @DeleteMapping(value = "/delete/{email}")
+    @DeleteMapping(value = "accounts/delete/{email}")
     public ResponseEntity<String> deleteUserDetails(@PathVariable String email) { // Working
         User user = new User();
         user.setEmail(email);
@@ -191,6 +221,11 @@ public class AccountController extends BaseController{
         return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
     }
 
+
+    /***
+     *
+     * TODO: Possible change to a new controller?
+     */
     @CrossOrigin()
     @GetMapping(value = "/login/{email}/{password}")
     public ResponseEntity<String> Login(@PathVariable String email, @PathVariable String password) {
@@ -207,7 +242,7 @@ public class AccountController extends BaseController{
     }
 
     @CrossOrigin()
-    @GetMapping(value = "/usersinrange/{longitude}/{latitude}/{radius}")
+    @GetMapping(value = "accounts/range/{longitude}/{latitude}/{radius}")
     public ResponseEntity<String> UsersInRangeOfRadius(@PathVariable double longitude, @PathVariable double latitude, @PathVariable int radius){
         if(_usersInRange.getRadiusPostcodes(longitude, latitude, radius) != ""){
             return new ResponseEntity<>(_usersInRange.getRadiusPostcodes(longitude, latitude, radius), HttpStatus.OK);
