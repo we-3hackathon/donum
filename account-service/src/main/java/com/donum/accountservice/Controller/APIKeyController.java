@@ -67,4 +67,14 @@ public class APIKeyController extends BaseController {
     public void loadController() {
         _controllerName = "APIKeyController";
     }
+
+    public DynamoRepo getSingleDynamoRepo(){
+
+        if(_singleDynamoRepo != null || _singleDynamoMapper != null){
+            return _singleDynamoRepo;
+        }
+
+        loadAll();
+        return _singleDynamoRepo;
+    }
 }

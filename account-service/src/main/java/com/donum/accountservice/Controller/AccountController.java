@@ -32,8 +32,8 @@ public class AccountController extends BaseController{
      */
     @ResponseBody
     @CrossOrigin()
-    @GetMapping(value = "/accounts/{bloodGroup}/{firstName}/{lastName}/{email}/{password}/{addressline}/{postcode}")
-    public ResponseEntity<String> Register(@PathVariable String bloodGroup , @PathVariable  String firstName, @PathVariable  String lastName, @PathVariable  String email, @PathVariable  String password, @PathVariable  String addressline, @PathVariable  String postcode){
+    @PostMapping(value = "/accounts")
+    public ResponseEntity<String> Register(@RequestBody User user){
 
         switch (APIKeyController._singleDynamoRepo.createUser(bloodGroup, firstName, lastName, email, password, addressline, postcode)){
             case 1:
@@ -47,8 +47,8 @@ public class AccountController extends BaseController{
      *
      * TODO: Needs to be a POST with model binding -> security
      */
-    @GetMapping("/verify/{accesscode}/{email}")
-    public ResponseEntity<String> Verify(@PathVariable String accesscode, @PathVariable String email){
+    @PostMapping("/verify/{accesscode}/{email}")
+    public ResponseEntity<String> Verify(@RequestBody User user){
 
         try {
             User user = APIKeyController._singleDynamoRepo.getSingleUser(email);
@@ -82,8 +82,8 @@ public class AccountController extends BaseController{
      * TODO: Needs to be a POST with model binding -> security
      */
     @CrossOrigin()
-    @GetMapping(value = "/accounts/{email}")
-    public ResponseEntity<String> getUserDetails(@PathVariable String email) { // Working
+    @PostMapping(value = "/accounts/{email}")
+    public ResponseEntity<String> getUserDetails(@RequestBody String email) { // Working
         User user = APIKeyController._singleDynamoRepo.getSingleUser(email);
         if(user != null){
             return new ResponseEntity<>(user.toString(), HttpStatus.OK);
@@ -96,8 +96,8 @@ public class AccountController extends BaseController{
         APIKeyController._singleDynamoRepo.updateUserDetails(user);
     }
 
-    @GetMapping(value = "accounts/reset/{email}")
-    public ResponseEntity<String> resetPasswordEmail(@PathVariable String email){
+    @PostMapping(value = "accounts/reset")
+    public ResponseEntity<String> resetPasswordEmail(@RequestBody String email){
 
         HttpStatus httpStatus = HttpStatus.OK;
         String message = "";
@@ -117,8 +117,8 @@ public class AccountController extends BaseController{
      *
      * TODO: Needs to be a PATCH with model binding -> security
      */
-    @GetMapping(value = "accounts/reset/{passwordResetToken}/{update}/{email}")
-    public ResponseEntity<String> resetPassword(@PathVariable String passwordResetToken, @PathVariable String update, @PathVariable String email){
+    @PostMapping(value = "accounts/reset")
+    public ResponseEntity<String> resetPassword(@RequestBody String passwordResetToken, @RequestBody String update, @RequestBody String email){
 
         HttpStatus httpStatus = HttpStatus.OK;
         String message = "";
@@ -147,8 +147,8 @@ public class AccountController extends BaseController{
      * TODO: Needs to be a PATCH with model binding -> security
      */
     @CrossOrigin()
-    @GetMapping(value = "accounts/reset/password/{email}/{update}")
-    public ResponseEntity<String> updateUserPassword(@PathVariable String email, @PathVariable String update ){
+    @PatchMapping(value = "accounts/reset/password")
+    public ResponseEntity<String> updateUserPassword(@RequestBody String email, @RequestBody String update ){
 
         HttpStatus httpStatus = HttpStatus.OK;
         String message = "";
@@ -170,8 +170,8 @@ public class AccountController extends BaseController{
      * TODO: Needs to be a PATCH with model binding
      */
     @CrossOrigin()
-    @GetMapping(value = "accounts/reset/address/{email}/{update}")
-    public ResponseEntity<String> updateUserAddress(@PathVariable String email, @PathVariable String update ){
+    @PatchMapping(value = "accounts/reset/address")
+    public ResponseEntity<String> updateUserAddress(@RequestBody String email, @RequestBody String update ){
 
         HttpStatus httpStatus = HttpStatus.OK;
         String message = "";
@@ -194,8 +194,8 @@ public class AccountController extends BaseController{
      * TODO: Needs to be a PATCH with model binding
      */
     @CrossOrigin()
-    @GetMapping(value = "accounts/reset/{email}/{update}")
-    public ResponseEntity<String> updateUserEmail(@PathVariable String email, @PathVariable String update ){
+    @PatchMapping(value = "accounts/reset")
+    public ResponseEntity<String> updateUserEmail(@RequestBody String email, @RequestBody String update ){
 
         ResponseEntity message = null;
         switch(APIKeyController._singleDynamoRepo.updateUserDetail(email, 3, update)){
@@ -210,8 +210,8 @@ public class AccountController extends BaseController{
     }
 
     @CrossOrigin()
-    @DeleteMapping(value = "accounts/delete/{email}")
-    public ResponseEntity<String> deleteUserDetails(@PathVariable String email) { // Working
+    @DeleteMapping(value = "accounts/delete")
+    public ResponseEntity<String> deleteUserDetails(@RequestBody String email) { // Working
         User user = new User();
         user.setEmail(email);
         if(APIKeyController._singleDynamoRepo.getSingleUser(email) != null){
@@ -254,5 +254,6 @@ public class AccountController extends BaseController{
     public void loadController() {
         _controllerName = "AccountController ";
     }
+
 
 }
