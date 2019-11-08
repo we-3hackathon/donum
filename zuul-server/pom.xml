@@ -8,11 +8,11 @@
 		<version>2.1.4.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.bdonor.zuul-server</groupId>
+	<groupId>com.donum.zuul-server</groupId>
 	<artifactId>zuul-server</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>zuul-server</name>
-	<description>Demo project for Spring Boot</description>
+	<description>Proxy and routing of services</description>
 
 	<properties>
 		<java.version>1.8</java.version>
