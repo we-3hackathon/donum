@@ -1,6 +1,7 @@
 package com.donum.accountservice.Controller;
 
 import com.donum.accountservice.Enum.EnumAPI_Links;
+import com.donum.accountservice.Enum.ErrorMessage;
 import com.donum.accountservice.Service.UsersInRange;
 import com.google.gson.Gson;
 import org.apache.log4j.Logger;
@@ -32,9 +33,9 @@ public class AccountController extends BaseController {
 
         switch (APIKeyController._singleDynamoRepo.createUser(user)) {
             case 1:
-                return new ResponseEntity<>("Email in use. Try another email.", HttpStatus.CONFLICT);
+                return new ResponseEntity<>(ErrorMessage.EMAIL_INUSE.toString(), HttpStatus.CONFLICT);
             default:
-                return new ResponseEntity<>("User added to Database", HttpStatus.CREATED);
+                return new ResponseEntity<>(ErrorMessage.SUCCESS.toString(), HttpStatus.CREATED);
         }
     }
 
@@ -47,12 +48,12 @@ public class AccountController extends BaseController {
         switch (APIKeyController._singleDynamoRepo.updateUserDetail(email, detail, update)) {
 
             case 1:
-                message = "Update: success";
+                message = ErrorMessage.SUCCESS.toString();
 
                 return new ResponseEntity<>(message, HttpStatus.OK);
 
             default:
-                message = "Failed to update";
+                message = ErrorMessage.FAIL.toString();
 
                 return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
         }
@@ -67,7 +68,7 @@ public class AccountController extends BaseController {
             APIKeyController._singleDynamoRepo.deleteUserDetails(user);
             return new ResponseEntity<>(user.toString() + " Deleted", HttpStatus.OK);
         }
-        return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(ErrorMessage.USER_NOTFOUND.toString(), HttpStatus.NOT_FOUND);
     }
 
     @CrossOrigin()
@@ -76,7 +77,7 @@ public class AccountController extends BaseController {
 
         List<User> Users = APIKeyController._singleDynamoRepo.getAllUsers();
         if (Users.isEmpty()) {
-            return new ResponseEntity<>("No users in database.", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(ErrorMessage.EMPTY.toString(), HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(new Gson().toJson(Users), HttpStatus.OK);
     }
@@ -94,7 +95,7 @@ public class AccountController extends BaseController {
         if (user != null) {
             return new ResponseEntity<>(user.toString(), HttpStatus.OK);
         }
-        return new ResponseEntity<>("User not found.", HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(ErrorMessage.USER_NOTFOUND.toString(), HttpStatus.NOT_FOUND);
     }
 
     @CrossOrigin()
@@ -139,7 +140,7 @@ public class AccountController extends BaseController {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<>("User does not exist", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(ErrorMessage.USER_NOTFOUND.toString(), HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(message, httpStatus);
     }
@@ -168,7 +169,7 @@ public class AccountController extends BaseController {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<>("User does not exist!", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(ErrorMessage.USER_NOTFOUND.toString(), HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>("Invalid!", HttpStatus.UNAUTHORIZED);
     }
@@ -189,7 +190,7 @@ public class AccountController extends BaseController {
                 e.printStackTrace();
             }
         }
-        return new ResponseEntity<>("Login Failed.", HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(ErrorMessage.FAIL.toString(), HttpStatus.UNAUTHORIZED);
     }
 
     @Override
