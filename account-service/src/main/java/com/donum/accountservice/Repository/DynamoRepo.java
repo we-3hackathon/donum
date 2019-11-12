@@ -94,12 +94,16 @@ public class DynamoRepo {
         return APIKeyController._singleDynamoMapper.load(User.class, email);
     }
 
-    public void updateUserDetails(User user) {
+    public int updateUserDetails(User user) {
         try {
             APIKeyController._singleDynamoMapper.save(user, buildDynamoDBSaveExpression(user));
+
+            return 200;
         } catch (ConditionalCheckFailedException exception) {
             logger.error(exception.getMessage());
             exception.printStackTrace();
+
+            return exception.getStatusCode();
         }
     }
 

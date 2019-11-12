@@ -84,12 +84,16 @@ public class AccountController extends BaseController {
 
     @CrossOrigin()
     @PutMapping(value = "/accounts")
-    public void updateUserDetails(@RequestBody User user) {
-        APIKeyController._singleDynamoRepo.updateUserDetails(user);
+    public ResponseEntity<String> updateUserDetails(@RequestBody User user) {
+
+        if(APIKeyController._singleDynamoRepo.updateUserDetails(user) == 200){
+            return new ResponseEntity<>(ErrorMessage.SUCCESS.toString(), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(ErrorMessage.USER_NOTFOUND.toString(), HttpStatus.NOT_FOUND);
     }
 
     @CrossOrigin()
-    @PostMapping(value = "/accounts/{email}")
+    @PostMapping(value = "/accounts/get")
     public ResponseEntity<String> getUserDetails(@RequestBody String email) { // Working
         User user = APIKeyController._singleDynamoRepo.getSingleUser(email);
         if (user != null) {
