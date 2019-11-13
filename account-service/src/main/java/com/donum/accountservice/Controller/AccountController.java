@@ -2,6 +2,7 @@ package com.donum.accountservice.Controller;
 
 import com.donum.accountservice.Enum.EnumAPI_Links;
 import com.donum.accountservice.Enum.ErrorMessage;
+import com.donum.accountservice.Enum.UpdateCode;
 import com.donum.accountservice.Service.UsersInRange;
 import com.google.gson.Gson;
 import org.apache.log4j.Logger;
@@ -132,9 +133,9 @@ public class AccountController extends BaseController {
         try {
             User user = APIKeyController._singleDynamoRepo.getSingleUser(email);
             if (!user.getResetPasswordToken().equals("")) {
-                switch (APIKeyController._singleDynamoRepo.updateUserDetail(email, 1, update)) {
+                switch (APIKeyController._singleDynamoRepo.updateUserDetail(email, UpdateCode.PASSWORD.value(), update)) {
                     case 1:
-                        APIKeyController._singleDynamoRepo.updateUserDetail(email, 5, "");
+                        APIKeyController._singleDynamoRepo.updateUserDetail(email, UpdateCode.TOKEN.value(), "");
                         message = "Password Reset";
                     case -1:
                         httpStatus = HttpStatus.BAD_REQUEST;
@@ -168,7 +169,7 @@ public class AccountController extends BaseController {
                 return new ResponseEntity<>("Already Verified", HttpStatus.CONFLICT);
             }
             if (userInDB.getAccesscode().equals(user.getAccesscode())) {
-                APIKeyController._singleDynamoRepo.updateUserDetail(user.getEmail(), 4, "");
+                APIKeyController._singleDynamoRepo.updateUserDetail(user.getEmail(), UpdateCode.VERIFIED.value(), "");
                 return new ResponseEntity<>(user.getAccesscode(), HttpStatus.OK);
             }
         } catch (Exception e) {
