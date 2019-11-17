@@ -3,6 +3,7 @@ package com.donum.accountservice.Controller;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.donum.accountservice.Config.DynamoDBConfig;
 import com.donum.accountservice.Enum.EnumAPIKey;
+import com.donum.accountservice.Enum.ErrorMessage;
 import com.donum.accountservice.Repository.DynamoRepo;
 import com.donum.accountservice.Security.KeyHelper;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
@@ -60,11 +61,21 @@ public class APIKeyController extends BaseController {
                 + "Your Secret Key:"
                 + ((EnumAPIKey.DYNAMO_KEY.toString() != "" ) ? " Set" :"Not set" )
                 + " <p></p> "
-                + ((!_singleDynamoRepo.getAllUsers().isEmpty())? "Dynamo connection is Online" : "Dynamo connection is Offline") ;
+                + ((!_singleDynamoRepo.getAllUsers().isEmpty())? ErrorMessage.DYNAMO_ONLINE : ErrorMessage.DYNAMO_OFFLINE) ;
     }
 
     @Override
     public void loadController() {
         _controllerName = "APIKeyController";
+    }
+
+    public DynamoRepo getSingleDynamoRepo(){
+
+        if(_singleDynamoRepo != null || _singleDynamoMapper != null){
+            return _singleDynamoRepo;
+        }
+
+        loadAll();
+        return _singleDynamoRepo;
     }
 }

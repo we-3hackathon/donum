@@ -7,6 +7,7 @@ import java.util.UUID;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 import com.donum.accountservice.Controller.APIKeyController;
+import com.donum.accountservice.Enum.EmailFields;
 import com.donum.accountservice.Enum.Template_Paths;
 import com.donum.accountservice.InternalService.JWTService;
 import com.donum.accountservice.InternalService.GoogleApiServiceHelper;
@@ -22,6 +23,8 @@ import com.amazonaws.services.dynamodbv2.model.ComparisonOperator;
 import com.amazonaws.services.dynamodbv2.model.ConditionalCheckFailedException;
 import com.amazonaws.services.dynamodbv2.model.ExpectedAttributeValue;
 
+import javax.validation.constraints.Email;
+
 public class DynamoRepo {
 
     private EmailService emailService = new EmailService();
@@ -29,33 +32,53 @@ public class DynamoRepo {
     private JWTService jwt = new JWTService();
 
     private final static Logger logger = Logger.getLogger(DynamoRepo.class);
+    private BCryptPasswordEncoder _bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
-	private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
-    public int createUser(String bloodGroup, String firstName, String lastName, String email, String password, String addressline, String postcode){
+    public int createUser(User user){
 
-        User userExists = APIKeyController._singleDynamoMapper.load(User.class, email);
+        User userExists = APIKeyController._singleDynamoMapper.load(User.class, user.getEmail());
 
         if(userExists != null){
             System.out.println("User " + userExists.toString() + "Already exists!");
             return 1;
         }
 
-        String[] LatLong = GoogleApiServiceHelper.convertToCoordinates(addressline,postcode);
-
-        if (LatLong[0].contains("Not Found") || LatLong[1].contains("Not Found")){ return 2; }
-
         String randID = UUID.randomUUID().toString();
+        user.setId(randID);
 
-        APIKeyController._singleDynamoMapper.save(new User(randID, bloodGroup, firstName, lastName, email, bCryptPasswordEncoder.encode(password),
-                addressline, postcode, LatLong[0], LatLong[1], false, ""));
+        try {
+            String[] LatLong = GoogleApiServiceHelper.convertToCoordinates(user.getAddressline(), user.getPostcode());
+
+            // location could not be determined
+            if(LatLong[0].isEmpty() || LatLong[1].isEmpty()){
+                user.setLatitude("500");
+                user.setLongitude("500");
+
+                APIKeyController._singleDynamoMapper.save(user);
+            }
+
+            user.setLatitude(LatLong[0]);
+            user.setLongitude(LatLong[1]);
+
+            APIKeyController._singleDynamoMapper.save(user);
+
+        }catch (Exception e){
+
+            // 500 error recorded, user can still register
+            user.setLatitude("500");
+            user.setLongitude("500");
+
+            APIKeyController._singleDynamoMapper.save(user);
+        }
+
 
         try {
             Map<String, Object> emailData = new HashMap<>();
-            emailData.put("Name", firstName + " " + lastName);
+            emailData.put("Name", user.getFirstName() + " " + user.getLastName());
 
-            emailService.sendEmail(new MailRequest(randID, firstName, email, "Aroundhackathon@gmail.com",
-                            "Email Confirmation"), emailData, Template_Paths.EMAIL_CONFIRMATION.toString());
+            emailService.sendEmail(new MailRequest(randID, user.getFirstName(), user.getLastName(), EmailFields.FROM.toString(),
+                            EmailFields.CONFIRMATION_SUBJECT.toString()), emailData, Template_Paths.EMAIL_CONFIRMATION.toString());
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -71,12 +94,16 @@ public class DynamoRepo {
         return APIKeyController._singleDynamoMapper.load(User.class, email);
     }
 
-    public void updateUserDetails(User user) {
+    public int updateUserDetails(User user) {
         try {
             APIKeyController._singleDynamoMapper.save(user, buildDynamoDBSaveExpression(user));
+
+            return 200;
         } catch (ConditionalCheckFailedException exception) {
             logger.error(exception.getMessage());
             exception.printStackTrace();
+
+            return exception.getStatusCode();
         }
     }
 
@@ -90,8 +117,8 @@ public class DynamoRepo {
                 updateUserDetail(email, 5, ResetToken);
             }
             emailData.put("ResetURL", "http://localhost:3000/resetpassword" + ResetToken + "/" + email);
-            emailService.sendEmail(new MailRequest(email, "Aroundhackathon@gmail.com",
-                    "Reset Password"), emailData, Template_Paths.RESET_PASSWORD.toString());
+            emailService.sendEmail(new MailRequest(email, EmailFields.FROM.toString(),
+                    EmailFields.RESET_SUBJECT.toString()), emailData, Template_Paths.RESET_PASSWORD.toString());
             return 1;
         }catch (Exception e){
             e.printStackTrace();
@@ -106,7 +133,7 @@ public class DynamoRepo {
 
         switch(detail){
             case 1:
-                updateUser.setPassword(bCryptPasswordEncoder.encode(update));
+                updateUser.setPassword(update);
                 break;
             case 2:
                 String[] addressPostcode = update.split("|");
@@ -148,8 +175,8 @@ public class DynamoRepo {
         try{
             User user = APIKeyController._singleDynamoMapper.load(User.class, email);
             if(user != null && user.isVerified()){
-                if(bCryptPasswordEncoder.matches(password, user.getPassword())){
-                    return jwt.getJWT(email, bCryptPasswordEncoder.encode(password));
+                if(_bCryptPasswordEncoder.matches(password, user.getPassword())){
+                    return jwt.getJWT(email, _bCryptPasswordEncoder.encode(password));
                 }
             }
         }catch (Exception e){

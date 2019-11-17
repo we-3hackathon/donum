@@ -1,6 +1,8 @@
 package com.donum.accountservice.Controller;
 
 import com.donum.accountservice.Enum.EnumAPI_Links;
+import com.donum.accountservice.Enum.ErrorMessage;
+import com.donum.accountservice.Enum.UpdateCode;
 import com.donum.accountservice.Service.UsersInRange;
 import com.google.gson.Gson;
 import org.apache.log4j.Logger;
@@ -18,7 +20,7 @@ import java.net.URLConnection;
 import java.util.List;
 
 @RestController
-public class AccountController extends BaseController{
+public class AccountController extends BaseController {
 
     @Autowired
     private UsersInRange _usersInRange;
@@ -27,69 +29,89 @@ public class AccountController extends BaseController{
 
     @ResponseBody
     @CrossOrigin()
-    @GetMapping(value = "/create/{bloodGroup}/{firstName}/{lastName}/{email}/{password}/{addressline}/{postcode}")
-    public ResponseEntity<String> Register(@PathVariable String bloodGroup , @PathVariable  String firstName, @PathVariable  String lastName, @PathVariable  String email, @PathVariable  String password, @PathVariable  String addressline, @PathVariable  String postcode){
+    @PostMapping(value = "/accounts")
+    public ResponseEntity<String> Register(@RequestBody User user) {
 
-        switch (APIKeyController._singleDynamoRepo.createUser(bloodGroup, firstName, lastName, email, password, addressline, postcode)){
+        switch (APIKeyController._singleDynamoRepo.createUser(user)) {
             case 1:
-                return new ResponseEntity<>("Email in use. Try another email.", HttpStatus.CONFLICT);
+                return new ResponseEntity<>(ErrorMessage.EMAIL_INUSE.toString(), HttpStatus.CONFLICT);
             default:
-                return new ResponseEntity<>("User added to Database", HttpStatus.CREATED);
+                return new ResponseEntity<>(ErrorMessage.SUCCESS.toString(), HttpStatus.CREATED);
         }
-    }
-
-    @GetMapping("/verify-account/{accesscode}/{email}")
-    public ResponseEntity<String> Verify(@PathVariable String accesscode, @PathVariable String email){
-
-        try {
-            User user = APIKeyController._singleDynamoRepo.getSingleUser(email);
-            if(user.isVerified()) {
-                return new ResponseEntity<>("Already Verified", HttpStatus.CONFLICT);
-            }
-            if(user.getAccesscode().equals(accesscode)){
-                APIKeyController._singleDynamoRepo.updateUserDetail(email, 4, "");
-                return new ResponseEntity<>(accesscode, HttpStatus.OK);
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-            return new ResponseEntity<>("User does not exist!", HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>("Invalid!", HttpStatus.UNAUTHORIZED);
     }
 
     @CrossOrigin()
-    @GetMapping(value = "/get-all")
+    @PatchMapping(value = "/accounts")
+    public ResponseEntity<String> updateUserAddress(@RequestBody String email, @RequestBody String update, @RequestBody int detail) {
+
+        String message = "";
+
+        switch (APIKeyController._singleDynamoRepo.updateUserDetail(email, detail, update)) {
+
+            case 1:
+                message = ErrorMessage.SUCCESS.toString();
+
+                return new ResponseEntity<>(message, HttpStatus.OK);
+
+            default:
+                message = ErrorMessage.FAIL.toString();
+
+                return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @CrossOrigin()
+    @DeleteMapping(value = "/accounts")
+    public ResponseEntity<String> deleteUserDetails(@RequestBody String email) {
+        User user = new User();
+        user.setEmail(email);
+        if (APIKeyController._singleDynamoRepo.getSingleUser(email) != null) {
+            APIKeyController._singleDynamoRepo.deleteUserDetails(user);
+            return new ResponseEntity<>(user.toString() + " Deleted", HttpStatus.OK);
+        }
+        return new ResponseEntity<>(ErrorMessage.USER_NOTFOUND.toString(), HttpStatus.NOT_FOUND);
+    }
+
+    @CrossOrigin()
+    @GetMapping(value = "/accounts")
     public ResponseEntity<String> getUsers() {
 
         List<User> Users = APIKeyController._singleDynamoRepo.getAllUsers();
-        if(Users.isEmpty()){
-            return new ResponseEntity<>("No users in database.", HttpStatus.NOT_FOUND);
+        if (Users.isEmpty()) {
+            return new ResponseEntity<>(ErrorMessage.EMPTY.toString(), HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(new Gson().toJson(Users), HttpStatus.OK);
     }
 
     @CrossOrigin()
-    @GetMapping(value = "/getuser/{email}")
-    public ResponseEntity<String> getUserDetails(@PathVariable String email) { // Working
+    @PutMapping(value = "/accounts")
+    public ResponseEntity<String> updateUserDetails(@RequestBody User user) {
+
+        if(APIKeyController._singleDynamoRepo.updateUserDetails(user) == 200){
+            return new ResponseEntity<>(ErrorMessage.SUCCESS.toString(), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(ErrorMessage.USER_NOTFOUND.toString(), HttpStatus.NOT_FOUND);
+    }
+
+    @CrossOrigin()
+    @PostMapping(value = "/accounts/get")
+    public ResponseEntity<String> getUserDetails(@RequestBody String email) { // Working
         User user = APIKeyController._singleDynamoRepo.getSingleUser(email);
-        if(user != null){
+        if (user != null) {
             return new ResponseEntity<>(user.toString(), HttpStatus.OK);
         }
-        return new ResponseEntity<>("User not found.", HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(ErrorMessage.USER_NOTFOUND.toString(), HttpStatus.NOT_FOUND);
     }
 
-    @PutMapping(value = "/updateuser")
-    public void updateUserDetails(@RequestBody User user) {
-        APIKeyController._singleDynamoRepo.updateUserDetails(user);
-    }
-
-    @GetMapping(value = "/reset-password-email/{email}")
-    public ResponseEntity<String> resetPasswordEmail(@PathVariable String email){
+    @CrossOrigin()
+    @PostMapping(value = "accounts/reset")
+    public ResponseEntity<String> resetPasswordEmail(@RequestBody String email) {
 
         HttpStatus httpStatus = HttpStatus.OK;
         String message = "";
 
-        switch (APIKeyController._singleDynamoRepo.passwordResetEmail(email)){
+        // create a new reset token and send email
+        switch (APIKeyController._singleDynamoRepo.passwordResetEmail(email)) {
             case 1:
                 message = "Email Sent.";
                 break;
@@ -100,17 +122,20 @@ public class AccountController extends BaseController{
         return new ResponseEntity<>(message, httpStatus);
     }
 
-    @GetMapping(value = "/resetpassword/{passwordResetToken}/{update}/{email}")
-    public ResponseEntity<String> resetPassword(@PathVariable String passwordResetToken, @PathVariable String update, @PathVariable String email){
+    @CrossOrigin()
+    @PatchMapping(value = "/accounts/reset")
+    public ResponseEntity<String> resetPassword(@RequestBody String update, @RequestBody String email) {
 
         HttpStatus httpStatus = HttpStatus.OK;
         String message = "";
+
+        // change the password in the database
         try {
             User user = APIKeyController._singleDynamoRepo.getSingleUser(email);
             if (!user.getResetPasswordToken().equals("")) {
-                switch (APIKeyController._singleDynamoRepo.updateUserDetail(email, 1, update)) {
+                switch (APIKeyController._singleDynamoRepo.updateUserDetail(email, UpdateCode.PASSWORD.value(), update)) {
                     case 1:
-                        APIKeyController._singleDynamoRepo.updateUserDetail(email, 5, "");
+                        APIKeyController._singleDynamoRepo.updateUserDetail(email, UpdateCode.TOKEN.value(), "");
                         message = "Password Reset";
                     case -1:
                         httpStatus = HttpStatus.BAD_REQUEST;
@@ -118,84 +143,51 @@ public class AccountController extends BaseController{
                         break;
                 }
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<>("User does not exist", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(ErrorMessage.USER_NOTFOUND.toString(), HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(message, httpStatus);
     }
 
     @CrossOrigin()
-    @GetMapping(value = "/updatepassword/{email}/{update}")
-    public ResponseEntity<String> updateUserPassword(@PathVariable String email, @PathVariable String update ){
-
-        HttpStatus httpStatus = HttpStatus.OK;
-        String message = "";
-
-        switch(APIKeyController._singleDynamoRepo.updateUserDetail(email, 1, update)){
-            case 1:
-                message = "Password update: success";
-                break;
-            case -1:
-                httpStatus = HttpStatus.BAD_REQUEST;
-                message = "Failed to update";
-                break;
+    @GetMapping(value = "accounts/range/{longitude}/{latitude}/{radius}")
+    public ResponseEntity<String> UsersInRangeOfRadius(@PathVariable double longitude, @PathVariable double latitude, @PathVariable int radius) {
+        if (_usersInRange.getRadiusPostcodes(longitude, latitude, radius) != "") {
+            return new ResponseEntity<>(_usersInRange.getRadiusPostcodes(longitude, latitude, radius), HttpStatus.OK);
         }
-        return new ResponseEntity<>(message, httpStatus);
+        return new ResponseEntity<>("No users in given radius", HttpStatus.NOT_FOUND);
     }
 
     @CrossOrigin()
-    @GetMapping(value = "/updateaddress/{email}/{update}")
-    public ResponseEntity<String> updateUserAddress(@PathVariable String email, @PathVariable String update ){
+    @PostMapping("/verify/{accesscode}/{email}")
+    public ResponseEntity<String> Verify(@RequestBody User user) {
 
-        HttpStatus httpStatus = HttpStatus.OK;
-        String message = "";
-
-        switch(APIKeyController._singleDynamoRepo.updateUserDetail(email, 2, update)){
-            case 1:
-                message = "Address update: success";
-                break;
-            case -1:
-                httpStatus = HttpStatus.BAD_REQUEST;
-                message = "Failed to update";
-                break;
+        try {
+            User userInDB = APIKeyController._singleDynamoRepo.getSingleUser(user.getEmail());
+            if (userInDB.isVerified()) {
+                return new ResponseEntity<>("Already Verified", HttpStatus.CONFLICT);
+            }
+            if (userInDB.getAccesscode().equals(user.getAccesscode())) {
+                APIKeyController._singleDynamoRepo.updateUserDetail(user.getEmail(), UpdateCode.VERIFIED.value(), "");
+                return new ResponseEntity<>(user.getAccesscode(), HttpStatus.OK);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(ErrorMessage.USER_NOTFOUND.toString(), HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(message, httpStatus);
+        return new ResponseEntity<>("Invalid!", HttpStatus.UNAUTHORIZED);
     }
 
-    @CrossOrigin()
-    @GetMapping(value = "/updateemail/{email}/{update}")
-    public ResponseEntity<String> updateUserEmail(@PathVariable String email, @PathVariable String update ){
-
-        ResponseEntity message = null;
-        switch(APIKeyController._singleDynamoRepo.updateUserDetail(email, 3, update)){
-            case 1:
-                message = new ResponseEntity<>("Email update: success", HttpStatus.OK);
-                break;
-            case -1:
-                message = new ResponseEntity<>("Failed to update.", HttpStatus.NOT_FOUND);
-                break;
-        }
-        return message;
-    }
-
-    @CrossOrigin()
-    @DeleteMapping(value = "/delete/{email}")
-    public ResponseEntity<String> deleteUserDetails(@PathVariable String email) { // Working
-        User user = new User();
-        user.setEmail(email);
-        if(APIKeyController._singleDynamoRepo.getSingleUser(email) != null){
-            APIKeyController._singleDynamoRepo.deleteUserDetails(user);
-            return new ResponseEntity<>(user.toString() + " Deleted", HttpStatus.OK);
-        }
-        return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
-    }
-
+    /***
+     *
+     * TODO: Possible change to a new controller?
+     */
     @CrossOrigin()
     @GetMapping(value = "/login/{email}/{password}")
     public ResponseEntity<String> Login(@PathVariable String email, @PathVariable String password) {
         String token = APIKeyController._singleDynamoRepo.checkCredentials(email, password);
-        if(!token.equals("Request Failed")){
+        if (!token.equals("Request Failed")) {
             try {
                 return new ResponseEntity<>(token, HttpStatus.OK);
             } catch (Exception e) {
@@ -203,21 +195,11 @@ public class AccountController extends BaseController{
                 e.printStackTrace();
             }
         }
-        return new ResponseEntity<>("Login Failed.", HttpStatus.UNAUTHORIZED);
-    }
-
-    @CrossOrigin()
-    @GetMapping(value = "/usersinrange/{longitude}/{latitude}/{radius}")
-    public ResponseEntity<String> UsersInRangeOfRadius(@PathVariable double longitude, @PathVariable double latitude, @PathVariable int radius){
-        if(_usersInRange.getRadiusPostcodes(longitude, latitude, radius) != ""){
-            return new ResponseEntity<>(_usersInRange.getRadiusPostcodes(longitude, latitude, radius), HttpStatus.OK);
-        }
-        return new ResponseEntity<>("No users in given radius", HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(ErrorMessage.FAIL.toString(), HttpStatus.UNAUTHORIZED);
     }
 
     @Override
     public void loadController() {
         _controllerName = "AccountController ";
     }
-
 }
