@@ -5,8 +5,8 @@ public enum ErrorMessage {
     EMPTY("Collection empty"),
     SUCCESS("Success"),
     FAIL("Fail"),
-    DYNAMO_OFFLINE("Aroundhackathon@gmail.com"),
-    DYNAMO_ONLINE("Reset Password"),
+    DYNAMO_OFFLINE("Dynamo connection: Offline"),
+    DYNAMO_ONLINE(("Dynamo connection: Online"),
     USER_NOTFOUND("User does not exist"),
     EMAIL_INUSE("Email already in use, please try another one");
 
